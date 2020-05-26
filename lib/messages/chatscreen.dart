@@ -21,16 +21,33 @@ class _ChatscreenState extends State<Chatscreen> {
   Widget chatMessageList(){
     return StreamBuilder(
       stream: chatMessagesStream,
-      builder: (context, snapshot){
-        return snapshot.hasData ? ListView.builder(
-            itemCount: snapshot.data.documents.length,
-            controller: _scrollController,
-            itemBuilder: (context, index) {
-              return MessageTile(snapshot.data.documents[index].data["message"],
-                  snapshot.data.documents[index].data["sendBy"] == Constants.myName);
-            }
+      builder: (context, snapshot) {
+        return snapshot.hasData ? Column(
+          children: <Widget>[
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.only(bottom: 50),
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.data.documents.length,
+                    controller: _scrollController,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: <Widget>[
+                          MessageTile(snapshot.data.documents[index]
+                              .data["message"],
+                              snapshot.data.documents[index].data["sendBy"] ==
+                                  Constants.myName),
+                        ],
+                      );
+                    }
+                ),
+              ),
+            ),
+            SizedBox(height: 60),
+          ],
         ) : Loading();
-      },
+      }
     );
   }
 
