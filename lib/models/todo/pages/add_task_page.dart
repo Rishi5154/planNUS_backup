@@ -30,9 +30,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   @override
   Widget build(BuildContext context) {
-    ToDoDatabase provider = Provider.of<ToDoDatabase>(context);
-
+    var provider = Provider.of<ToDoDatabase>(context);
     _textTaskControler.clear();
+
     return Padding(
       padding: const EdgeInsets.all(24.0),
       child: Column(

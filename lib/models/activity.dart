@@ -3,36 +3,47 @@ import 'schedule_time.dart';
 
 class Activity {
   static final nil = "No Activity";
+  Map<String, Object> data = {
+    'name' : nil,
+    'isImportant' : false,
+    'isFinish' : false
+  };
 
-  String name;
-  ScheduleTiming slot;
-  bool isImportant = false;
-  bool isFinish = false;
-
-  Activity(String name, ScheduleTiming slot) {
-    this.name = name;
-    this.slot = slot;
+  Activity(Map<String, Object> customActivityData) {
+    this.data = customActivityData;
   }
 
-  static Activity noActivity(ScheduleTiming slot) {
-    return new Activity(nil, slot);
+  static Activity customActivity(String name, bool isImportant, bool isFinish) {
+    return new Activity({
+      'name' : name,
+      'isImportant' : isImportant,
+      'isFinish' : isFinish
+    });
+  }
+
+  static Activity noActivity() {
+    return new Activity({
+      'name' : nil,
+      'isImportant' : false,
+      'isFinish' : false
+    });
   }
 
   void alter(String name) {
-    this.name = name;
+    data['name'] = name;
   }
 
   void deleteActivity() {
-    this.name = nil;
-    isImportant = false;
+    data['name'] = nil;
+    data['isImportant'] = false;
   }
 
   void toggleImportant() {
-    this.isImportant = true;
+    data['isImportant'] = true;
   }
 
   void toggleNotImportant() {
-    this.isImportant = false;
+    data['isImportant'] = false;
   }
 
   Widget dailyActivityTemplate() {
@@ -48,26 +59,30 @@ class WeeklyActivityCard extends StatefulWidget {
   final Activity activity;
   WeeklyActivityCard({this.activity});
   @override
-  WeeklyActivityCardState createState() => WeeklyActivityCardState(a: this.activity);
+  WeeklyActivityCardState createState() => WeeklyActivityCardState();
 }
 
 class WeeklyActivityCardState extends State<WeeklyActivityCard> {
   Activity a;
-  WeeklyActivityCardState({this.a});
 
   @override
   Widget build(BuildContext context) {
+    a = widget.activity;
+    String name = a.data['name'];
+    bool isImportant = a.data['isImportant'];
+    bool isFinish = a.data['isFinish'];
+
     return SizedBox(
       width: 50.0,
       height: 47.0,
       child: Card(
-        color: a.name == 'No Activity'
-            ? Colors.grey[200] : a.isImportant
+        color: name == 'No Activity'
+            ? Colors.grey[200] : isImportant
             ? Colors.red : Colors.lightGreenAccent[100],
         child: GestureDetector(
           onTapDown: _storePosition,
           child: Center(
-            child: Text(a.name,
+            child: Text(name,
             style: TextStyle(
               fontSize: 10,
               color: Colors.black87,
@@ -123,28 +138,26 @@ class WeeklyActivityCardState extends State<WeeklyActivityCard> {
 
 }
 
-
-
 class DailyActivityCard extends StatefulWidget {
   final Activity activity;
   DailyActivityCard({ this.activity });
 
   @override
   DailyActivityState createState() {
-    // TODO: implement createState
-    return DailyActivityState(this.activity);
+    return DailyActivityState();
   }
 }
 
 class DailyActivityState extends State<DailyActivityCard> {
   Activity a;
-  DailyActivityState(Activity a) { this.a = a;}
-
-
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    a = widget.activity;
+    String name = a.data['name'];
+    String slot = a.data['slot'];
+    bool isImportant = a.data['isImportant'];
+    bool isFinish = a.data['isFinish'];
     return Card(
        margin: EdgeInsets.fromLTRB(16.0, 8, 16.0, 8),
        child: Row(
@@ -152,7 +165,7 @@ class DailyActivityState extends State<DailyActivityCard> {
            Container(
              padding: EdgeInsets.all(20.0),
              child: Text(
-                 a.slot.toString(),
+                 slot,
                  style: TextStyle(
                    color: Colors.black87,
                    fontSize: 17.5,
@@ -162,11 +175,11 @@ class DailyActivityState extends State<DailyActivityCard> {
           Expanded(
             child: Container(
               padding: EdgeInsets.all(20.0),
-              color: a.name == 'No Activity' ? Colors.grey[200] : a.isImportant ? Colors.red : Colors.lightGreenAccent[100],
+              color: name == 'No Activity' ? Colors.grey[200] : isImportant ? Colors.red : Colors.lightGreenAccent[100],
               child: GestureDetector(
                 onTapDown: _storePosition,
                 child: Text(
-                  a.name,
+                  name,
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.black87,

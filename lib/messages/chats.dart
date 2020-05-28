@@ -29,8 +29,8 @@ class _ChatsState extends State<Chats> {
     _myHandle = await HelperFunctions.getUserHandleSharedPreferences();
     setState(() {
     });
-    print("${_myName}");
-    print("${_myHandle}");
+    print("$_myName");
+    print("$_myHandle");
   }
 
   initiateSearch() {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plannusandroidversion/models/day_schedule.dart';
 import 'package:plannusandroidversion/models/timetable.dart';
+import 'package:plannusandroidversion/models/todo/pages/task_page.dart';
 import 'package:plannusandroidversion/models/todo/todo_main.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:plannusandroidversion/models/weekly_event_adder.dart';
@@ -8,27 +9,26 @@ import 'package:plannusandroidversion/screens/home/messages.dart';
 import 'package:plannusandroidversion/screens/home/profile.dart';
 import 'package:plannusandroidversion/services/auth.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:provider/provider.dart';
 
 
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
   final String title;
   @override
-  _HomeState createState() => _HomeState(new User());
+  _HomeState createState() => _HomeState();
 }
 class _HomeState extends State<Home> {
   User user;
   var tabs = [];
 
-  _HomeState(User user) {
-    this.user = user;
-    this.user.init();
-    this.tabs = [
-      Scaffold(backgroundColor: Colors.deepOrangeAccent[100], body: TheApp()), //home
-      Scaffold(backgroundColor: Colors.yellow, body: TimeTableWidget(tt: user.timetable)),
-      Messages(),
-      Profile(),
-    ];
+  _HomeState() {
+//    this.tabs = [
+//      Scaffold(backgroundColor: Colors.deepOrangeAccent[100], body: ToDoApp()), //home
+//      Scaffold(backgroundColor: Colors.yellow, body: TimeTableWidget(tt: user.timetable)),
+//      Messages(),
+//      Profile(),
+//    ];
   }
 
   int currentIndex = 0;
@@ -39,6 +39,14 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    user = Provider.of<User>(context);
+    user.init();
+    tabs = [
+      Provider<User>.value(value: user, child: Scaffold(backgroundColor: Colors.deepOrangeAccent[100], body: ToDoApp())), //home
+      Provider<User>.value(value: user, child: Scaffold(backgroundColor: Colors.yellow, body: TimeTableWidget(tt: user.timetable))),//TimeTable.emptyTimeTable()))),
+      Provider<User>.value(value: user, child: Messages()),
+      Provider<User>.value(value: user, child: Profile()),
+    ];
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -65,17 +73,21 @@ class _HomeState extends State<Home> {
               ));
               setState(() {
                 user.timetable.alter(x[4], x[0], x[1], x[2], x[3]);
-                tabs[0] = Scaffold(backgroundColor: Colors.deepOrangeAccent[100], body: DayScheduleWidget(ds: user.timetable.timetable['Mon'])); //home
-                tabs[1] = Scaffold(backgroundColor: Colors.yellow, body: TimeTableWidget(tt: user.timetable));
-                print(user.timetable.timetable['Mon'].scheduler['0800-0900'].name);
+                print(user.timetable.timetable);
+                tabs[0] = Scaffold(
+                    backgroundColor: Colors.deepOrangeAccent[100],
+                    body: TaskPage()//DayScheduleWidget(ds: user.timetable.timetable['Mon'])
+                ); //home
+                tabs[1] = Scaffold(
+                    backgroundColor: Colors.yellow,
+                    body: TimeTableWidget(tt: user.timetable)
+                );
               });
             },
           ),
           IconButton(
             icon: Icon(Icons.search, color: Colors.white),
-            onPressed: () {
-
-            },
+            onPressed: () {},
           ),
           FlatButton.icon(
             icon: Icon(Icons.person,
