@@ -138,29 +138,33 @@ class _SignInState extends State<SignIn> {
                     if(formKey.currentState.validate()) {
                       QuerySnapshot userInfoSnapshot;
                       if(formKey.currentState.validate()) {
-                      HelperFunctions.saveUserEmailSharedPreferences(email);
-                      DatabaseMethods().getUserByUserEmail(email).then((value) {
-                      userInfoSnapshot = value;
-                      HelperFunctions
+                        HelperFunctions.saveUserEmailSharedPreferences(email);
+                        DatabaseMethods().getUserByUserEmail(email).then((value) {
+                        userInfoSnapshot = value;
+                        HelperFunctions
                           .saveUsernameSharedPreferences(userInfoSnapshot.documents[0].data["name"]);
-                      print(userInfoSnapshot.documents[0].data["name"]);
-                      HelperFunctions
+                        print(userInfoSnapshot.documents[0].data["name"]);
+                        HelperFunctions
                           .saveUserHandleSharedPreferences(userInfoSnapshot.documents[0].data["handle"]);
-                      });
-                      setState(() => loading = true);
-                      dynamic result = await auth.signInWithEmailAndPassword(email, password);
-                      if (result == null ) {
-                        setState(() {
-                          error = 'FAILED TO SIGN IN!';
-                          loading = false;
                         });
+
+                        setState(() => loading = true);
+                        dynamic result = await auth.signInWithEmailAndPassword(email, password);
+                        if (result == null ) {
+                          setState(() {
+                            error = 'FAILED TO SIGN IN!';
+                            loading = false;
+                          });
+                        } else {
+                          HelperFunctions.saveUserLoggedInSharedPreferences(true);
+                        }
+
                       } else {
                         HelperFunctions.saveUserLoggedInSharedPreferences(true);
                         Constants.myName = await HelperFunctions.getUsernameSharedPreferences();
                         Constants.myHandle = await HelperFunctions.getUserHandleSharedPreferences();
                         print(Constants.myName + " has logged in");
                         print(Constants.myHandle + " has logged in");
-                      }
                       }
                     }
                   },

@@ -53,11 +53,25 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
     addable = '';
   }
 
+  String day(String selected) {
+    switch(selected) {
+      case 'Mon': return '1'; break;
+      case 'Tue': return '2'; break;
+      case 'Wed': return '3'; break;
+      case 'Thu': return '4'; break;
+      case 'Fri': return '5'; break;
+      case 'Sat': return '6'; break;
+      case 'Sun': return '7'; break;
+      default: return '0'; break;
+    }
+  }
+
   onChangeStartTime(ScheduleTime selectedStartTime) {
     setState(() {
       _selectedStartTime = selectedStartTime;
     });
   }
+
   onChangeEndTime(ScheduleTime selectedEndTime) {
     if (selectedEndTime.time <= _selectedStartTime.time) {
       setState((){
@@ -70,6 +84,7 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
       });
     }
   }
+
   onChangeImportance(bool choice) {
     setState(() {
       _selectedImportance = choice;
@@ -201,7 +216,7 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
                           _selectedStartTime,
                           _selectedEndTime,
                           _selectedImportance,
-                          _selectedDay
+                          day(_selectedDay),
                         ]);
                         init();
                       }

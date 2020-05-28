@@ -30,9 +30,16 @@ class _ChatsState extends State<Chats> {
   getUserInfo() async {
     _myName = await HelperFunctions.getUsernameSharedPreferences();
     _myHandle = await HelperFunctions.getUserHandleSharedPreferences();
+
+    setState(() {
+    });
+    print("$_myName");
+    print("$_myHandle");
+
     setState(() {});
     print("${_myName}");
     print("${_myHandle}");
+
   }
 
   initiateSearch() {
