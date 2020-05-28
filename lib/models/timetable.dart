@@ -383,7 +383,7 @@ class ActivityTile extends StatelessWidget {
       color: name == 'No Activity' ? Colors.white70 : isImportant ? Colors.red : Colors.greenAccent,
       child: SizedBox(
           height: 50.0,
-          width: 40.0,
+          width: 39.0,
           child: Center(
             child: Text(
             name,
