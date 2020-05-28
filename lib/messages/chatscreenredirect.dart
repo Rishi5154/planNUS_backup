@@ -4,50 +4,66 @@ import 'package:plannusandroidversion/shared/loading.dart';
 import 'constants.dart';
 import 'database.dart';
 
-class Chatscreen extends StatefulWidget {
+class ChatscreenRedirect extends StatefulWidget {
   final String chatRoomID;
-  Chatscreen(this.chatRoomID);
+  ChatscreenRedirect(this.chatRoomID);
   @override
-  _ChatscreenState createState() => _ChatscreenState();
+  _ChatscreenRedirectState createState() => _ChatscreenRedirectState();
 }
 
-class _ChatscreenState extends State<Chatscreen> {
+class _ChatscreenRedirectState extends State<ChatscreenRedirect> {
 
   DatabaseMethods databaseMethods = new DatabaseMethods();
   TextEditingController messageController = new TextEditingController();
   Stream chatMessagesStream;
   ScrollController _scrollController = new ScrollController();
 
+  AppBar appBar(){
+    return AppBar(
+        leading: IconButton(
+          icon: new Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+              size: 24,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        )
+    );
+  }
+
+
   Widget chatMessageList(){
     return StreamBuilder(
-      stream: chatMessagesStream,
-      builder: (context, snapshot) {
-        return snapshot.hasData ? Column(
-          children: <Widget>[
-            Expanded(
-              child: Container(
-                margin: EdgeInsets.only(bottom: 50),
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: snapshot.data.documents.length,
-                    controller: _scrollController,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: <Widget>[
-                          MessageTile(snapshot.data.documents[index]
-                              .data["message"],
-                              snapshot.data.documents[index].data["sendBy"] ==
-                                  Constants.myName),
-                        ],
-                      );
-                    }
+        stream: chatMessagesStream,
+        builder: (context, snapshot) {
+          return snapshot.hasData ? Column(
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.only(bottom: 50),
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: snapshot.data.documents.length,
+                      controller: _scrollController,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: <Widget>[
+                            MessageTile(snapshot.data.documents[index]
+                                .data["message"],
+                                snapshot.data.documents[index].data["sendBy"] ==
+                                    Constants.myName),
+                          ],
+                        );
+                      }
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 60),
-          ],
-        ) : Loading();
-      }
+              SizedBox(height: 60),
+            ],
+          ) : Loading();
+        }
     );
   }
 
@@ -73,10 +89,16 @@ class _ChatscreenState extends State<Chatscreen> {
     });
     super.initState();
   }
+  
+
   @override
   Widget build(BuildContext context) {
+    //AppBar appBar = appBar();
     return Scaffold(
-      appBar: AppBar(),
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(appBar().preferredSize.height - 10),
+          child: appBar(),
+      ),
       body: Container(
           child: Stack(
             children: [

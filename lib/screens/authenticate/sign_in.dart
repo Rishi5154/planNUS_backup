@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/messages/database.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
+import 'package:plannusandroidversion/screens/authenticate/resetpassword.dart';
 import 'package:plannusandroidversion/services/auth.dart';
 import 'package:plannusandroidversion/shared/constants.dart';
 import 'package:plannusandroidversion/shared/loading.dart';
@@ -40,7 +43,11 @@ class _SignInState extends State<SignIn> {
           FlatButton.icon(
             icon: Icon(Icons.person, color: Colors.white),
             label: Text('Register',
-            style: new TextStyle(color: Colors.white),
+            softWrap: true,
+            style: GoogleFonts.biryani(
+              color: Colors.white,
+              fontSize: 12,
+            ),
             ),
             onPressed: () {
               widget.toggleView();
@@ -63,7 +70,7 @@ class _SignInState extends State<SignIn> {
             child : Column (
               children: <Widget>[
                 Image.asset('assets/planNUS.png', height: 250, width: 300),
-                SizedBox(height: 20),
+                SizedBox(height: 10),
                 Container(
                   margin: EdgeInsets.only(right: 30),
                   child: TextFormField(
@@ -86,7 +93,36 @@ class _SignInState extends State<SignIn> {
                     },
                   ),
                 ),
-                SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: 25,
+                    width: 250,
+                    alignment: Alignment.topRight,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ResetPassword(),
+                            )
+                        );
+                      },
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.black,
+                        highlightColor: Colors.grey[100],
+                        child: Text('Forgot password?',
+                          textAlign: TextAlign.right,
+                          style: GoogleFonts.lato(
+                          decoration: TextDecoration.underline,
+                          fontSize: 14,
+                          color: Colors.black
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
                 RaisedButton(
                   color: Colors.amberAccent,
                   padding: EdgeInsets.symmetric(vertical: 0, horizontal: 51),
@@ -111,6 +147,7 @@ class _SignInState extends State<SignIn> {
                         HelperFunctions
                           .saveUserHandleSharedPreferences(userInfoSnapshot.documents[0].data["handle"]);
                         });
+
                         setState(() => loading = true);
                         dynamic result = await auth.signInWithEmailAndPassword(email, password);
                         if (result == null ) {
@@ -121,11 +158,18 @@ class _SignInState extends State<SignIn> {
                         } else {
                           HelperFunctions.saveUserLoggedInSharedPreferences(true);
                         }
+
+                      } else {
+                        HelperFunctions.saveUserLoggedInSharedPreferences(true);
+                        Constants.myName = await HelperFunctions.getUsernameSharedPreferences();
+                        Constants.myHandle = await HelperFunctions.getUserHandleSharedPreferences();
+                        print(Constants.myName + " has logged in");
+                        print(Constants.myHandle + " has logged in");
                       }
                     }
                   },
                 ),
-                SizedBox(height: 5),
+                SizedBox(height: 10,),
                 RaisedButton(
                   color: Colors.pinkAccent,
                   child: Shimmer.fromColors(

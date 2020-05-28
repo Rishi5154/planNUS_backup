@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/models/day_schedule.dart';
 import 'package:plannusandroidversion/models/timetable.dart';
 import 'package:plannusandroidversion/models/todo/pages/task_page.dart';
@@ -97,6 +98,8 @@ class _HomeState extends State<Home> {
               style: TextStyle(color: Colors.yellow)
             ),
               onPressed: () async {
+              Constants.myName = null;
+              Constants.myHandle = null;
                 await auth.googleSignIn.isSignedIn().then((value) async {
                   if (value) {
                     AuthService.googleSignInAccount = null;
