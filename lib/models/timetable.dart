@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:plannusandroidversion/models/schedule_time.dart';
+import 'package:plannusandroidversion/models/user.dart';
 import 'activity.dart';
 import 'day_schedule.dart';
 
-void main() => runApp(MaterialApp(debugShowCheckedModeBanner: false, home: TimeTableWidget(tt: TimeTable.emptyTimeTable())));
+void main() => runApp(MaterialApp(debugShowCheckedModeBanner: false, home: TimeTableWidget(new User())));
 
 class TimeTable {
   static List<String> days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -27,8 +28,8 @@ class TimeTable {
     });
   }
 
-  Widget timeTableWidget() {
-    return TimeTableWidget(tt: this);
+  Widget timeTableWidget(User u) {
+    return TimeTableWidget(u);
   }
 
   void alter(String day, String bName, ScheduleTime bStart, ScheduleTime bEnd, bool isImportant) {
@@ -44,8 +45,8 @@ class TimeTable {
 }
 
 class TimeTableWidget extends StatefulWidget {
-  final TimeTable tt;
-  TimeTableWidget({this.tt});
+  final User user;
+  TimeTableWidget(this.user);
 
   @override
   TimeTableWidgetState createState() => TimeTableWidgetState();
@@ -61,185 +62,8 @@ class TimeTableWidgetState extends State<TimeTableWidget> {
     _sc = ScrollController();
   }
 
-//  Widget timetable() {
-//    return SingleChildScrollView(
-//      scrollDirection: Axis.horizontal,
-//      child: Row(
-//        children: [
-//          Column(
-//              children: tt.timetable['1'].values.map((value) {
-//                return Card(
-//                    child: DecoratedBox(
-//                        decoration: BoxDecoration(
-//                          color: Colors.white,
-//                        ),
-//                        child: SizedBox(
-//                          height: 50.0,
-//                          width: 50.0,
-//                          child: Text(value['name'], textAlign: TextAlign.center),
-//                        )
-//                    )
-//                );
-//              }).toList()
-//          ),
-//          Column(
-//              children: tt.timetable['2'].values.map((value) {
-//                return Card(
-//                    child: DecoratedBox(
-//                        decoration: BoxDecoration(
-//                          color: Colors.white,
-//                        ),
-//                        child: SizedBox(
-//                          height: 50.0,
-//                          width: 50.0,
-//                          child: Text(value['name'], textAlign: TextAlign.center,),
-//                        )
-//                    )
-//                );
-//              }).toList()
-//          ),
-//          Column(
-//              children: tt.timetable['3'].values.map((value) {
-//                return Card(
-//                    child: DecoratedBox(
-//                        decoration: BoxDecoration(
-//                          color: Colors.white,
-//                        ),
-//                        child: SizedBox(
-//                          height: 50.0,
-//                          width: 50.0,
-//                          child: Text(value['name'], textAlign: TextAlign.center,),
-//                        )
-//                    )
-//                );
-//              }).toList()
-//          ),
-//          Column(
-//              children: tt.timetable['4'].values.map((value) {
-//                return Card(
-//                    child: DecoratedBox(
-//                        decoration: BoxDecoration(
-//                          color: Colors.white,
-//                        ),
-//                        child: SizedBox(
-//                          height: 50.0,
-//                          width: 50.0,
-//                          child: Text(value['name'], textAlign: TextAlign.center,),
-//                        )
-//                    )
-//                );
-//              }).toList()
-//          ),
-//          Column(
-//              children: tt.timetable['5'].values.map((value) {
-//                return Card(
-//                    child: DecoratedBox(
-//                        decoration: BoxDecoration(
-//                          color: Colors.white,
-//                        ),
-//                        child: SizedBox(
-//                          height: 50.0,
-//                          width: 50.0,
-//                          child: Text(value['name'], textAlign: TextAlign.center,),
-//                        )
-//                    )
-//                );
-//              }).toList()
-//          ),
-//          Column(
-//              children: tt.timetable['6'].values.map((value) {
-//                return Card(
-//                    child: DecoratedBox(
-//                        decoration: BoxDecoration(
-//                          color: Colors.white,
-//                        ),
-//                        child: SizedBox(
-//                          height: 50.0,
-//                          width: 50.0,
-//                          child: Text(value['name'], textAlign: TextAlign.center,),
-//                        )
-//                    )
-//                );
-//              }).toList()
-//          ),
-//          Column(
-//              children: tt.timetable['7'].values.map((value) {
-//                return Card(
-//                    child: DecoratedBox(
-//                        decoration: BoxDecoration(
-//                          color: Colors.white,
-//                        ),
-//                        child: SizedBox(
-//                          height: 50.0,
-//                          width: 50.0,
-//                          child: Text(value['name'], textAlign: TextAlign.center,),
-//                        )
-//                    )
-//                );
-//              }).toList()
-//          ),
-//        ]
-//      ),
-//    );
-//  }
-//
-//  Widget dayList() {
-//    return Row(
-//      children: TimeTable.days.map((day) {
-//        Widget activity = Card(
-//          margin: EdgeInsets.fromLTRB(4.0, 5.0, 4.0, 5.0),
-//          child: DecoratedBox(
-//              decoration: BoxDecoration(
-//                color: Colors.amberAccent,
-//              ),
-//              child: SizedBox(
-//                  height: 20.0,
-//                  width: 50.0,
-//                  child: Text(day, textAlign: TextAlign.center, style: TextStyle(fontSize: 20.0))
-//              )
-//          ),
-//        );
-//        if (day == 'Mon') {
-//          return Row(
-//              children: [
-//                SizedBox(width: 48),
-//                activity
-//              ]
-//          );
-//        } else {
-//          return activity;
-//        }
-//      }).toList()
-//    );
-//  }
-//
-//  Widget timeList() {
-//    return Column(
-//        children: ScheduleTiming.allSlots.map((slot) {
-//          return Card(
-//            child: DecoratedBox(
-//                decoration: BoxDecoration(
-//                  color: Colors.blue,
-//                ),
-//                child: SizedBox(
-//                    height: 50.0,
-//                    width: 40.0,
-//                    child: Column(
-//                        children: [
-//                          Text(ScheduleTime(time: slot.start).toString(), textAlign: TextAlign.center, style: TextStyle(fontSize: 16.0)),
-//                          Text("-", style: TextStyle(fontSize: 10)),
-//                          Text(ScheduleTime(time: slot.end).toString(), textAlign: TextAlign.center, style: TextStyle(fontSize: 16.0)),
-//                        ]
-//                    )
-//                )
-//            ),
-//          );
-//        }).toList()
-//    );
-//  }
-
   Widget build(BuildContext context) {
-    tt = widget.tt;
+    tt = widget.user.timetable;
     return Scaffold(
       body: SafeArea(
         child: CustomScrollView(
@@ -261,38 +85,6 @@ class TimeTableWidgetState extends State<TimeTableWidget> {
                 ]
               )
             ),
-//            SliverGrid(
-//              delegate: SliverChildBuilderDelegate((context, index) {
-//                if (index == 0) {
-//                  return SizedBox(
-//                    width: 40.0
-//                  );
-//                } else {
-//                  String day = TimeTable.days[index-1];
-//                  Widget activity = Card(
-//                    margin: EdgeInsets.fromLTRB(4.0, 5.0, 4.0, 5.0),
-//                    child: DecoratedBox(
-//                        decoration: BoxDecoration(
-//                          color: Colors.amberAccent,
-//                        ),
-//                        child: SizedBox(
-//                            height: 20.0,
-//                            width: 50.0,
-//                            child: Text(day, textAlign: TextAlign.center,
-//                                style: TextStyle(fontSize: 20.0))
-//                        )
-//                    ),
-//                  );
-//                  return activity;
-//                }
-//              },
-//              childCount: 8,
-//              ),
-//              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-//                crossAxisCount: 8,
-//                childAspectRatio: 1.7,
-//              ),
-//            ),
             SliverList(
               delegate: SliverChildBuilderDelegate((context, index1) {
                 ScheduleTiming slot = ScheduleTiming.allSlots[index1];
@@ -313,13 +105,13 @@ class TimeTableWidgetState extends State<TimeTableWidget> {
                             )
                           )
                       ),
-                      ActivityTile(tt.timetable['1'][slot.toString()]['name'], tt.timetable['1'][slot.toString()]['isImportant']),
-                      ActivityTile(tt.timetable['2'][slot.toString()]['name'], tt.timetable['2'][slot.toString()]['isImportant']),
-                      ActivityTile(tt.timetable['3'][slot.toString()]['name'], tt.timetable['3'][slot.toString()]['isImportant']),
-                      ActivityTile(tt.timetable['4'][slot.toString()]['name'], tt.timetable['4'][slot.toString()]['isImportant']),
-                      ActivityTile(tt.timetable['5'][slot.toString()]['name'], tt.timetable['5'][slot.toString()]['isImportant']),
-                      ActivityTile(tt.timetable['6'][slot.toString()]['name'], tt.timetable['6'][slot.toString()]['isImportant']),
-                      ActivityTile(tt.timetable['7'][slot.toString()]['name'], tt.timetable['7'][slot.toString()]['isImportant']),
+                      ttRow('1', slot.toString()),
+                      ttRow('2', slot.toString()),
+                      ttRow('3', slot.toString()),
+                      ttRow('4', slot.toString()),
+                      ttRow('5', slot.toString()),
+                      ttRow('6', slot.toString()),
+                      ttRow('7', slot.toString()),
                     ]
                   )
                 );
@@ -330,27 +122,57 @@ class TimeTableWidgetState extends State<TimeTableWidget> {
         ),
       )
     );
+  }
 
-//    return Scaffold(
-//      appBar: AppBar(),
-//      body: SingleChildScrollView(
-//        scrollDirection: Axis.vertical,
-//        child: Column(
-//          children:[
-//            dayList(),
-//            Row(
-//              children: [
-//                timeList(),
-//                SingleChildScrollView(
-//                  scrollDirection: Axis.horizontal,
-//                  child: timetable(),
-//                ),
-//              ]
-//            ),
-//          ]
-//        ),
-//      )
-//    );
+  Widget ttRow(String day, String slot) {
+    return GestureDetector(
+      child: ActivityTile(tt.timetable[day][slot.toString()]['name'], tt.timetable[day][slot.toString()]['isImportant']),
+      onLongPress: () {
+        _showPopupMenu(day, slot.toString());
+      },
+      onTapDown: _storePosition,
+    );
+  }
+
+  var _tapPosition;
+
+  _showPopupMenu(String _day, String _slot) async {
+    final RenderBox overlay = Overlay.of(context).context.findRenderObject();
+    await showMenu(
+      context: context,
+      position: RelativeRect.fromRect(
+          _tapPosition & Size(40, 40), // smaller rect, the touch area
+          Offset.zero & overlay.size // Bigger rect, the entire screen
+      ),
+      items: <PopupMenuEntry> [
+        PopupMenuItem<bool>(
+          value: true,
+          child: FlatButton(
+            child: Text("Delete"),
+            onPressed: () {
+              setState(() {
+                tt.timetable[_day][_slot]['name'] = 'No Activity';
+                tt.timetable[_day][_slot]['isImportant'] = false;
+              });
+              Navigator.pop(context);
+            },
+          ),
+        ),
+        PopupMenuItem<bool>(
+          value: false,
+          child: FlatButton(
+              child: Text("Cancel"),
+              onPressed: () {
+                Navigator.pop(context);
+              }
+          ),
+        )
+      ],
+      elevation: 8.0,
+    );
+  }
+  void _storePosition(TapDownDetails details) {
+    _tapPosition = details.globalPosition;
   }
 }
 
@@ -372,27 +194,38 @@ class DayTile extends StatelessWidget {
   }
 }
 
-class ActivityTile extends StatelessWidget {
+class ActivityTile extends StatefulWidget {
   final String name;
   final bool isImportant;
   ActivityTile(this.name, this.isImportant);
+  @override
+  ActivityCardState createState() => ActivityCardState();
+}
 
+class ActivityCardState extends State<ActivityTile> {
+  String _name;
+  bool _isImportant;
   @override
   Widget build(BuildContext context) {
+    _name = widget.name;
+    _isImportant = widget.isImportant;
     return Card(
-      color: name == 'No Activity' ? Colors.white70 : isImportant ? Colors.red : Colors.greenAccent,
+      color: _name == 'No Activity'
+          ? Colors.grey[200] : _isImportant
+          ? Colors.red : Colors.lightGreenAccent[100],
       child: SizedBox(
-          height: 50.0,
-          width: 39.0,
-          child: Center(
-            child: Text(
-            name,
-            textAlign: TextAlign.center,
+        width: 39.0,
+        height: 50.0,
+        child: Center(
+          child: Text(_name,
             style: TextStyle(
-              fontSize: 10.0
-            )),
-          )
-      )
+              fontSize: 10,
+              color: Colors.black87,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
     );
   }
 }

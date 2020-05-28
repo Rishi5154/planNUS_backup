@@ -44,7 +44,7 @@ class _HomeState extends State<Home> {
     user.init();
     tabs = [
       Provider<User>.value(value: user, child: Scaffold(backgroundColor: Colors.deepOrangeAccent[100], body: ToDoApp())), //home
-      Provider<User>.value(value: user, child: Scaffold(backgroundColor: Colors.yellow, body: TimeTableWidget(tt: user.timetable))),//TimeTable.emptyTimeTable()))),
+      Provider<User>.value(value: user, child: Scaffold(backgroundColor: Colors.yellow, body: TimeTableWidget(user))),//TimeTable.emptyTimeTable()))),
       Provider<User>.value(value: user, child: Messages()),
       Provider<User>.value(value: user, child: Profile()),
     ];
@@ -81,7 +81,7 @@ class _HomeState extends State<Home> {
                 ); //home
                 tabs[1] = Scaffold(
                     backgroundColor: Colors.yellow,
-                    body: TimeTableWidget(tt: user.timetable)
+                    body: TimeTableWidget(user)
                 );
               });
             },
