@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/messages/database.dart';
+import 'package:plannusandroidversion/messages/helperfunctions.dart';
 import 'package:plannusandroidversion/models/user.dart';
 
 class AuthService {
@@ -45,18 +47,36 @@ class AuthService {
   }
 
   Future createProfileForGoogleAccounts() async {
+    String email = googleSignInAccount.email;
+    String name = googleSignInAccount.displayName;
+    QuerySnapshot snapshot;
+    HelperFunctions.saveUserLoggedInSharedPreferences(true);
     try {
-      QuerySnapshot snapshot = await DatabaseMethods().getUserByUserEmail(
-          AuthService.googleSignInAccount.email);
+
+      QuerySnapshot snapshot = await DatabaseMethods().getUserByUserEmail(email);
+//      Constants.myName = snapshot.documents[0].data['name'];
+//      Constants.myHandle = snapshot.documents[0].data['handle'];
+      HelperFunctions.saveUserEmailSharedPreferences(email);
+      DatabaseMethods().getUserByUserEmail(email).then((value) {
+        snapshot = value;
+        HelperFunctions
+            .saveUsernameSharedPreferences(snapshot.documents[0].data["name"]);
+        print(snapshot.documents[0].data["name"]);
+        HelperFunctions
+            .saveUserHandleSharedPreferences(snapshot.documents[0].data["handle"]);
+      });
       print(snapshot.documents[0].data['name']);
       print("here at Gsignin");
       print(AuthService.googleUserId);
     } catch (e) {
       print(e.toString());
       print(AuthService.googleUserId + " at exception");
+      String handle = '';
       await DatabaseMethods(uid: AuthService.googleUserId).addUserData(
-          AuthService.googleSignInAccount.email,
-          AuthService.googleSignInAccount.displayName, '');
+          email, name, handle);
+      HelperFunctions.saveUserEmailSharedPreferences(email);
+      HelperFunctions.saveUsernameSharedPreferences(name);
+      HelperFunctions.saveUserHandleSharedPreferences(handle);
     }
   }
 
@@ -100,6 +120,16 @@ class AuthService {
     } catch (e) { // else return null
       print(e.toString());
       return null;
+    }
+  }
+
+  // reset password
+  Future resetPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } catch (e) {
+      print(e.toString());
+      return false;
     }
   }
 

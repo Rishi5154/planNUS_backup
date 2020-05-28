@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 import 'chatscreen.dart';
 import 'constants.dart';
 import 'database.dart';
@@ -55,7 +55,7 @@ class _ChatsState extends State<Chats> {
   }
 
   createChatRoomToStartConversation({String name}) {
-    print(Constants.myName /*+ " is here"*/);
+    print(Constants.myName + " is now");
     print(name + " is here");
     print(Constants.myName /*+ " is here"*/);
     if (name != Constants.myName) {
@@ -121,6 +121,9 @@ class _ChatsState extends State<Chats> {
         ));
   }
 
+  final formKey = GlobalKey<FormState>(); // 'id' of form
+  String error = '';
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -167,11 +170,26 @@ class _ChatsState extends State<Chats> {
                       padding: EdgeInsets.fromLTRB(20, 2, 2, 2),
                       icon: new Icon(Icons.search, color: Colors.blue),
                       onPressed: () {
-                        initiateSearch();
+                        if (Constants.myName == null || Constants.myName.isEmpty){
+                          setState(() {
+                            error = 'Please update your name at Profile!';
+                          });
+                        } else {
+                          initiateSearch();
+                        }
                       },
                     )
                   ],
                 ),
+              ),
+              Container(height: 20,
+                  width: 300,
+                  child: Text(error,
+                    style: GoogleFonts.lato(
+                        fontSize: 18,
+                        color: Colors.white,
+                    ),
+                  )
               ),
               searchList()
             ],
