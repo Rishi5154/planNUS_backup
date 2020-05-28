@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:plannusandroidversion/messages/chats.dart';
 import 'package:plannusandroidversion/messages/chatscreen.dart';
+import 'package:plannusandroidversion/messages/chatscreenredirect.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/messages/database.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
@@ -66,7 +68,7 @@ class _MessagesState extends State<Messages> {
           child: Column(
             children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(30),
+              padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 0),//const EdgeInsets.all(15),
               child: TextField(
                 controller: _titleController,
                 decoration: InputDecoration(
@@ -102,34 +104,39 @@ class ChatRoomsTile extends StatelessWidget {
   ChatRoomsTile(this.name, this.chatRoomID);
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(
-            builder: (context) => Chatscreen(chatRoomID)
-        ));
-//        Navigator.of(context).push(
-//            MaterialPageRoute(
-//              builder: (context) =>
-//                  Chatscreen(chatRoomID),
-//            ));
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-        child: Row(
-          children: <Widget>[
-            Container(
-              height: 40, width: 40,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(40),
-              ),
-              child: Text("${name.isNotEmpty ? name.substring(0,1).toUpperCase() : "-"}"),
+    return Container(
+      color: Colors.amber[200],
+      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      child: Row(
+        children: <Widget>[
+          Container(
+            height: 50, width: 50,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.circular(50),
             ),
-            SizedBox(width: 8),
-            Text(name)
-          ],
-        ),
+            child: Text("${name.isNotEmpty ? name.substring(0,1).toUpperCase() : "-"}",
+            style: TextStyle(fontSize: 18),),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(15, 8, 8, 8),
+            child: Container(width: 100, child: Text(name, style: GoogleFonts.biryani(fontSize: 16),)),
+          ),
+          SizedBox(width: 125),
+          IconButton(
+            icon: Icon(
+              Icons.send
+            ), onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          ChatscreenRedirect(chatRoomID),
+                    )
+                );
+              },
+          ),
+        ],
       ),
     );
   }

@@ -32,11 +32,11 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return loading ?  Loading() : Scaffold(
+      extendBodyBehindAppBar: true,
       backgroundColor: Colors.black54,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.transparent,
         elevation: 0.0,
-        title: Text('Sign up'),
         actions: <Widget>[
           FlatButton.icon(
             icon: Icon(Icons.person, color: Colors.white),
@@ -58,7 +58,7 @@ class _RegisterState extends State<Register> {
               colors: [Colors.amber[100], Colors.deepPurpleAccent, Colors.amber[100]],
             ),
           ),
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
+          padding: EdgeInsets.symmetric(vertical: 100, horizontal: 50),
           child: Form(
             key: formKey, // keep track of form and its state
             child : Column (

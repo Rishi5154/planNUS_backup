@@ -81,6 +81,15 @@ class DatabaseMethods {
       print(onError.toString());
     });
   }
+  updateChatRoom(String chatRoomID, chatRoomMap) {
+    Firestore.instance
+        .collection("ChatRoom")
+        .document(chatRoomID)
+        .updateData(chatRoomMap)
+        .catchError((onError){
+          print(onError.toString());
+        });
+  }
   addConversationMessages(String chatRoomID, messageMap) {
     Firestore.instance
         .collection("ChatRoom")

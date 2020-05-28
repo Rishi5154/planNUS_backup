@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/messages/database.dart';
+import 'package:plannusandroidversion/messages/helperfunctions.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:plannusandroidversion/services/auth.dart';
 import 'package:plannusandroidversion/shared/loading.dart';
@@ -52,13 +54,13 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
 
     User user = Provider.of<User>(context);
-    void foo() async {
-      String str = await databaseMethods.getSpecificUserData(user.uid);
-      setState(() {
-        key = str;
-      });
-    }
-    return handle == null ? Loading() :Scaffold(
+//    void foo() async {
+//      String str = await databaseMethods.getSpecificUserData(user.uid);
+//      setState(() {
+//        key = str;
+//      });
+//    }
+    return handle == null ? Loading() : Scaffold(
       appBar: AppBar(
         title: Text("Welcome, " + handle,
             style: TextStyle(color: Colors.black)
@@ -142,18 +144,28 @@ class _ProfileState extends State<Profile> {
                       ),
                       onPressed: () async {
                         //print(handle);
-                        if(formKey.currentState.validate()) {
+                        if (formKey.currentState.validate()) {
                           print(AuthService.googleUserId);
-                          await auth.googleSignIn.isSignedIn() ?
-                          await databaseMethods.updateSpecificUserData(AuthService.googleUserId, name, handle)
-                              : await databaseMethods.updateSpecificUserData(
-                              user.uid, name, handle);
+                          bool check = await auth.googleSignIn.isSignedIn();
+                          if (check) {
+                            await databaseMethods.updateSpecificUserData(
+                                AuthService.googleUserId, name, handle);
+                          } else {
+                            await databaseMethods.updateSpecificUserData(
+                                user.uid, name, handle);
+                          }
+                          HelperFunctions.saveUsernameSharedPreferences(name);
+                          HelperFunctions.saveUserHandleSharedPreferences(handle);
+                          Constants.myName = name;
+                          Constants.myHandle = handle;
+                          print(Constants.myName);
+                          print(Constants.myHandle);
                           setState(() {
                             error = 'Update successful!';
                             key = handle;
                           });
                         }
-                      },
+                      }
                     ),
                   ],
                 ),
