@@ -1,8 +1,11 @@
+import 'package:plannusandroidversion/models/todo/todo_models/database.dart';
+
 import 'timetable.dart';
 
 class User {
   final String uid;
   TimeTable timetable = TimeTable.emptyTimeTable();
+  TodoDatabase toDoDatabase = TodoDatabase();
   int phoneNumber;
   bool schedule = false;
   bool initial = true;

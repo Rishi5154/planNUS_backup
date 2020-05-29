@@ -17,12 +17,12 @@ class TodoData extends DataClass implements Insertable<TodoData> {
   final int todoType;
   TodoData(
       {@required this.id,
-        @required this.date,
-        @required this.time,
-        @required this.task,
-        @required this.description,
-        @required this.isFinish,
-        @required this.todoType});
+      this.date,
+      this.time,
+      @required this.task,
+      @required this.description,
+      @required this.isFinish,
+      @required this.todoType});
   factory TodoData.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -33,16 +33,16 @@ class TodoData extends DataClass implements Insertable<TodoData> {
     return TodoData(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       date:
-      dateTimeType.mapFromDatabaseResponse(data['${effectivePrefix}date']),
+          dateTimeType.mapFromDatabaseResponse(data['${effectivePrefix}date']),
       time:
-      dateTimeType.mapFromDatabaseResponse(data['${effectivePrefix}time']),
+          dateTimeType.mapFromDatabaseResponse(data['${effectivePrefix}time']),
       task: stringType.mapFromDatabaseResponse(data['${effectivePrefix}task']),
       description: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}description']),
       isFinish:
-      boolType.mapFromDatabaseResponse(data['${effectivePrefix}is_finish']),
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}is_finish']),
       todoType:
-      intType.mapFromDatabaseResponse(data['${effectivePrefix}todo_type']),
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}todo_type']),
     );
   }
   factory TodoData.fromJson(Map<String, dynamic> json,
@@ -91,13 +91,13 @@ class TodoData extends DataClass implements Insertable<TodoData> {
   }
 
   TodoData copyWith(
-      {int id,
-        DateTime date,
-        DateTime time,
-        String task,
-        String description,
-        bool isFinish,
-        int todoType}) =>
+          {int id,
+          DateTime date,
+          DateTime time,
+          String task,
+          String description,
+          bool isFinish,
+          int todoType}) =>
       TodoData(
         id: id ?? this.id,
         date: date ?? this.date,
@@ -110,39 +110,39 @@ class TodoData extends DataClass implements Insertable<TodoData> {
   @override
   String toString() {
     return (StringBuffer('TodoData(')
-      ..write('id: $id, ')
-      ..write('date: $date, ')
-      ..write('time: $time, ')
-      ..write('task: $task, ')
-      ..write('description: $description, ')
-      ..write('isFinish: $isFinish, ')
-      ..write('todoType: $todoType')
-      ..write(')'))
+          ..write('id: $id, ')
+          ..write('date: $date, ')
+          ..write('time: $time, ')
+          ..write('task: $task, ')
+          ..write('description: $description, ')
+          ..write('isFinish: $isFinish, ')
+          ..write('todoType: $todoType')
+          ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => $mrjf($mrjc(
+      id.hashCode,
       $mrjc(
+          date.hashCode,
           $mrjc(
+              time.hashCode,
               $mrjc(
-                  $mrjc($mrjc($mrjc(0, id.hashCode), date.hashCode),
-                      time.hashCode),
-                  task.hashCode),
-              description.hashCode),
-          isFinish.hashCode),
-      todoType.hashCode));
+                  task.hashCode,
+                  $mrjc(description.hashCode,
+                      $mrjc(isFinish.hashCode, todoType.hashCode)))))));
   @override
   bool operator ==(other) =>
       identical(this, other) ||
-          (other is TodoData &&
-              other.id == id &&
-              other.date == date &&
-              other.time == time &&
-              other.task == task &&
-              other.description == description &&
-              other.isFinish == isFinish &&
-              other.todoType == todoType);
+      (other is TodoData &&
+          other.id == id &&
+          other.date == date &&
+          other.time == time &&
+          other.task == task &&
+          other.description == description &&
+          other.isFinish == isFinish &&
+          other.todoType == todoType);
 }
 
 class TodoCompanion extends UpdateCompanion<TodoData> {
@@ -162,6 +162,24 @@ class TodoCompanion extends UpdateCompanion<TodoData> {
     this.isFinish = const Value.absent(),
     this.todoType = const Value.absent(),
   });
+  TodoCompanion copyWith(
+      {Value<int> id,
+      Value<DateTime> date,
+      Value<DateTime> time,
+      Value<String> task,
+      Value<String> description,
+      Value<bool> isFinish,
+      Value<int> todoType}) {
+    return TodoCompanion(
+      id: id ?? this.id,
+      date: date ?? this.date,
+      time: time ?? this.time,
+      task: task ?? this.task,
+      description: description ?? this.description,
+      isFinish: isFinish ?? this.isFinish,
+      todoType: todoType ?? this.todoType,
+    );
+  }
 }
 
 class $TodoTable extends Todo with TableInfo<$TodoTable, TodoData> {
@@ -173,7 +191,8 @@ class $TodoTable extends Todo with TableInfo<$TodoTable, TodoData> {
   @override
   GeneratedIntColumn get id => _id ??= _constructId();
   GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn('id', $tableName, false, hasAutoIncrement: true);
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
   }
 
   final VerificationMeta _dateMeta = const VerificationMeta('date');
@@ -184,7 +203,7 @@ class $TodoTable extends Todo with TableInfo<$TodoTable, TodoData> {
     return GeneratedDateTimeColumn(
       'date',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -196,7 +215,7 @@ class $TodoTable extends Todo with TableInfo<$TodoTable, TodoData> {
     return GeneratedDateTimeColumn(
       'time',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -213,7 +232,7 @@ class $TodoTable extends Todo with TableInfo<$TodoTable, TodoData> {
   }
 
   final VerificationMeta _descriptionMeta =
-  const VerificationMeta('description');
+      const VerificationMeta('description');
   GeneratedTextColumn _description;
   @override
   GeneratedTextColumn get description =>
@@ -348,8 +367,9 @@ class $TodoTable extends Todo with TableInfo<$TodoTable, TodoData> {
   }
 }
 
-abstract class _$Database extends GeneratedDatabase {
-  _$Database(QueryExecutor e) : super(const SqlTypeSystem.withDefaults(), e);
+abstract class _$TodoDatabase extends GeneratedDatabase {
+  _$TodoDatabase(QueryExecutor e)
+      : super(const SqlTypeSystem.withDefaults(), e);
   $TodoTable _todo;
   $TodoTable get todo => _todo ??= $TodoTable(this);
   TodoData _rowToTodoData(QueryRow row) {
@@ -367,7 +387,7 @@ abstract class _$Database extends GeneratedDatabase {
   Future<List<TodoData>> _getByType(
       int var1,
       {@Deprecated('No longer needed with Moor 1.6 - see the changelog for details')
-      QueryEngine operateOn}) {
+          QueryEngine operateOn}) {
     return (operateOn ?? this).customSelect(
         'SELECT * FROM todo WHERE todo_type = ? order by is_finish, date, time',
         variables: [
@@ -389,7 +409,7 @@ abstract class _$Database extends GeneratedDatabase {
   Future<int> _completeTask(
       int var1,
       {@Deprecated('No longer needed with Moor 1.6 - see the changelog for details')
-      QueryEngine operateOn}) {
+          QueryEngine operateOn}) {
     return (operateOn ?? this).customUpdate(
       'UPDATE todo SET is_finish = 1 WHERE id = ?',
       variables: [
@@ -402,7 +422,7 @@ abstract class _$Database extends GeneratedDatabase {
   Future<int> _deleteTask(
       int var1,
       {@Deprecated('No longer needed with Moor 1.6 - see the changelog for details')
-      QueryEngine operateOn}) {
+          QueryEngine operateOn}) {
     return (operateOn ?? this).customUpdate(
       'DELETE FROM todo WHERE id = ?',
       variables: [

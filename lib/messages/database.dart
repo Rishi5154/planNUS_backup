@@ -23,7 +23,7 @@ class DatabaseMethods {
       'email' : email,
       'name' : name,
       'handle' : handle,
-    'timetable' : TimeTable.emptyTimeTable().timetable,
+      'timetable' : TimeTable.emptyTimeTable().timetable,
     });
   }
 
@@ -36,7 +36,6 @@ class DatabaseMethods {
     });
   }
 
-
   Future<String> getSpecificUserData(String uid) async {
     String user;
     await users.document(uid).get().then((value) => {
@@ -45,7 +44,6 @@ class DatabaseMethods {
     //print(user);
     return user;
   }
-
 
   uploadUserInfo(userMap) {
     Firestore.instance.collection("users").add(userMap);

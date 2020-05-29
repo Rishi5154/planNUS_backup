@@ -2,8 +2,8 @@ import 'package:moor_flutter/moor_flutter.dart';
 
 class Todo extends Table {
   IntColumn get id => integer().autoIncrement()();
-  DateTimeColumn get date => dateTime()();
-  DateTimeColumn get time => dateTime()();
+  DateTimeColumn get date => dateTime().nullable()();
+  DateTimeColumn get time => dateTime().nullable()();
   TextColumn get task => text()();
   TextColumn get description => text()();
   BoolColumn get isFinish => boolean()();

@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:plannusandroidversion/models/todo/todo_models/todo.dart';
-import 'package:plannusandroidversion/models/todo/todo_models/todo.dart';
 
 part 'database.g.dart';
 
@@ -13,9 +12,9 @@ part 'database.g.dart';
   '_completeTask': 'UPDATE todo SET is_finish = 1 WHERE id = ?',
   '_deleteTask': 'DELETE FROM todo WHERE id = ?'
 })
-class ToDoDatabase extends _$Database with ChangeNotifier {
+class TodoDatabase extends _$TodoDatabase with ChangeNotifier {
   // we tell the database where to store the data with this constructor
-  ToDoDatabase()
+  TodoDatabase()
       : super(FlutterQueryExecutor.inDatabaseFolder(path: 'todos_file.sqlite'));
 
   // you should bump this number whenever you change or add a table definition. Migrations
@@ -25,9 +24,9 @@ class ToDoDatabase extends _$Database with ChangeNotifier {
 
   Stream<List<TodoData>> getTodoByType(int type) => watchGetByType(type);
 
-  Future insertTodoEntries(TodoData entry) {
+  Future insertTodoEntries(TodoData entry) async {
     return transaction((tx) async {
-      await into(todo).insert(entry);
+      await tx.into(todo).insert(entry);
     });
   }
 
