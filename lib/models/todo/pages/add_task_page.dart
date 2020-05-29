@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:plannusandroidversion/models/todo/todo_models/database.dart';
-import 'package:plannusandroidversion/models/todo/todo_models/todo.dart';
 import 'package:plannusandroidversion/models/todo/widgets/custom_modal_action_button.dart';
 import 'package:plannusandroidversion/models/todo/widgets/custom_date_time_picker.dart';
 import 'package:plannusandroidversion/models/todo/widgets/custom_textfield.dart';
+import 'package:plannusandroidversion/models/todo/todo_models/todo.dart';
 
 class AddTaskPage extends StatefulWidget {
   @override
@@ -30,9 +30,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<ToDoDatabase>(context);
-    _textTaskControler.clear();
+    var provider = Provider.of<TodoDatabase>(context);
 
+    _textTaskControler.clear();
     return Padding(
       padding: const EdgeInsets.all(24.0),
       child: Column(

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:plannusandroidversion/models/todo/todo_models/database.dart';
-import 'package:plannusandroidversion/models/todo/todo_models/todo.dart';
 import 'package:plannusandroidversion/models/todo/widgets/custom_button.dart';
+import 'package:plannusandroidversion/models/todo/todo_models/todo.dart';
 
 class TaskPage extends StatefulWidget {
   @override
@@ -11,11 +11,11 @@ class TaskPage extends StatefulWidget {
 }
 
 class _TaskPageState extends State<TaskPage> {
-  ToDoDatabase provider;
+  TodoDatabase provider;
 
   @override
   Widget build(BuildContext context) {
-    provider = Provider.of<ToDoDatabase>(context);
+    provider = Provider.of<TodoDatabase>(context);
 
     return StreamProvider.value(
       value: provider.getTodoByType(TodoType.TYPE_TASK.index),
@@ -68,9 +68,10 @@ class _TaskPageState extends State<TaskPage> {
                       CustomButton(
                         buttonText: "Complete",
                         onPressed: () {
-                          provider
-                              .completeTodoEntries(data.id)
-                              .whenComplete(() => Navigator.of(context).pop());
+//                          provider
+//                              .completeTodoEntries(data.id)
+//                              .whenComplete(() => Navigator.of(context).pop());
+                          Navigator.pop(context);
                         },
                         color: Theme.of(context).accentColor,
                         textColor: Colors.white,
@@ -110,9 +111,10 @@ class _TaskPageState extends State<TaskPage> {
                       CustomButton(
                         buttonText: "Delete",
                         onPressed: () {
-                          provider
-                              .deleteTodoEntries(data.id)
-                              .whenComplete(() => Navigator.of(context).pop());
+//                          provider
+//                              .deleteTodoEntries(data.id)
+//                              .whenComplete(() => Navigator.of(context).pop());
+                          Navigator.pop(context);
                         },
                         color: Theme.of(context).accentColor,
                         textColor: Colors.white,

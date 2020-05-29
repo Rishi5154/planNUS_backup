@@ -8,19 +8,20 @@ import 'package:plannusandroidversion/models/todo/pages/event_page.dart';
 import 'package:plannusandroidversion/models/todo/pages/task_page.dart';
 import 'package:plannusandroidversion/models/todo/widgets/custom_button.dart';
 
-void main() => runApp(ToDoApp());
+//void main() => runApp(ToDoApp());
 
 class ToDoApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider<ToDoDatabase>(
+      providers: [ChangeNotifierProvider<TodoDatabase>(
 //          builder: (context, child) => MyHome(),
 //      )],
-          create: (context) => ToDoDatabase())],
+          create: (context) => TodoDatabase())],
       child: MyHomePage()
     );
+//    return MyHomePage();
   }
 }
 
@@ -34,6 +35,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   double currentPage = 0;
 
+  User user;
+
   @override
   Widget build(BuildContext context) {
     _pageController.addListener(() {
@@ -41,6 +44,9 @@ class _MyHomePageState extends State<MyHomePage> {
         currentPage = _pageController.page;
       });
     });
+    //test
+    user = Provider.of<User>(context);
+    //testend
 
     return Scaffold(
       body: Stack(
@@ -66,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
               context: context,
               builder: (BuildContext context) {
                 return Dialog(
-                    child: currentPage == 0 ? AddTaskPage() : AddEventPage(),
+                    child: currentPage == 0 ? Provider<TodoDatabase>.value(value: null , child: AddTaskPage()) : AddEventPage(),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(12))));
               });
