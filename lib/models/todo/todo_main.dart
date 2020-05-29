@@ -18,7 +18,8 @@ class ToDoApp extends StatelessWidget {
       providers: [ChangeNotifierProvider<TodoDatabase>(
 //          builder: (context, child) => MyHome(),
 //      )],
-          create: (context) => TodoDatabase())],
+          create: (context) => Provider.of<User>(context).toDoDatabase
+      )],
       child: MyHomePage()
     );
 //    return MyHomePage();
@@ -72,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
               context: context,
               builder: (BuildContext context) {
                 return Dialog(
-                    child: currentPage == 0 ? Provider<TodoDatabase>.value(value: null , child: AddTaskPage()) : AddEventPage(),
+                    child: currentPage == 0 ? AddTaskPage() : AddEventPage(),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(12))));
               });

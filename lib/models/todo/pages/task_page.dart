@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:plannusandroidversion/models/user.dart';
 import 'package:provider/provider.dart';
 import 'package:plannusandroidversion/models/todo/todo_models/database.dart';
 import 'package:plannusandroidversion/models/todo/widgets/custom_button.dart';
@@ -12,11 +13,9 @@ class TaskPage extends StatefulWidget {
 
 class _TaskPageState extends State<TaskPage> {
   TodoDatabase provider;
-
   @override
   Widget build(BuildContext context) {
-    provider = Provider.of<TodoDatabase>(context);
-
+    provider = Provider.of<User>(context).toDoDatabase;
     return StreamProvider.value(
       value: provider.getTodoByType(TodoType.TYPE_TASK.index),
       child: Consumer<List<TodoData>>(
@@ -68,10 +67,9 @@ class _TaskPageState extends State<TaskPage> {
                       CustomButton(
                         buttonText: "Complete",
                         onPressed: () {
-//                          provider
-//                              .completeTodoEntries(data.id)
-//                              .whenComplete(() => Navigator.of(context).pop());
-                          Navigator.pop(context);
+                          provider
+                              .completeTodoEntries(data.id)
+                              .whenComplete(() => Navigator.of(context).pop());
                         },
                         color: Theme.of(context).accentColor,
                         textColor: Colors.white,
@@ -111,10 +109,9 @@ class _TaskPageState extends State<TaskPage> {
                       CustomButton(
                         buttonText: "Delete",
                         onPressed: () {
-//                          provider
-//                              .deleteTodoEntries(data.id)
-//                              .whenComplete(() => Navigator.of(context).pop());
-                          Navigator.pop(context);
+                          provider
+                              .deleteTodoEntries(data.id)
+                              .whenComplete(() => Navigator.of(context).pop());
                         },
                         color: Theme.of(context).accentColor,
                         textColor: Colors.white,
