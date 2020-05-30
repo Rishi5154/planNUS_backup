@@ -6,6 +6,7 @@ import 'package:plannusandroidversion/models/todo/widgets/custom_modal_action_bu
 import 'package:plannusandroidversion/models/todo/widgets/custom_date_time_picker.dart';
 import 'package:plannusandroidversion/models/todo/widgets/custom_textfield.dart';
 import 'package:plannusandroidversion/models/todo/todo_models/todo.dart';
+import 'package:plannusandroidversion/models/user.dart';
 
 class AddTaskPage extends StatefulWidget {
   @override
@@ -30,8 +31,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<TodoDatabase>(context);
-
+    var provider = Provider.of<User>(context).toDoDatabase;
     _textTaskControler.clear();
     return Padding(
       padding: const EdgeInsets.all(24.0),

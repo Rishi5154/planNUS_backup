@@ -16,9 +16,8 @@ class ToDoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [ChangeNotifierProvider<TodoDatabase>(
-//          builder: (context, child) => MyHome(),
-//      )],
-          create: (context) => TodoDatabase())],
+          create: (context) => Provider.of<User>(context).toDoDatabase
+      )],
       child: MyHomePage()
     );
 //    return MyHomePage();
@@ -47,7 +46,6 @@ class _MyHomePageState extends State<MyHomePage> {
     //test
     user = Provider.of<User>(context);
     //testend
-
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -58,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Positioned(
             right: 0,
             child: Text(
-              "6",
+              DateTime.now().day.toString(),
               style: TextStyle(fontSize: 200, color: Color(0x10000000)),
             ),
           ),
@@ -72,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
               context: context,
               builder: (BuildContext context) {
                 return Dialog(
-                    child: currentPage == 0 ? Provider<TodoDatabase>.value(value: null , child: AddTaskPage()) : AddEventPage(),
+                    child: currentPage == 0 ? AddTaskPage() : AddEventPage(),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(12))));
               });
@@ -91,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Padding(
           padding: const EdgeInsets.all(24.0),
           child: Text(
-            "Monday",
+            convertDay(DateTime.now().weekday),
             style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
           ),
         ),
@@ -148,5 +146,17 @@ class _MyHomePageState extends State<MyHomePage> {
             ))
       ],
     );
+  }
+
+  String convertDay(int weekDay) {
+    switch(weekDay) {
+      case 1 : return "Monday"; break;
+      case 2 : return "Tuesday"; break;
+      case 3 : return "Wednesday"; break;
+      case 4 : return "Thursday"; break;
+      case 5 : return "Friday"; break;
+      case 6 : return "Saturday"; break;
+      case 7 : return "Sunday"; break;
+    }
   }
 }

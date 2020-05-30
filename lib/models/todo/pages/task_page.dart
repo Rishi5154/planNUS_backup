@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:plannusandroidversion/models/user.dart';
 import 'package:provider/provider.dart';
 import 'package:plannusandroidversion/models/todo/todo_models/database.dart';
 import 'package:plannusandroidversion/models/todo/widgets/custom_button.dart';
@@ -12,11 +13,9 @@ class TaskPage extends StatefulWidget {
 
 class _TaskPageState extends State<TaskPage> {
   TodoDatabase provider;
-
   @override
   Widget build(BuildContext context) {
-    provider = Provider.of<TodoDatabase>(context);
-
+    provider = Provider.of<User>(context).toDoDatabase;
     return StreamProvider.value(
       value: provider.getTodoByType(TodoType.TYPE_TASK.index),
       child: Consumer<List<TodoData>>(
@@ -68,10 +67,9 @@ class _TaskPageState extends State<TaskPage> {
                       CustomButton(
                         buttonText: "Complete",
                         onPressed: () {
-//                          provider
-//                              .completeTodoEntries(data.id)
-//                              .whenComplete(() => Navigator.of(context).pop());
-                          Navigator.pop(context);
+                          provider
+                              .completeTodoEntries(data.id)
+                              .whenComplete(() => Navigator.of(context).pop());
                         },
                         color: Theme.of(context).accentColor,
                         textColor: Colors.white,
@@ -83,47 +81,7 @@ class _TaskPageState extends State<TaskPage> {
             });
       },
       onLongPress: () {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return Dialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12))),
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Text("Delete Task",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16)),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      Text(data.task),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      Text(new DateFormat("dd-MM-yyyy").format(data.date)),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      CustomButton(
-                        buttonText: "Delete",
-                        onPressed: () {
-//                          provider
-//                              .deleteTodoEntries(data.id)
-//                              .whenComplete(() => Navigator.of(context).pop());
-                          Navigator.pop(context);
-                        },
-                        color: Theme.of(context).accentColor,
-                        textColor: Colors.white,
-                      )
-                    ],
-                  ),
-                ),
-              );
-            });
+        deleteBox(context, data, provider);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
@@ -147,22 +105,72 @@ class _TaskPageState extends State<TaskPage> {
   Widget _taskComplete(TodoData data) {
     return Container(
       foregroundDecoration: BoxDecoration(color: Color(0x60FDFDFD)),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
-        child: Row(
-          children: <Widget>[
-            Icon(
-              Icons.radio_button_checked,
-              color: Theme.of(context).accentColor,
-              size: 20,
-            ),
-            SizedBox(
-              width: 28,
-            ),
-            Text(data.task)
-          ],
+      child: GestureDetector(
+        onLongPress: () {
+          deleteBox(context, data, provider);
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+          child: Row(
+            children: <Widget>[
+              Icon(
+                Icons.radio_button_checked,
+                color: Theme.of(context).accentColor,
+                size: 20,
+              ),
+              SizedBox(
+                width: 28,
+              ),
+              Text(data.task)
+            ],
+          ),
         ),
       ),
+    );
+  }
+  Future deleteBox(BuildContext context, TodoData data, TodoDatabase db) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(12))),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text("Delete Task",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16)),
+                  SizedBox(
+                    height: 24,
+                  ),
+                  Text(data.task),
+                  SizedBox(
+                    height: 24,
+                  ),
+                  Text(new DateFormat("dd-MM-yyyy").format(data.date)),
+                  SizedBox(
+                    height: 24,
+                  ),
+                  CustomButton(
+                    buttonText: "Delete",
+                    onPressed: () {
+                      db
+                          .deleteTodoEntries(data.id)
+                          .whenComplete(() => Navigator.of(context).pop());
+                    },
+                    color: Theme
+                        .of(context)
+                        .accentColor,
+                    textColor: Colors.white,
+                  )
+                ],
+              ),
+            ),
+          );
+        }
     );
   }
 }
