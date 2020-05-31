@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:plannusandroidversion/models/schedule_time.dart';
 import 'package:plannusandroidversion/models/user.dart';
-import 'activity.dart';
 import 'day_schedule.dart';
 
-void main() => runApp(MaterialApp(debugShowCheckedModeBanner: false, home: TimeTableWidget(new User())));
+//void main() => runApp(MaterialApp(debugShowCheckedModeBanner: false, home: TimeTableWidget(new User())));
 
+part 'timetable.g.dart';
+
+@JsonSerializable()
 class TimeTable {
   static List<String> days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   static List<int> weekdays = [1, 2, 3, 4, 5, 6, 7];
@@ -42,6 +45,10 @@ class TimeTable {
       s += 100;
     }
   }
+
+  factory TimeTable.fromJson(Map<String, dynamic> data) => _$TimeTableFromJson(data);
+
+  Map<String, dynamic> toJson() => _$TimeTableToJson(this);
 }
 
 class TimeTableWidget extends StatefulWidget {
