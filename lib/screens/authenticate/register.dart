@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'file:///C:/src/planNUS_backup/lib/services/database.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
 import 'package:plannusandroidversion/services/auth.dart';
+import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/shared/constants.dart';
 import 'package:plannusandroidversion/shared/loading.dart';
 import 'package:shimmer/shimmer.dart';
