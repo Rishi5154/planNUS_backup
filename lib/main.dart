@@ -23,8 +23,7 @@ class _MyAppState extends State<MyApp> {
       child:
         MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: /*isUserLoggedIn != null ? (isUserLoggedIn ? Chatscreen() : */Wrapper()//)
-        /* : Wrapper(),*/
+          home: Wrapper()
       ),
     );
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:plannusandroidversion/shared/loading.dart';
 
 import 'constants.dart';
-import 'database.dart';
+import '../services/database.dart';
 
 class Chatscreen extends StatefulWidget {
   final String chatRoomID;

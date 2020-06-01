@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:plannusandroidversion/models/timetable.dart';
 import 'package:plannusandroidversion/models/user.dart';
 
 class DatabaseMethods {
@@ -7,13 +6,18 @@ class DatabaseMethods {
   DatabaseMethods({this.uid});
 
   final CollectionReference users = Firestore.instance.collection("users");
+  
+  Stream<User> getUserStream2() {
+    return users.document(uid).snapshots().map((ss) => User.fromJson(ss.data['user']));
+  }
+  
+  Future<User> getUserData1() async {
+    return await users.document(uid).get().then((ss) => ss['user']);
+  }
 
-  Future<void> updateUserData(String email, String name, String handle) async {
-    print(uid);
+  Future<void> updateUserData2(User userData) async {
     return await users.document(uid).updateData({
-      'email' : email,
-      'name' : name,
-      'handle' : handle,
+      'user' : userData.toJson()
     });
   }
 
@@ -23,7 +27,16 @@ class DatabaseMethods {
       'email' : email,
       'name' : name,
       'handle' : handle,
-      'timetable' : TimeTable.emptyTimeTable().timetable,
+      'user' : User(uid: uid).toJson()
+    });
+  }
+
+  Future<void> updateUserData(String email, String name, String handle) async {
+    print(uid);
+    return await users.document(uid).updateData({
+      'email' : email,
+      'name' : name,
+      'handle' : handle,
     });
   }
 
