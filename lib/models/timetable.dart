@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:plannusandroidversion/models/schedule_time.dart';
 import 'package:plannusandroidversion/models/user.dart';
+import 'package:provider/provider.dart';
 import 'day_schedule.dart';
 
 //void main() => runApp(MaterialApp(debugShowCheckedModeBanner: false, home: TimeTableWidget(new User())));
@@ -61,16 +62,18 @@ class TimeTableWidget extends StatefulWidget {
 
 class TimeTableWidgetState extends State<TimeTableWidget> {
   TimeTable tt;
-  ScrollController _sc;
+  User user;
+//  ScrollController _sc;
 
   @override
   void initState() {
     super.initState();
-    _sc = ScrollController();
+//    _sc = ScrollController();
   }
 
   Widget build(BuildContext context) {
     tt = widget.user.timetable;
+    user = Provider.of<User>(context);
     return Scaffold(
       body: SafeArea(
         child: CustomScrollView(
@@ -156,12 +159,12 @@ class TimeTableWidgetState extends State<TimeTableWidget> {
           value: true,
           child: FlatButton(
             child: Text("Delete"),
-            onPressed: () {
+            onPressed: () async {
               setState(() {
-                tt.timetable[_day][_slot]['name'] = 'No Activity';
-                tt.timetable[_day][_slot]['isImportant'] = false;
+                user.timetable.timetable[_day][_slot]['name'] = 'No Activity';
+                user.timetable.timetable[_day][_slot]['isImportant'] = false;
               });
-              Navigator.pop(context);
+              await user.update().whenComplete(() => Navigator.pop(context));
             },
           ),
         ),

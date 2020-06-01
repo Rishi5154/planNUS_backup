@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plannusandroidversion/messages/chats.dart';
-import 'package:plannusandroidversion/messages/chatscreen.dart';
 import 'package:plannusandroidversion/messages/chatscreenredirect.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
-import 'file:///C:/src/planNUS_backup/lib/services/database.dart';
+import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
 import 'package:plannusandroidversion/services/auth.dart';
 
@@ -13,8 +12,6 @@ class Messages extends StatefulWidget {
   @override
   _MessagesState createState() => _MessagesState();
 }
-
-
 
 class _MessagesState extends State<Messages> {
 
@@ -39,7 +36,6 @@ class _MessagesState extends State<Messages> {
   }
   @override
   void initState() {
-    // TODO: implement initState
     getUserInfo();
     super.initState();
   }

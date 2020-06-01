@@ -20,7 +20,6 @@ class ToDoApp extends StatelessWidget {
       )],
       child: MyHomePage()
     );
-//    return MyHomePage();
   }
 }
 
@@ -43,9 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
         currentPage = _pageController.page;
       });
     });
-    //test
     user = Provider.of<User>(context);
-    //testend
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -157,6 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
       case 5 : return "Friday"; break;
       case 6 : return "Saturday"; break;
       case 7 : return "Sunday"; break;
+      default: return ""; break;
     }
   }
 }

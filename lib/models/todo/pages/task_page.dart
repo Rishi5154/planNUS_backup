@@ -13,13 +13,11 @@ class TaskPage extends StatefulWidget {
 
 class _TaskPageState extends State<TaskPage> {
   User user;
-  TodoDatabase provider;
   @override
   Widget build(BuildContext context) {
     user = Provider.of<User>(context);
-    provider = user.toDoDatabase;
     return StreamProvider.value(
-      value: provider.getTodoByType(TodoType.TYPE_TASK.index),
+      value: user.toDoDatabase.getTodoByType(TodoType.TYPE_TASK.index),
       child: Consumer<List<TodoData>>(
         builder: (context, _dataList, child) {
           return _dataList == null
@@ -30,7 +28,7 @@ class _TaskPageState extends State<TaskPage> {
             itemBuilder: (context, index) {
               return _dataList[index].isFinish
                   ? _taskComplete(_dataList[index])
-                  : _taskUncomplete(_dataList[index]);
+                  : _taskIncomplete(_dataList[index]);
             },
           );
         },
@@ -38,7 +36,7 @@ class _TaskPageState extends State<TaskPage> {
     );
   }
 
-  Widget _taskUncomplete(TodoData data) {
+  Widget _taskIncomplete(TodoData data) {
     return InkWell(
       onTap: () {
         showDialog(
@@ -69,7 +67,7 @@ class _TaskPageState extends State<TaskPage> {
                       CustomButton(
                         buttonText: "Complete",
                         onPressed: () {
-                          provider
+                          user.toDoDatabase
                               .completeTodoEntries(data.id)
                               .whenComplete(() => Navigator.of(context).pop());
                         },
@@ -83,8 +81,7 @@ class _TaskPageState extends State<TaskPage> {
             });
       },
       onLongPress: () async {
-        await deleteBox(context, data, provider).whenComplete(() => user.update());
-//        await user.update();
+        await deleteBox(context, data);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
@@ -110,8 +107,7 @@ class _TaskPageState extends State<TaskPage> {
       foregroundDecoration: BoxDecoration(color: Color(0x60FDFDFD)),
       child: GestureDetector(
         onLongPress: () async {
-          await deleteBox(context, data, provider).whenComplete(() => user.update());
-//          await user.update();
+          await deleteBox(context, data);
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
@@ -133,7 +129,7 @@ class _TaskPageState extends State<TaskPage> {
     );
   }
 
-  Future deleteBox(BuildContext context, TodoData data, TodoDatabase db) {
+  Future deleteBox(BuildContext context, TodoData data) {
     return showDialog(
         context: context,
         builder: (context) {
@@ -162,8 +158,10 @@ class _TaskPageState extends State<TaskPage> {
                   CustomButton(
                     buttonText: "Delete",
                     onPressed: () async {
-                      await db.deleteTodoEntries(data.id)
-                        .whenComplete(() => Provider.of<User>(context).update()).whenComplete(() => Navigator.pop(context));
+                      await Provider.of<User>(context).toDoDatabase
+                          .deleteTodoEntries(data.id)
+                          .whenComplete(() => Provider.of<User>(context).update())
+                          .whenComplete(() => Navigator.pop(context));
                     },
                     color: Theme
                         .of(context)

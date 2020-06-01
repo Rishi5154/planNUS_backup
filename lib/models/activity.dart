@@ -1,6 +1,3 @@
-import 'package:flutter/material.dart';
-import 'schedule_time.dart';
-
 class Activity {
   static final nil = "No Activity";
   Map<String, Object> data = {

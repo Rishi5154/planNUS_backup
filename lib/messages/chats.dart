@@ -37,8 +37,8 @@ class _ChatsState extends State<Chats> {
     print("$_myHandle");
 
     setState(() {});
-    print("${_myName}");
-    print("${_myHandle}");
+    print("$_myName");
+    print("$_myHandle");
 
   }
 
