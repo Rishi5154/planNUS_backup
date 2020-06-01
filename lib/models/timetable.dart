@@ -9,7 +9,7 @@ import 'day_schedule.dart';
 
 part 'timetable.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class TimeTable {
   static List<String> days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   static List<int> weekdays = [1, 2, 3, 4, 5, 6, 7];

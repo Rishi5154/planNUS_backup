@@ -23,8 +23,8 @@ User _$UserFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'uid': instance.uid,
-      'timetable': instance.timetable,
-      'toDoDatabase': instance.toDoDatabase,
+      'timetable': instance.timetable?.toJson(),
+      'toDoDatabase': instance.toDoDatabase?.toJson(),
       'phoneNumber': instance.phoneNumber,
       'schedule': instance.schedule,
       'initial': instance.initial,

@@ -4,7 +4,7 @@ import 'timetable.dart';
 
 part 'user.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class User {
   final String uid;
   TimeTable timetable = TimeTable.emptyTimeTable();

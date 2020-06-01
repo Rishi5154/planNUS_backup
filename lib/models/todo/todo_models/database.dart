@@ -5,7 +5,7 @@ import 'package:plannusandroidversion/models/todo/todo_models/todo.dart';
 
 part 'database.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 @UseMoor(tables: [
   Todo
 ], queries: {
