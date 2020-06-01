@@ -61,12 +61,15 @@ class _ProfileState extends State<Profile> {
 //      });
 //    }
     return handle == null ? Loading() : Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text("Welcome, " + handle,
-            style: TextStyle(color: Colors.black)
+        title: Center(
+          child: Text("Welcome, " + handle,
+              style: TextStyle(color: Colors.black)
+          ),
         ),
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
       ),
       body: SingleChildScrollView(
         child: Container(
