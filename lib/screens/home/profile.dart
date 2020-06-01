@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
-import 'file:///C:/src/planNUS_backup/lib/services/database.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:plannusandroidversion/services/auth.dart';
+import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/shared/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
