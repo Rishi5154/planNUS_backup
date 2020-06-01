@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:plannusandroidversion/models/todo/todo_models/todo.dart';
 
 part 'database.g.dart';
 
+@JsonSerializable(explicitToJson: true)
 @UseMoor(tables: [
   Todo
 ], queries: {
@@ -41,4 +43,8 @@ class TodoDatabase extends _$TodoDatabase with ChangeNotifier {
       await _deleteTask(id);
     });
   }
+
+  factory TodoDatabase.fromJson(Map<String, dynamic> data) => _$TodoDatabaseFromJson(data);
+
+  Map<String, dynamic> toJson() => _$TodoDatabaseToJson(this);
 }
