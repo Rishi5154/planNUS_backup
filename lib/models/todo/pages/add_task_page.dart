@@ -31,7 +31,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<User>(context).toDoDatabase;
+    User user = Provider.of<User>(context);
+    var provider = user.toDoDatabase;
     _textTaskControler.clear();
     return Padding(
       padding: const EdgeInsets.all(24.0),
@@ -61,11 +62,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
             onClose: () {
               Navigator.of(context).pop();
             },
-            onSave: () {
+            onSave: () async {
               if (_textTaskControler.text == "") {
                 print("data not found");
               } else {
-                provider
+                await provider
                     .insertTodoEntries(new TodoData(
                     date: _selectedDate,
                     time: DateTime.now(),
@@ -73,8 +74,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     task: _textTaskControler.text,
                     description: "",
                     todoType: TodoType.TYPE_TASK.index,
-                    id: null))
-                    .whenComplete(() => Navigator.of(context).pop());
+                    id: null)).whenComplete(() => user.update()).whenComplete(() => Navigator.pop(context));
+//                await user.update();
+//                Navigator.pop(context);
               }
             },
           )

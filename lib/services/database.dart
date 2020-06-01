@@ -6,6 +6,20 @@ class DatabaseMethods {
   DatabaseMethods({this.uid});
 
   final CollectionReference users = Firestore.instance.collection("users");
+  
+  Stream<User> getUserStream2() {
+    return users.document(uid).snapshots().map((ss) => User.fromJson(ss.data['user']));
+  }
+  
+  Future<User> getUserData1() async {
+    return await users.document(uid).get().then((ss) => ss['user']);
+  }
+
+  Future<void> updateUserData2(User userData) async {
+    return await users.document(uid).updateData({
+      'user' : userData.toJson()
+    });
+  }
 
   Future<void> addUserData(String email, String name, String handle) async {
     print(uid);
