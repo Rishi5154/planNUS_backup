@@ -13,8 +13,6 @@ class Messages extends StatefulWidget {
   _MessagesState createState() => _MessagesState();
 }
 
-
-
 class _MessagesState extends State<Messages> {
 
   AuthService auth = new AuthService();
@@ -38,7 +36,6 @@ class _MessagesState extends State<Messages> {
   }
   @override
   void initState() {
-    // TODO: implement initState
     getUserInfo();
     super.initState();
   }
