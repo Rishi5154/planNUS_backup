@@ -1,7 +1,11 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:plannusandroidversion/models/todo/todo_models/database.dart';
-
+import 'package:plannusandroidversion/services/database.dart';
 import 'timetable.dart';
 
+part 'user.g.dart';
+
+@JsonSerializable(explicitToJson: true)
 class User {
   final String uid;
   TimeTable timetable = TimeTable.emptyTimeTable();
@@ -18,11 +22,12 @@ class User {
       initial = false;
     }
   }
-}
 
-class UserData {
-   String uid;
-   String name;
-   String handle;
-   UserData({this.name, this.handle});
+  factory User.fromJson(Map<String, dynamic> data) => _$UserFromJson(data);
+
+  Map<String, dynamic> toJson() => _$UserToJson(this);
+
+  Future<void> update() async {
+    return DatabaseMethods(uid: this.uid).updateUserData2(this);
+  }
 }

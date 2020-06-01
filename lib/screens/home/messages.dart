@@ -4,7 +4,7 @@ import 'package:plannusandroidversion/messages/chats.dart';
 import 'package:plannusandroidversion/messages/chatscreen.dart';
 import 'package:plannusandroidversion/messages/chatscreenredirect.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
-import 'package:plannusandroidversion/messages/database.dart';
+import 'file:///C:/src/planNUS_backup/lib/services/database.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
 import 'package:plannusandroidversion/services/auth.dart';
 

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
-import 'package:plannusandroidversion/messages/database.dart';
+import 'file:///C:/src/planNUS_backup/lib/services/database.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
 import 'package:plannusandroidversion/screens/authenticate/resetpassword.dart';
 import 'package:plannusandroidversion/services/auth.dart';

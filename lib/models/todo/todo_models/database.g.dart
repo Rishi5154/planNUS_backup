@@ -3,6 +3,17 @@
 part of 'database.dart';
 
 // **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+TodoDatabase _$TodoDatabaseFromJson(Map<String, dynamic> json) {
+  return TodoDatabase();
+}
+
+Map<String, dynamic> _$TodoDatabaseToJson(TodoDatabase instance) =>
+    <String, dynamic>{};
+
+// **************************************************************************
 // MoorGenerator
 // **************************************************************************
 

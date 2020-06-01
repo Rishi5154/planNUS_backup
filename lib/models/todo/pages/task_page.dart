@@ -12,10 +12,12 @@ class TaskPage extends StatefulWidget {
 }
 
 class _TaskPageState extends State<TaskPage> {
+  User user;
   TodoDatabase provider;
   @override
   Widget build(BuildContext context) {
-    provider = Provider.of<User>(context).toDoDatabase;
+    user = Provider.of<User>(context);
+    provider = user.toDoDatabase;
     return StreamProvider.value(
       value: provider.getTodoByType(TodoType.TYPE_TASK.index),
       child: Consumer<List<TodoData>>(
@@ -80,8 +82,9 @@ class _TaskPageState extends State<TaskPage> {
               );
             });
       },
-      onLongPress: () {
-        deleteBox(context, data, provider);
+      onLongPress: () async {
+        await deleteBox(context, data, provider).whenComplete(() => user.update());
+//        await user.update();
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
@@ -106,8 +109,9 @@ class _TaskPageState extends State<TaskPage> {
     return Container(
       foregroundDecoration: BoxDecoration(color: Color(0x60FDFDFD)),
       child: GestureDetector(
-        onLongPress: () {
-          deleteBox(context, data, provider);
+        onLongPress: () async {
+          await deleteBox(context, data, provider).whenComplete(() => user.update());
+//          await user.update();
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
@@ -128,6 +132,7 @@ class _TaskPageState extends State<TaskPage> {
       ),
     );
   }
+
   Future deleteBox(BuildContext context, TodoData data, TodoDatabase db) {
     return showDialog(
         context: context,
@@ -156,10 +161,9 @@ class _TaskPageState extends State<TaskPage> {
                   ),
                   CustomButton(
                     buttonText: "Delete",
-                    onPressed: () {
-                      db
-                          .deleteTodoEntries(data.id)
-                          .whenComplete(() => Navigator.of(context).pop());
+                    onPressed: () async {
+                      await db.deleteTodoEntries(data.id)
+                        .whenComplete(() => Provider.of<User>(context).update()).whenComplete(() => Navigator.pop(context));
                     },
                     color: Theme
                         .of(context)

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'chatscreen.dart';
 import 'constants.dart';
-import 'database.dart';
+import '../services/database.dart';
 import 'helperfunctions.dart';
 
 class Chats extends StatefulWidget {
