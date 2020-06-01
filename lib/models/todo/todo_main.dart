@@ -157,6 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
       case 5 : return "Friday"; break;
       case 6 : return "Saturday"; break;
       case 7 : return "Sunday"; break;
+      default: return ""; break;
     }
   }
 }

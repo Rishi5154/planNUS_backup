@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'file:///C:/src/planNUS_backup/lib/services/database.dart';
-import 'package:plannusandroidversion/messages/helperfunctions.dart';
+import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/services/auth.dart';
 import 'package:plannusandroidversion/shared/constants.dart';
 import 'package:shimmer/shimmer.dart';
@@ -79,7 +78,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                     } else {
                       setState(() {
                         error = 'Success! Details to reset password '
-                            'have been sent to ${email}';
+                            'have been sent to $email';
                       });
                     }
                   }

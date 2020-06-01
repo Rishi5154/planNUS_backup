@@ -1,11 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'activity.dart';
 import 'schedule_time.dart';
-
-//void main() => runApp(MaterialApp(
-//  home: DayScheduleWidget(ds: new DaySchedule()),
-//));
 
 class DaySchedule {
   static final List<ScheduleTiming> allTimings = ScheduleTiming.allSlots;

@@ -61,12 +61,12 @@ class TimeTableWidget extends StatefulWidget {
 
 class TimeTableWidgetState extends State<TimeTableWidget> {
   TimeTable tt;
-  ScrollController _sc;
+//  ScrollController _sc;
 
   @override
   void initState() {
     super.initState();
-    _sc = ScrollController();
+//    _sc = ScrollController();
   }
 
   Widget build(BuildContext context) {
