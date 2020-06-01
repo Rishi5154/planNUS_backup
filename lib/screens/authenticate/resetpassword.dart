@@ -79,7 +79,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                     } else {
                       setState(() {
                         error = 'Success! Details to reset password '
-                            'have been sent to ${email}';
+                            'have been sent to $email';
                       });
                     }
                   }

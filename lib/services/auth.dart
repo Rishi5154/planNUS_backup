@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
-import 'database.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
-import 'package:plannusandroidversion/models/todo/todo_models/database.dart';
 import 'package:plannusandroidversion/models/user.dart';
 
 class AuthService {
@@ -50,7 +49,7 @@ class AuthService {
   Future createProfileForGoogleAccounts() async {
     String email = googleSignInAccount.email;
     String name = googleSignInAccount.displayName;
-    QuerySnapshot snapshot;
+//    QuerySnapshot snapshot;
     HelperFunctions.saveUserLoggedInSharedPreferences(true);
     try {
 
