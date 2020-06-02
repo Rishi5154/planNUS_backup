@@ -18,7 +18,7 @@ class TodoData extends ChangeNotifier {
   }
 
   Stream<List<Todo>> getTodoByType(int type) {
-    if (tasks == null || tasks.isEmpty) {
+    if (tasks == null) {
       return Stream.value(new List<Todo>());
     } else {
       return Stream.value(tasks.values.toList());
@@ -38,12 +38,11 @@ class TodoData extends ChangeNotifier {
       tasks[id] = task;
       notifyListeners();
     } catch (e) {
-      print("########################## err ############# " + e.toString());
     }
   }
 
-  void deleteTodoEntries(int id) {
-    tasks.remove(tasks[id]);
+  void deleteTodoEntries(int idToDelete) {
+    tasks.removeWhere((id, value) => id == idToDelete);
     notifyListeners();
   }
 
