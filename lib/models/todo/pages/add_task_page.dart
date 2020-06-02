@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:plannusandroidversion/models/todo/todo_models/database.dart';
 import 'package:plannusandroidversion/models/todo/widgets/custom_modal_action_button.dart';
 import 'package:plannusandroidversion/models/todo/widgets/custom_date_time_picker.dart';
 import 'package:plannusandroidversion/models/todo/widgets/custom_textfield.dart';
@@ -65,18 +64,17 @@ class _AddTaskPageState extends State<AddTaskPage> {
               if (_textTaskControler.text == "") {
                 print("data not found");
               } else {
-                await user.toDoDatabase
-                    .insertTodoEntries(new TodoData(
+                  user.toDoDatabase
+                      .insertTodoEntries(new Todo(
                       date: _selectedDate,
                       time: DateTime.now(),
                       isFinish: false,
                       task: _textTaskControler.text,
                       description: "",
                       todoType: TodoType.TYPE_TASK.index,
-                      id: null)
-                    )
-                    .whenComplete(() => user.update())
-                    .whenComplete(() => Navigator.pop(context));
+                      id: user.toDoDatabase.count)
+                      );
+                  await user.update().whenComplete(() => Navigator.pop(context));
               }
             },
           )

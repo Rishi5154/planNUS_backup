@@ -1,13 +1,25 @@
-import 'package:moor_flutter/moor_flutter.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-class Todo extends Table {
-  IntColumn get id => integer().autoIncrement()();
-  DateTimeColumn get date => dateTime().nullable()();
-  DateTimeColumn get time => dateTime().nullable()();
-  TextColumn get task => text()();
-  TextColumn get description => text()();
-  BoolColumn get isFinish => boolean()();
-  IntColumn get todoType => integer()();
+part 'todo.g.dart';
+@JsonSerializable(explicitToJson: true)
+class Todo {
+  final int id;
+  String task;
+  DateTime date;
+  DateTime time;
+  bool isFinish;
+  int todoType;
+  String description;
+
+  Todo({this.date, this.time, this.isFinish, this.task, this.description, this.todoType, this.id});
+
+  factory Todo.fromJson(Map<String, dynamic> data) => _$TodoFromJson(data);
+
+  Map<String, dynamic> toJson() => _$TodoToJson(this);
+
+  void toggleComplete() {
+    isFinish = true;
+  }
 }
 
 enum TodoType { TYPE_TASK, TYPE_EVENT }

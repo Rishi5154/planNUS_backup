@@ -15,7 +15,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
         : TimeTable.fromJson(json['timetable'] as Map<String, dynamic>)
     ..toDoDatabase = json['toDoDatabase'] == null
         ? null
-        : TodoDatabase.fromJson(json['toDoDatabase'] as Map<String, dynamic>)
+        : TodoData.fromJson(json['toDoDatabase'] as Map<String, dynamic>)
     ..phoneNumber = json['phoneNumber'] as int
     ..schedule = json['schedule'] as bool
     ..initial = json['initial'] as bool;

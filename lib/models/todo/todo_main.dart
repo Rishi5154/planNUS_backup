@@ -1,34 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:provider/provider.dart';
-import 'package:plannusandroidversion/models/todo/todo_models/database.dart';
+import 'package:plannusandroidversion/models/todo/todo_models/todo_data.dart';
 import 'package:plannusandroidversion/models/todo/pages/add_event_page.dart';
 import 'package:plannusandroidversion/models/todo/pages/add_task_page.dart';
 import 'package:plannusandroidversion/models/todo/pages/event_page.dart';
 import 'package:plannusandroidversion/models/todo/pages/task_page.dart';
 import 'package:plannusandroidversion/models/todo/widgets/custom_button.dart';
 
-//void main() => runApp(ToDoApp());
-
-class ToDoApp extends StatelessWidget {
-  // This widget is the root of your application.
+class ToDoPage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [ChangeNotifierProvider<TodoDatabase>(
-          create: (context) => Provider.of<User>(context).toDoDatabase
-      )],
-      child: MyHomePage()
-    );
-  }
+  _ToDoPageState createState() => _ToDoPageState();
 }
 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class _ToDoPageState extends State<ToDoPage> {
   PageController _pageController = PageController();
 
   double currentPage = 0;
@@ -43,38 +28,41 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     });
     user = Provider.of<User>(context);
-    return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          Container(
-            height: 35,
-            color: Theme.of(context).accentColor,
-          ),
-          Positioned(
-            right: 0,
-            child: Text(
-              DateTime.now().day.toString(),
-              style: TextStyle(fontSize: 200, color: Color(0x10000000)),
+    return ChangeNotifierProvider<TodoData>.value(
+      value: user.toDoDatabase,
+      child: Scaffold(
+        body: Stack(
+          children: <Widget>[
+            Container(
+              height: 35,
+              color: Theme.of(context).accentColor,
             ),
-          ),
-          _mainContent(context),
-        ],
+            Positioned(
+              right: 0,
+              child: Text(
+                DateTime.now().day.toString(),
+                style: TextStyle(fontSize: 200, color: Color(0x10000000)),
+              ),
+            ),
+            _mainContent(context),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (BuildContext context) {
+                  return Dialog(
+                      child: currentPage == 0 ? AddTaskPage() : AddEventPage(),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(12))));
+                });
+          },
+          child: Icon(Icons.add),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-              barrierDismissible: false,
-              context: context,
-              builder: (BuildContext context) {
-                return Dialog(
-                    child: currentPage == 0 ? AddTaskPage() : AddEventPage(),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(12))));
-              });
-        },
-        child: Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
