@@ -20,10 +20,12 @@ class _ChatscreenRedirectState extends State<ChatscreenRedirect> {
 
   AppBar appBar(){
     return AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
         leading: IconButton(
           icon: new Icon(
               Icons.arrow_back_ios,
-              color: Colors.white,
+              color: Colors.black,
               size: 24,
           ),
           onPressed: () {
@@ -95,9 +97,11 @@ class _ChatscreenRedirectState extends State<ChatscreenRedirect> {
   Widget build(BuildContext context) {
     //AppBar appBar = appBar();
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(appBar().preferredSize.height - 10),
-          child: appBar(),
+          child: appBar(
+          ),
       ),
       body: Container(
           child: Stack(
@@ -174,7 +178,7 @@ class MessageTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(left: isSentByMe ? 0 : 24, right: isSentByMe ? 24 : 0),
-      margin: EdgeInsets.symmetric(vertical: 8),
+      margin: EdgeInsets.only(left: isSentByMe ? 15 : 0, right: isSentByMe ? 0 : 15, top: 10, bottom: 10),
       width: MediaQuery.of(context).size.width,
       alignment: isSentByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(

@@ -75,12 +75,14 @@ class TimeTableWidgetState extends State<TimeTableWidget> {
     tt = widget.user.timetable;
     user = Provider.of<User>(context);
     return Scaffold(
+      extendBodyBehindAppBar: true,
       body: SafeArea(
         child: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
+              elevation: 0,
               floating: false,
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.transparent,
               pinned: true,
               title: Row(
                 children: [

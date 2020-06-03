@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
 import 'package:plannusandroidversion/models/user.dart';
@@ -8,6 +10,7 @@ import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/shared/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
+
 
 class Profile extends StatefulWidget {
   @override
@@ -25,6 +28,7 @@ class _ProfileState extends State<Profile> {
   String handle;
   String error = '';
   String key = '';
+  File _image;
 
   DatabaseMethods databaseMethods = new DatabaseMethods();
   QuerySnapshot currentUser;
@@ -48,18 +52,17 @@ class _ProfileState extends State<Profile> {
     super.initState();
   }
 
-
+  Future getImage() async {
+    ImagePicker imagePicker = new ImagePicker();
+    File image = (await imagePicker.getImage(source: ImageSource.gallery)) as File;
+    setState(() {
+      _image = image;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-
     User user = Provider.of<User>(context);
-//    void foo() async {
-//      String str = await databaseMethods.getSpecificUserData(user.uid);
-//      setState(() {
-//        key = str;
-//      });
-//    }
     return handle == null ? Loading() : Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -85,7 +88,10 @@ class _ProfileState extends State<Profile> {
             key: formKey, // keep track of form and its state
             child : Column (
               children: <Widget>[
-                Image.asset('assets/profilepicture.png', height: 300, width: 300),
+                Image.asset('assets/profilepicture.png',
+                    height: 300,
+                    width: 300,
+                ),
                 Container(
                   margin: EdgeInsets.only(right: 30),
                   child: TextFormField(
@@ -170,6 +176,23 @@ class _ProfileState extends State<Profile> {
                         }
                       }
                     ),
+                    Container(
+                      margin: EdgeInsets.only(left: 10, right:0, top: 0, bottom: 0),
+                      child: RaisedButton(
+                        onPressed: () {
+                          getImage();
+                        },
+                        color: Colors.blueAccent,
+                        child: Shimmer.fromColors(
+                          highlightColor: Colors.black,
+                          baseColor: Colors.white,
+                          child: Text(
+                            'Update image',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
                 SizedBox(height: 12),

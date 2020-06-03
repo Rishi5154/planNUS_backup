@@ -35,11 +35,6 @@ class _ChatsState extends State<Chats> {
     });
     print("$_myName");
     print("$_myHandle");
-
-    setState(() {});
-    print("$_myName");
-    print("$_myHandle");
-
   }
 
   initiateSearch() {
@@ -134,6 +129,7 @@ class _ChatsState extends State<Chats> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: Colors.deepPurple,
         appBar: AppBar(
