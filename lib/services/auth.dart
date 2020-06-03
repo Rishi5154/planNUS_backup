@@ -52,10 +52,7 @@ class AuthService {
 //    QuerySnapshot snapshot;
     HelperFunctions.saveUserLoggedInSharedPreferences(true);
     try {
-
       QuerySnapshot snapshot = await DatabaseMethods().getUserByUserEmail(email);
-//      Constants.myName = snapshot.documents[0].data['name'];
-//      Constants.myHandle = snapshot.documents[0].data['handle'];
       HelperFunctions.saveUserEmailSharedPreferences(email);
       DatabaseMethods().getUserByUserEmail(email).then((value) {
         snapshot = value;
@@ -65,9 +62,9 @@ class AuthService {
         HelperFunctions
             .saveUserHandleSharedPreferences(snapshot.documents[0].data["handle"]);
       });
-      print(snapshot.documents[0].data['name']);
-      print("here at Gsignin");
-      print(AuthService.googleUserId);
+//      print(snapshot.documents[0].data['name']);
+//      print("here at Gsignin");
+//      print(AuthService.googleUserId);
     } catch (e) {
       print(e.toString());
       print(AuthService.googleUserId + " at exception");

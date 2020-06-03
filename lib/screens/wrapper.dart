@@ -17,10 +17,13 @@ class Wrapper extends StatelessWidget {
       return Authenticate();
     } else {
       print("################## User id :" + user.uid);
-      return StreamProvider<User>.value(
-        value: DatabaseMethods(uid: user.uid).getUserStream2(),
-        child: Home()
-      );
+        return StreamProvider<User>.value(
+            value: DatabaseMethods(uid: user.uid).getUserStream2(),
+            child: Home(),
+          catchError: (context, e) {
+              return user;
+          },
+        );
     }
   }
 }
