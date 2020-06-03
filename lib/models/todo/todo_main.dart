@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:plannusandroidversion/models/user.dart';
 import 'package:provider/provider.dart';
 import 'package:plannusandroidversion/models/todo/todo_models/todo_data.dart';
 import 'package:plannusandroidversion/models/todo/pages/add_event_page.dart';
@@ -18,7 +17,7 @@ class _ToDoPageState extends State<ToDoPage> {
 
   double currentPage = 0;
 
-  User user;
+  TodoData todoData;
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +26,8 @@ class _ToDoPageState extends State<ToDoPage> {
         currentPage = _pageController.page;
       });
     });
-    user = Provider.of<User>(context);
-    return ChangeNotifierProvider<TodoData>.value(
-      value: user.toDoDatabase,
-      child: Scaffold(
+    todoData = Provider.of<TodoData>(context, listen: true);
+    return Scaffold(
         body: Stack(
           children: <Widget>[
             Container(
@@ -54,7 +51,7 @@ class _ToDoPageState extends State<ToDoPage> {
                 context: context,
                 builder: (BuildContext context) {
                   return Dialog(
-                      child: currentPage == 0 ? AddTaskPage() : AddEventPage(),
+                      child: currentPage == 0 ? Provider<TodoData>.value(value: todoData, child: AddTaskPage()) : AddEventPage(),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(12))));
                 });
@@ -62,7 +59,6 @@ class _ToDoPageState extends State<ToDoPage> {
           child: Icon(Icons.add),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      ),
     );
   }
 
@@ -85,7 +81,10 @@ class _ToDoPageState extends State<ToDoPage> {
         Expanded(
             child: PageView(
               controller: _pageController,
-              children: <Widget>[TaskPage(), EventPage()],
+              children: <Widget>[
+                TaskPage(),
+                EventPage()
+              ],
             ))
       ],
     );

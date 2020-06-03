@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:plannusandroidversion/models/user.dart';
 import 'package:provider/provider.dart';
 import 'package:plannusandroidversion/models/todo/todo_models/todo_data.dart';
 import 'package:plannusandroidversion/models/todo/widgets/custom_button.dart';
@@ -12,14 +11,15 @@ class TaskPage extends StatefulWidget {
 }
 
 class _TaskPageState extends State<TaskPage> {
-  User user;
+  TodoData todoData;
   @override
   Widget build(BuildContext context) {
-    user = Provider.of<User>(context, listen: true);
-    return ChangeNotifierProvider<TodoData>.value(
-      value: user.toDoDatabase,
-      child: StreamProvider<List<Todo>>.value(
-          value: user.toDoDatabase.getTodoByType(TodoType.TYPE_TASK.index),
+    todoData = Provider.of<TodoData>(context, listen: true);
+    return  StreamProvider<List<Todo>>.value(
+          value: todoData.getTodoByType(TodoType.TYPE_TASK.index),
+          catchError: (context, e) {
+            return new List<Todo>();
+          },
           child: Consumer<List<Todo>>(
             builder: (context, _dataList, child) {
               return _dataList == null
@@ -34,9 +34,8 @@ class _TaskPageState extends State<TaskPage> {
                 },
               );
             },
-          ),
-      ),
-    );
+          )
+        );
   }
 
   Widget _taskIncomplete(Todo data) {
@@ -70,9 +69,8 @@ class _TaskPageState extends State<TaskPage> {
                       CustomButton(
                         buttonText: "Complete",
                         onPressed: () async {
-                          user.toDoDatabase
-                              .completeTodoEntries(data.id);
-                          await user.update().whenComplete(() => Navigator.pop(context));
+                          todoData.completeTodoEntries(data.id);
+                          await todoData.update(context).whenComplete(() => Navigator.pop(context));
                         },
                         color: Theme.of(context).accentColor,
                         textColor: Colors.white,
@@ -161,9 +159,9 @@ class _TaskPageState extends State<TaskPage> {
                   CustomButton(
                     buttonText: "Delete",
                     onPressed: () async{
-                      user.toDoDatabase
+                      todoData
                           .deleteTodoEntries(data.id);
-                      await user.update().whenComplete(() => Navigator.pop(context));
+                      await todoData.update(context).whenComplete(() => Navigator.pop(context));
                     },
                     color: Theme
                         .of(context)
