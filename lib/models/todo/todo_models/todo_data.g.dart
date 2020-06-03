@@ -11,10 +11,12 @@ TodoData _$TodoDataFromJson(Map<String, dynamic> json) {
     ..tasks = (json['tasks'] as Map<String, dynamic>)?.map(
       (k, e) => MapEntry(int.parse(k),
           e == null ? null : Todo.fromJson(e as Map<String, dynamic>)),
-    );
+    )
+    ..counter = json['counter'] as List;
 }
 
 Map<String, dynamic> _$TodoDataToJson(TodoData instance) => <String, dynamic>{
       'tasks':
           instance.tasks?.map((k, e) => MapEntry(k.toString(), e?.toJson())),
+      'counter': instance.counter,
     };

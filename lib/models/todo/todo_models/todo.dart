@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'todo.g.dart';
 @JsonSerializable(explicitToJson: true)
 class Todo {
-  final int id;
+  int id;
   String task;
   DateTime date;
   DateTime time;
