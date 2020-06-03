@@ -12,13 +12,13 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:plannusandroidversion/shared/loading.dart';
 import 'package:provider/provider.dart';
 
-
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
   final String title;
   @override
   _HomeState createState() => _HomeState();
 }
+
 class _HomeState extends State<Home> {
   User user;
   var tabs = [];
@@ -39,7 +39,7 @@ class _HomeState extends State<Home> {
       tabs = [
         Provider<User>.value(value: user,
             child: Scaffold(backgroundColor: Colors.deepOrangeAccent[100],
-                body: ToDoApp())),
+                body: ToDoPage())),
         //home
         Provider<User>.value(value: user,
             child: Scaffold(
