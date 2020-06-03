@@ -3,12 +3,14 @@ import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/models/timetable.dart';
 import 'package:plannusandroidversion/models/todo/pages/task_page.dart';
 import 'package:plannusandroidversion/models/todo/todo_main.dart';
+import 'package:plannusandroidversion/models/todo/todo_models/todo_data.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:plannusandroidversion/models/weekly_event_adder.dart';
 import 'package:plannusandroidversion/screens/home/messages.dart';
 import 'package:plannusandroidversion/screens/home/profile.dart';
 import 'package:plannusandroidversion/services/auth.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/shared/loading.dart';
 import 'package:provider/provider.dart';
 
@@ -37,7 +39,8 @@ class _HomeState extends State<Home> {
     } else {
       print("################################# here " + user.uid);
       tabs = [
-        Provider<User>.value(value: user,
+        StreamProvider<TodoData>.value(
+            value: DatabaseMethods(uid: user.uid).getUserTodoDataStream(),
             child: Scaffold(backgroundColor: Colors.deepOrangeAccent[100],
                 body: ToDoPage())),
         //home

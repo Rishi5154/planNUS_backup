@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:plannusandroidversion/models/todo/todo_models/todo_data.dart';
 import 'package:plannusandroidversion/models/user.dart';
 
 class DatabaseMethods {
@@ -11,8 +12,19 @@ class DatabaseMethods {
     return users.document(uid).snapshots().map((ss) => User.fromJson(ss.data['user']));
   }
   
-  Future<User> getUserData1() async {
-    return await users.document(uid).get().then((ss) => ss['user']);
+  Stream<TodoData> getUserTodoDataStream() {
+    return users.document(uid).snapshots().map((ss) => TodoData.fromJson(ss.data['tasks']));
+  }
+
+  Future<void> updateUserTodoData(TodoData data) async {
+    return users.document(uid).updateData({
+      'tasks' : data.toJson()
+    });
+  }
+
+  Future<TodoData> getUserTodoData() async {
+    TodoData result = await users.document(uid).get().then((val) => TodoData.fromJson(val['tasks']));
+    return result;
   }
 
   Future<void> updateUserData2(User userData) async {
@@ -27,7 +39,8 @@ class DatabaseMethods {
       'email' : email,
       'name' : name,
       'handle' : handle,
-      'user' : User(uid: uid).toJson()
+      'user' : User(uid: uid).toJson(),
+      'tasks' : TodoData().toJson(),
     });
   }
 

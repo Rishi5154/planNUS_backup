@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plannusandroidversion/models/todo/todo_models/todo_data.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:plannusandroidversion/screens/authenticate/authenticate.dart';
 import 'package:plannusandroidversion/screens/home/home.dart';
@@ -19,7 +20,13 @@ class Wrapper extends StatelessWidget {
       print("################## User id :" + user.uid);
       return StreamProvider<User>.value(
         value: DatabaseMethods(uid: user.uid).getUserStream2(),
-        child: Home()
+        child: StreamProvider<TodoData>.value(
+            value: DatabaseMethods(uid: user.uid).getUserTodoDataStream(),
+            child: Home(),
+        ),
+        catchError: (context, e) {
+          return user;
+        },
       );
     }
   }
