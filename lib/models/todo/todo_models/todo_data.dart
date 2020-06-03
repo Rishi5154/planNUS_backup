@@ -10,14 +10,16 @@ part 'todo_data.g.dart';
 @JsonSerializable(explicitToJson: true)
 class TodoData {
   Map<int, Todo> tasks;
-  int _counter = 0;
+  List counter = [0];
 
   TodoData() {
     this.tasks = new Map<int, Todo>();
   }
 
   int get count {
-    return _counter++;
+    int result = counter[0];
+    counter[0]++;
+    return result;
   }
 
   Stream<List<Todo>> getTodoByType(int type) {
