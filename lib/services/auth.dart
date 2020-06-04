@@ -27,17 +27,16 @@ class AuthService {
 
   Future login() async {
     try{
-        GoogleSignInAccount user = await googleSignIn.signIn();
-        GoogleSignInAuthentication gsa = await user.authentication;
-        final AuthCredential credential = GoogleAuthProvider
-            .getCredential(idToken: gsa.idToken, accessToken: gsa.accessToken);
-        AuthResult temp = await _auth.signInWithCredential(credential);
-        FirebaseUser curr = temp.user;
-        googleSignInAccount = user;
-        googleUserId = curr.uid;
-        print("true");
-        return userFromFirebaseUser(curr);
-    return new User();
+      GoogleSignInAccount user = await googleSignIn.signIn();
+      GoogleSignInAuthentication gsa = await user.authentication;
+      final AuthCredential credential = GoogleAuthProvider
+          .getCredential(idToken: gsa.idToken, accessToken: gsa.accessToken);
+      AuthResult temp = await _auth.signInWithCredential(credential);
+      FirebaseUser curr = temp.user;
+      googleSignInAccount = user;
+      googleUserId = curr.uid;
+      print("true");
+      return userFromFirebaseUser(curr);
     } catch (err){
       print(err);
       print("null from login");
