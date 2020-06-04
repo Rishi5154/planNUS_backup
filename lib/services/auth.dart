@@ -36,8 +36,8 @@ class AuthService {
         googleSignInAccount = user;
         googleUserId = curr.uid;
         print("true");
-        //await DatabaseMethods(uid: curr.uid).updateUserData('', '@changeHandle');
         return userFromFirebaseUser(curr);
+    return new User();
     } catch (err){
       print(err);
       print("null from login");
@@ -51,7 +51,6 @@ class AuthService {
 //    QuerySnapshot snapshot;
     HelperFunctions.saveUserLoggedInSharedPreferences(true);
     try {
-
       QuerySnapshot snapshot = await DatabaseMethods().getUserByUserEmail(email);
 //      Constants.myName = snapshot.documents[0].data['name'];
 //      Constants.myHandle = snapshot.documents[0].data['handle'];
