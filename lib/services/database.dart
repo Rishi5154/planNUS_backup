@@ -7,7 +7,11 @@ class DatabaseMethods {
   DatabaseMethods({this.uid});
 
   final CollectionReference users = Firestore.instance.collection("users");
-  
+
+  Stream<String> getHandleStream() {
+    return users.document(uid).snapshots().map((ss) => ss.data['handle']);
+  }
+
   Stream<User> getUserStream2() {
     return users.document(uid).snapshots().map((ss) => User.fromJson(ss.data['user']));
   }

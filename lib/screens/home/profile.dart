@@ -29,26 +29,13 @@ class _ProfileState extends State<Profile> {
   String error = '';
   String key = '';
   File _image;
-
+  String newHandle;
   DatabaseMethods databaseMethods = new DatabaseMethods();
   QuerySnapshot currentUser;
-
-
-  profileName(String uid) async{
-    await databaseMethods
-        .getHandleByEmail(uid)
-        .then((value) => {
-      setState(() => handle = value['handle'])
-    });
-  }
-  displayHandle() async {
-    await auth.googleSignIn.isSignedIn() ? profileName(AuthService.googleUserId)
-        : profileName(AuthService.currentUser.uid);
-  }
+  
   @override
   void initState() {
     // TODO: implement initState
-    displayHandle();
     super.initState();
   }
 
@@ -63,6 +50,8 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     User user = Provider.of<User>(context);
+    handle = Provider.of<String>(context);
+
     return handle == null ? Loading() : Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -132,7 +121,7 @@ class _ProfileState extends State<Profile> {
                     obscureText: false,
                     validator: (val) => val[0] != '@' ? 'Handle starts with @!' : null,
                     onChanged: (val) {
-                      setState(() => handle = val);
+                      setState(() => newHandle = val);
                       //print(handle);
                     },
                   ),
@@ -157,11 +146,12 @@ class _ProfileState extends State<Profile> {
                           print(AuthService.googleUserId);
                           bool check = await auth.googleSignIn.isSignedIn();
                           if (check) {
-                            await databaseMethods.updateSpecificUserData(
-                                AuthService.googleUserId, name, handle);
+//                            await databaseMethods.updateSpecificUserData(
+//                                AuthService.googleUserId, name, handle);
+                          await databaseMethods.updateSpecificUserData(user.uid, name, newHandle);
                           } else {
                             await databaseMethods.updateSpecificUserData(
-                                user.uid, name, handle);
+                                user.uid, name, newHandle);
                           }
                           HelperFunctions.saveUsernameSharedPreferences(name);
                           HelperFunctions.saveUserHandleSharedPreferences(handle);

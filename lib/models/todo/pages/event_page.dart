@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plannusandroidversion/models/todo/widgets/custom_icon_decoration.dart';
+import 'package:plannusandroidversion/models/user.dart';
+import 'package:provider/provider.dart';
 //import 'package:plannusapk/models/activity.dart';
 
 class EventPage extends StatefulWidget {
@@ -10,26 +12,39 @@ class EventPage extends StatefulWidget {
 class Event {
   final String time;
   final String task;
-  final String desc;
-  final bool isFinish;
+  String desc;
+  bool isFinish;
+  bool isImportant;
 
-  const Event(this.time, this.task, this.desc, this.isFinish);
+  Event(this.time, this.task, this.desc, this.isFinish, this.isImportant);
 }
 
-final List<Event> _eventList = [
-  new Event("08:00", "Have coffe with Sam", "Personal", true),
-  new Event("10:00", "Meet with sales", "Work", true),
-  new Event("12:00", "Call Tom about appointment", "Work", false),
-  new Event("14:00", "Fix onboarding experience", "Work", false),
-  new Event("16:00", "Edit API documentation", "Personal", false),
-  new Event("18:00", "Setup user focus group", "Personal", false),
-];
+//final List<Event> _eventList = [
+//  new Event("08:00", "Have coffe with Sam", "Personal", true),
+//  new Event("10:00", "Meet with sales", "Work", true),
+//  new Event("12:00", "Call Tom about appointment", "Work", false),
+//  new Event("14:00", "Fix onboarding experience", "Work", false),
+//  new Event("16:00", "Edit API documentation", "Personal", false),
+//  new Event("18:00", "Setup user focus group", "Personal", false),
+//];
 
 class _EventPageState extends State<EventPage> {
+  static List<String> _orderedTime = [
+    '0800-0900', '0900-1000', '1000-1100', '1100-1200', '1200-1300', '1300-1400',
+    '1400-1500', '1500-1600', '1600-1700', '1700-1800', '1800-1900', '1900-2000'
+  ];
   @override
   Widget build(BuildContext context) {
     double iconSize = 20;
-
+    Map<String, Map<String, Object>> map = Provider.of<User>(context).timetable.timetable[DateTime.now().weekday.toString()];
+    List<Event> _eventList = _orderedTime.map((m) {
+      String time = m.substring(0,2) + ":" + m.substring(2,4);
+      String task = map[m]['name'];
+      String desc = "";
+      bool isFinish = map[m]['isFinish'];
+      bool isImportant = map[m]['isImportant'];
+      return new Event(time, task, desc, isFinish, isImportant);
+    }).toList();
     return ListView.builder(
       itemCount: _eventList.length,
       padding: const EdgeInsets.all(0),
