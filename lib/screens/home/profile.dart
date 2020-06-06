@@ -33,9 +33,10 @@ class _ProfileState extends State<Profile> {
   String url;
   Image img;
   File _image;
-
+  String newHandle;
   DatabaseMethods databaseMethods = new DatabaseMethods();
   QuerySnapshot currentUser;
+
   StorageReference reference = FirebaseStorage.instance.ref()
       .child('${AuthService.currentUser.uid}/profileimage.jpg');
 
@@ -89,6 +90,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     User user = Provider.of<User>(context);
+    handle = Provider.of<String>(context);
     return handle == null || img == null ? Loading() : Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -165,7 +167,7 @@ class _ProfileState extends State<Profile> {
                     obscureText: false,
                     validator: (val) => val[0] != '@' ? 'Handle starts with @!' : null,
                     onChanged: (val) {
-                      setState(() => handle = val);
+                      setState(() => newHandle = val);
                       //print(handle);
                     },
                   ),
@@ -186,18 +188,19 @@ class _ProfileState extends State<Profile> {
                             style: GoogleFonts.lato(color: Colors.white, fontWeight: FontWeight.w600),
                           ),
                         ),
-                        onPressed: () async {
-                          //print(handle);
-                          if (formKey.currentState.validate()) {
-                            print(AuthService.googleUserId);
-                            bool check = await auth.googleSignIn.isSignedIn();
-                            if (check) {
-                              await databaseMethods.updateSpecificUserData(
-                                  AuthService.googleUserId, name, handle);
-                            } else {
-                              await databaseMethods.updateSpecificUserData(
-                                  user.uid, name, handle);
-                            }
+                      onPressed: () async {
+                        //print(handle);
+                        if (formKey.currentState.validate()) {
+                          print(AuthService.googleUserId);
+                          bool check = await auth.googleSignIn.isSignedIn();
+                          if (check) {
+//                            await databaseMethods.updateSpecificUserData(
+//                                AuthService.googleUserId, name, handle);
+                          await databaseMethods.updateSpecificUserData(user.uid, name, newHandle);
+                          } else {
+                            await databaseMethods.updateSpecificUserData(
+                                user.uid, name, newHandle);
+                          }
                             HelperFunctions.saveUsernameSharedPreferences(name);
                             HelperFunctions.saveUserHandleSharedPreferences(handle);
                             Constants.myName = name;
@@ -208,7 +211,6 @@ class _ProfileState extends State<Profile> {
                               error = 'Update successful!';
                               key = handle;
                             });
-                          }
                         }
                       ),
                     ),

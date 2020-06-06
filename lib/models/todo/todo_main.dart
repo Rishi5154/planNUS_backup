@@ -51,7 +51,9 @@ class _ToDoPageState extends State<ToDoPage> {
                 context: context,
                 builder: (BuildContext context) {
                   return Dialog(
-                      child: currentPage == 0 ? Provider<TodoData>.value(value: todoData, child: AddTaskPage()) : AddEventPage(),
+                      child: currentPage == 0
+                          ? Provider<TodoData>.value(value: todoData, child: AddTaskPage())
+                          : Provider<TodoData>.value(value: todoData, child: AddEventPage()),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(12))));
                 });

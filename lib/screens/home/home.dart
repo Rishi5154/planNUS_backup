@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/models/timetable.dart';
 import 'package:plannusandroidversion/models/todo/pages/task_page.dart';
@@ -37,7 +38,6 @@ class _HomeState extends State<Home> {
     if (user == null) {
       return Loading();
     } else {
-      print("################################# here " + user.uid);
       tabs = [
         StreamProvider<TodoData>.value(
             value: DatabaseMethods(uid: user.uid).getUserTodoDataStream(),
@@ -49,17 +49,18 @@ class _HomeState extends State<Home> {
                 backgroundColor: Colors.yellow, body: TimeTableWidget(user))),
         //TimeTable.emptyTimeTable()))),
         Provider<User>.value(value: user, child: Messages()),
-        Provider<User>.value(value: user, child: Profile()),
+        MultiProvider(providers: [
+          StreamProvider<String>(
+            create: (_) => DatabaseMethods(uid: user.uid).getHandleStream(),
+            catchError: (context, e) { return "(no name yet)";}),
+          Provider<User>(create: (_) => user)
+        ], child: Profile()),
       ];
       return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: Colors.deepPurple,
           appBar: AppBar(
-            leading: IconButton(
-              icon: Icon(Icons.menu),
-              onPressed: () {},
-            ),
             title: Text(header,
                 style: TextStyle(
                   color: Colors.white,
@@ -117,6 +118,25 @@ class _HomeState extends State<Home> {
                   }
               )
             ],
+          ),
+          drawer: Drawer(
+            child: ListView(
+              children: [
+                DrawerHeader(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(colors: [
+                      Colors.deepOrange,
+                      Colors.orangeAccent,
+                    ])
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Image(image: AssetImage('assets/planNUS.png')),
+                  )
+                ),
+
+              ],
+            ),
           ),
           body: tabs[currentIndex],
           bottomNavigationBar: BottomNavyBar(
