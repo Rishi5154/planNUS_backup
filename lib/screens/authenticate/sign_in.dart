@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
 import 'package:plannusandroidversion/screens/authenticate/resetpassword.dart';
+import 'package:plannusandroidversion/screens/home/profile.dart';
 import 'package:plannusandroidversion/services/auth.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/shared/constants.dart';
@@ -156,15 +157,17 @@ class _SignInState extends State<SignIn> {
                             loading = false;
                           });
                         } else {
+                          print("here at signin");
                           HelperFunctions.saveUserLoggedInSharedPreferences(true);
+                          Constants.myName = await HelperFunctions.getUsernameSharedPreferences();
+                          Constants.myHandle = await HelperFunctions.getUserHandleSharedPreferences();
+                          //Constants.myProfilePhoto = await ImageSelector.downloadImage() ?? '';
+                          print(Constants.myName + " has logged in");
+                          print(Constants.myHandle + " has logged in");
                         }
-
                       } else {
                         HelperFunctions.saveUserLoggedInSharedPreferences(true);
-                        Constants.myName = await HelperFunctions.getUsernameSharedPreferences();
-                        Constants.myHandle = await HelperFunctions.getUserHandleSharedPreferences();
-                        print(Constants.myName + " has logged in");
-                        print(Constants.myHandle + " has logged in");
+
                       }
                     }
                   },
