@@ -39,17 +39,6 @@ class _ProfileState extends State<Profile> {
   StorageReference reference = FirebaseStorage.instance.ref()
       .child('${AuthService.currentUser.uid}/profileimage.jpg');
 
-  profileName(String uid) async{
-    await databaseMethods
-        .getHandleByEmail(uid)
-        .then((value) => {
-      setState(() => handle = value['handle'])
-    });
-  }
-  displayHandle() async {
-    await auth.googleSignIn.isSignedIn() ? profileName(AuthService.googleUserId)
-        : profileName(AuthService.currentUser.uid);
-  }
   getPhoto() async {
     try {
       url = await downloadImage();
@@ -93,29 +82,9 @@ class _ProfileState extends State<Profile> {
   void initState() {
     // TODO: implement initState
     getPhoto();
-    displayHandle();
     super.initState();
   }
 
-//  Future getImage() async {
-//    ImagePicker imagePicker = new ImagePicker();
-//    File Image = await ImagePicker.pickImage(source: ImageSource.gallery);
-//    //PickedFile image = await imagePicker.getImage(source: ImageSource.gallery);
-//    setState(() {
-//      _image = Image;
-//    });
-//    uploadImage(Image);
-//  }
-//
-//  Future uploadImage(File image) async {
-//    StorageUploadTask uploadTask = reference.putFile(image);
-//    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
-//  }
-//
-//  Future downloadImage() async {
-//    String downloadUrl = await reference.getDownloadURL();
-//    return downloadUrl;
-//  }
 
   @override
   Widget build(BuildContext context) {
