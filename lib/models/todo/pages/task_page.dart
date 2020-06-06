@@ -15,8 +15,8 @@ class _TaskPageState extends State<TaskPage> {
   @override
   Widget build(BuildContext context) {
     todoData = Provider.of<TodoData>(context, listen: true);
-    return  StreamProvider<List<Todo>>.value(
-          value: todoData.getTodoByType(TodoType.TYPE_TASK.index),
+    return StreamProvider<List<Todo>>.value(
+          value: todoData == null ? new Stream.value(List<Todo>()) : todoData.getTodoByType(TodoType.TYPE_TASK.index),
           catchError: (context, e) {
             return new List<Todo>();
           },

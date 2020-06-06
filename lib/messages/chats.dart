@@ -131,8 +131,11 @@ class _ChatsState extends State<Chats> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        extendBodyBehindAppBar: false,
         backgroundColor: Colors.deepPurple,
         appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
           leading: IconButton(
             icon: new Icon(Icons.arrow_back_ios, color: Colors.white),
             onPressed: () {
@@ -181,6 +184,10 @@ class _ChatsState extends State<Chats> {
                           setState(() {
                             error = 'Please update your handle at Profile!';
                           });
+                        } else if (searchTextEditingController.text == Constants.myHandle) {
+                          setState(() {
+                            error = "You can't search for yourself! ";
+                          });
                         } else {
                           initiateSearch();
                         }
@@ -191,10 +198,13 @@ class _ChatsState extends State<Chats> {
               ),
               Container(height: 20,
                   width: 300,
-                  child: Text(error,
-                    style: GoogleFonts.lato(
-                        fontSize: 18,
-                        color: Colors.white,
+                  child: Center(
+                    child: Text(error,
+                      style: GoogleFonts.lato(
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600
+                      ),
                     ),
                   )
               ),

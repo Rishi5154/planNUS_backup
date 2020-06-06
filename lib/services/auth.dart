@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:plannusandroidversion/services/database.dart';
-import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
 import 'package:plannusandroidversion/models/user.dart';
 
@@ -36,6 +35,8 @@ class AuthService {
         FirebaseUser curr = temp.user;
         googleSignInAccount = user;
         googleUserId = curr.uid;
+        currentUser = curr;
+        print(currentUser.uid + ": id of current Firebase User, Google Signed in");
         print("true");
         //await DatabaseMethods(uid: curr.uid).updateUserData('', '@changeHandle');
         return userFromFirebaseUser(curr);
@@ -62,9 +63,6 @@ class AuthService {
         HelperFunctions
             .saveUserHandleSharedPreferences(snapshot.documents[0].data["handle"]);
       });
-//      print(snapshot.documents[0].data['name']);
-//      print("here at Gsignin");
-//      print(AuthService.googleUserId);
     } catch (e) {
       print(e.toString());
       print(AuthService.googleUserId + " at exception");
@@ -98,6 +96,7 @@ class AuthService {
       FirebaseUser user = result.user;
       print(user.uid);
       currentUser = user;
+      print(currentUser.uid + ": id of current Firebase User with registered account");
       return userFromFirebaseUser(user);
     } catch (e) { // else return null
       print(e.toString());
@@ -113,6 +112,7 @@ class AuthService {
       // create a new collection for the user with id on firebase database
       await DatabaseMethods(uid: user.uid).addUserData(email, '', handle);
       currentUser = user;
+      print(currentUser.uid + ": id of current Firebase User with registered account");
       return userFromFirebaseUser(user);
     } catch (e) { // else return null
       print(e.toString());

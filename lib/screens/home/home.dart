@@ -103,6 +103,7 @@ class _HomeState extends State<Home> {
                   onPressed: () async {
                     Constants.myName = null;
                     Constants.myHandle = null;
+                    Constants.myProfilePhoto = null;
                     await auth.googleSignIn.isSignedIn().then((value) async {
                       if (value) {
                         AuthService.googleSignInAccount = null;

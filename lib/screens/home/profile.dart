@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
@@ -28,11 +30,14 @@ class _ProfileState extends State<Profile> {
   String handle;
   String error = '';
   String key = '';
+  String url;
+  Image img;
   File _image;
 
   DatabaseMethods databaseMethods = new DatabaseMethods();
   QuerySnapshot currentUser;
-
+  StorageReference reference = FirebaseStorage.instance.ref()
+      .child('${AuthService.currentUser.uid}/profileimage.jpg');
 
   profileName(String uid) async{
     await databaseMethods
@@ -45,25 +50,77 @@ class _ProfileState extends State<Profile> {
     await auth.googleSignIn.isSignedIn() ? profileName(AuthService.googleUserId)
         : profileName(AuthService.currentUser.uid);
   }
+  getPhoto() async {
+    try {
+      url = await downloadImage();
+      setState(() {
+        img = Image.network(url);
+      });
+    } catch (e) {
+      print("here at img fail");
+      setState(() {
+        img = Image.asset('assets/profilepicture.png', height: 300, width: 300,);
+      });
+    }
+  }
+
+  Future getImage() async {
+    print(AuthService.currentUser.uid + " here at image.dart");
+    File Image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    //PickedFile image = await imagePicker.getImage(source: ImageSource.gallery);
+//    setState(() {
+//      _image = Image;
+//    });
+    await uploadImage(Image);
+    return Image;
+  }
+
+  Future uploadImage(File image) async {
+    StorageUploadTask uploadTask = reference.putFile(image);
+    print(AuthService.currentUser.uid + " here at image.dart");
+    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+  }
+
+  Future downloadImage() async {
+    String downloadUrl = await reference.getDownloadURL();
+    return downloadUrl;
+    //Image img = Image
+    //StorageReference img = await FirebaseStorage.instance.getReferenceFromUrl(downloadUrl)
+  }
+
+
   @override
   void initState() {
     // TODO: implement initState
+    getPhoto();
     displayHandle();
     super.initState();
   }
 
-  Future getImage() async {
-    ImagePicker imagePicker = new ImagePicker();
-    File image = (await imagePicker.getImage(source: ImageSource.gallery)) as File;
-    setState(() {
-      _image = image;
-    });
-  }
+//  Future getImage() async {
+//    ImagePicker imagePicker = new ImagePicker();
+//    File Image = await ImagePicker.pickImage(source: ImageSource.gallery);
+//    //PickedFile image = await imagePicker.getImage(source: ImageSource.gallery);
+//    setState(() {
+//      _image = Image;
+//    });
+//    uploadImage(Image);
+//  }
+//
+//  Future uploadImage(File image) async {
+//    StorageUploadTask uploadTask = reference.putFile(image);
+//    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+//  }
+//
+//  Future downloadImage() async {
+//    String downloadUrl = await reference.getDownloadURL();
+//    return downloadUrl;
+//  }
 
   @override
   Widget build(BuildContext context) {
     User user = Provider.of<User>(context);
-    return handle == null ? Loading() : Scaffold(
+    return handle == null || img == null ? Loading() : Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Center(
@@ -88,9 +145,16 @@ class _ProfileState extends State<Profile> {
             key: formKey, // keep track of form and its state
             child : Column (
               children: <Widget>[
-                Image.asset('assets/profilepicture.png',
-                    height: 300,
-                    width: 300,
+                Container(
+                  child: _image != null ? Padding(
+                    padding: const EdgeInsets.all(60),
+                    child: CircleAvatar(backgroundImage:FileImage(_image), radius: 100),
+                  ) :
+                    url != null ? Padding(
+                      padding: const EdgeInsets.all(60),
+                      child: CircleAvatar(backgroundImage:img.image, radius: 100),
+                    )
+                        : img
                 ),
                 Container(
                   margin: EdgeInsets.only(right: 30),
@@ -141,46 +205,56 @@ class _ProfileState extends State<Profile> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget> [
-                    RaisedButton(
-                      color: Colors.blueAccent,
-                      child: Shimmer.fromColors(
-                        highlightColor: Colors.black,
-                        baseColor: Colors.white,
-                        child: Text(
-                          'Update',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                      onPressed: () async {
-                        //print(handle);
-                        if (formKey.currentState.validate()) {
-                          print(AuthService.googleUserId);
-                          bool check = await auth.googleSignIn.isSignedIn();
-                          if (check) {
-                            await databaseMethods.updateSpecificUserData(
-                                AuthService.googleUserId, name, handle);
-                          } else {
-                            await databaseMethods.updateSpecificUserData(
-                                user.uid, name, handle);
-                          }
-                          HelperFunctions.saveUsernameSharedPreferences(name);
-                          HelperFunctions.saveUserHandleSharedPreferences(handle);
-                          Constants.myName = name;
-                          Constants.myHandle = handle;
-                          print(Constants.myName);
-                          print(Constants.myHandle);
-                          setState(() {
-                            error = 'Update successful!';
-                            key = handle;
-                          });
-                        }
-                      }
-                    ),
                     Container(
                       margin: EdgeInsets.only(left: 10, right:0, top: 0, bottom: 0),
                       child: RaisedButton(
-                        onPressed: () {
-                          getImage();
+                        color: Colors.blueAccent,
+                        child: Shimmer.fromColors(
+                          highlightColor: Colors.black,
+                          baseColor: Colors.white,
+                          child: Text(
+                            'Update',
+                            style: GoogleFonts.lato(color: Colors.white, fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        onPressed: () async {
+                          //print(handle);
+                          if (formKey.currentState.validate()) {
+                            print(AuthService.googleUserId);
+                            bool check = await auth.googleSignIn.isSignedIn();
+                            if (check) {
+                              await databaseMethods.updateSpecificUserData(
+                                  AuthService.googleUserId, name, handle);
+                            } else {
+                              await databaseMethods.updateSpecificUserData(
+                                  user.uid, name, handle);
+                            }
+                            HelperFunctions.saveUsernameSharedPreferences(name);
+                            HelperFunctions.saveUserHandleSharedPreferences(handle);
+                            Constants.myName = name;
+                            Constants.myHandle = handle;
+                            print(Constants.myName);
+                            print(Constants.myHandle);
+                            setState(() {
+                              error = 'Update successful!';
+                              key = handle;
+                            });
+                          }
+                        }
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 3, right:0, top: 0, bottom: 0),
+                      child: RaisedButton(
+                        onPressed: () async {
+                          ImagePicker imagePicker = new ImagePicker();
+                          File Image = await ImagePicker.pickImage(source: ImageSource.gallery);
+                          //File image = await ImageSelector.getImage();
+                          setState(() {
+                            _image = Image;
+                          });
+                          await uploadImage(Image);
+
                         },
                         color: Colors.blueAccent,
                         child: Shimmer.fromColors(
@@ -188,7 +262,11 @@ class _ProfileState extends State<Profile> {
                           baseColor: Colors.white,
                           child: Text(
                             'Update image',
-                            style: TextStyle(color: Colors.white),
+                            style: GoogleFonts.lato(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ),
