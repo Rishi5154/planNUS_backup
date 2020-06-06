@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:plannusandroidversion/shared/loading.dart';
 
 import 'constants.dart';
@@ -152,7 +153,7 @@ class MessageTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(left: isSentByMe ? 0 : 24, right: isSentByMe ? 24 : 0),
-      margin: EdgeInsets.symmetric(vertical: 8),
+      margin: EdgeInsets.only(left: isSentByMe ? 15 : 0, right: isSentByMe ? 0 : 15, top: 10, bottom: 10),
       width: MediaQuery.of(context).size.width,
       alignment: isSentByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(

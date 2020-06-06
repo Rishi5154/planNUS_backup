@@ -35,11 +35,6 @@ class _ChatsState extends State<Chats> {
     });
     print("$_myName");
     print("$_myHandle");
-
-    setState(() {});
-    print("$_myName");
-    print("$_myHandle");
-
   }
 
   initiateSearch() {
@@ -134,6 +129,7 @@ class _ChatsState extends State<Chats> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: Colors.deepPurple,
         appBar: AppBar(
@@ -177,9 +173,13 @@ class _ChatsState extends State<Chats> {
                       padding: EdgeInsets.fromLTRB(20, 2, 2, 2),
                       icon: new Icon(Icons.search, color: Colors.blue),
                       onPressed: () {
-                        if (Constants.myName == null || Constants.myName.isEmpty){
+                        if (Constants.myName == null || Constants.myName.isEmpty) {
                           setState(() {
                             error = 'Please update your name at Profile!';
+                          });
+                        } else if (Constants.myHandle == null || Constants.myHandle.isEmpty) {
+                          setState(() {
+                            error = 'Please update your handle at Profile!';
                           });
                         } else {
                           initiateSearch();
