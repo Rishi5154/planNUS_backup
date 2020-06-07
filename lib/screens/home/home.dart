@@ -71,23 +71,19 @@ class _HomeState extends State<Home> {
               IconButton(
                 icon: Icon(Icons.add, color: Colors.white),
                 tooltip: 'Add',
-                onPressed: () async {
-                  List x = await Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => WeeklyEventAdder()
-                  ));
-                  setState(() async {
-                    user.timetable.alter(x[4], x[0], x[1], x[2], x[3]);
-                    await user.update();
-                    print(user.timetable.timetable);
-                    tabs[0] = Scaffold(
-                        backgroundColor: Colors.deepOrangeAccent[100],
-                        body: TaskPage()
-                    ); //home
-                    tabs[1] = Scaffold(
-                        backgroundColor: Colors.yellow,
-                        body: Provider<User>.value(value: user, child: TimeTableWidget())
-                    );
-                  });
+                onPressed: () {
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Dialog(
+                        child: Provider<User>.value(value: user, child: WeeklyEventAdder()),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(12))
+                        )
+                      );
+                    }
+                  );
                 },
               ),
               IconButton(
