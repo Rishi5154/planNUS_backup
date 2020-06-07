@@ -1,9 +1,12 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
 import 'package:plannusandroidversion/services/auth.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/shared/constants.dart';
+import 'package:plannusandroidversion/shared/helperwidgets.dart';
 import 'package:plannusandroidversion/shared/loading.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -118,9 +121,9 @@ class _RegisterState extends State<Register> {
                       dynamic result = await auth.registerWithEmailAndPassword(email, password, handle);
                       if (result == null) {
                         setState((){
-                          error = 'Input valid email & password!';
                           loading = false;
                         });
+                        HelperWidgets.flushbar('Account already created!', Icons.account_box)..show(context);
                       } else {
                         HelperFunctions.saveUserLoggedInSharedPreferences(true);
                         HelperFunctions.saveUserEmailSharedPreferences(email);

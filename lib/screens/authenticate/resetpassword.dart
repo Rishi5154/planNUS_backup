@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:plannusandroidversion/messages/helperfunctions.dart';
 import 'package:plannusandroidversion/services/auth.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/shared/constants.dart';
+import 'package:plannusandroidversion/shared/helperwidgets.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ResetPassword extends StatefulWidget {
@@ -26,7 +26,6 @@ class _ResetPasswordState extends State<ResetPassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      //backgroundColor: Colors.transparent,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
@@ -73,14 +72,10 @@ class _ResetPasswordState extends State<ResetPassword> {
                     // checking whether content in form is valid
                     dynamic result = await auth.resetPassword(email);
                     if (result == false) {
-                      setState((){
-                        error = 'Invalid email!';
-                      });
+                      HelperWidgets.flushbar('Invalid email!', Icons.account_box)..show(context);
                     } else {
-                      setState(() {
-                        error = 'Success! Details to reset password '
-                            'have been sent to $email';
-                      });
+                      HelperWidgets.flushbar('Success! Details to reset password '
+                          'have been sent to $email', Icons.email)..show(context);
                     }
                   }
                 },
