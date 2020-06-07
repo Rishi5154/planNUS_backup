@@ -93,9 +93,8 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Container(
+    return Dialog(
+      child: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

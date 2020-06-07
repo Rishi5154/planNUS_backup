@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/models/timetable.dart';
@@ -45,7 +46,7 @@ class _HomeState extends State<Home> {
         //home
         Provider<User>.value(value: user,
             child: Scaffold(
-                backgroundColor: Colors.yellow, body: TimeTableWidget(user))),
+                backgroundColor: Colors.yellow, body: TimeTableWidget())),
         //TimeTable.emptyTimeTable()))),
         Provider<User>.value(value: user, child: Messages()),
         MultiProvider(providers: [
@@ -84,7 +85,7 @@ class _HomeState extends State<Home> {
                     ); //home
                     tabs[1] = Scaffold(
                         backgroundColor: Colors.yellow,
-                        body: TimeTableWidget(user)
+                        body: Provider<User>.value(value: user, child: TimeTableWidget())
                     );
                   });
                 },
