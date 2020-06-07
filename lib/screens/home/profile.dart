@@ -56,13 +56,13 @@ class _ProfileState extends State<Profile> {
 
   Future getImage() async {
     print(AuthService.currentUser.uid + " here at image.dart");
-    File Image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    PickedFile image = await ImagePicker().getImage(source: ImageSource.gallery);
     //PickedFile image = await imagePicker.getImage(source: ImageSource.gallery);
 //    setState(() {
 //      _image = Image;
 //    });
-    await uploadImage(Image);
-    return Image;
+    await uploadImage(File(image.path));
+    return image;
   }
 
   Future uploadImage(File image) async {
@@ -196,23 +196,25 @@ class _ProfileState extends State<Profile> {
                           if (check) {
 //                            await databaseMethods.updateSpecificUserData(
 //                                AuthService.googleUserId, name, handle);
-                          await databaseMethods.updateSpecificUserData(user.uid, name, newHandle);
+                            await databaseMethods.updateSpecificUserData(
+                                user.uid, name, newHandle);
                           } else {
                             await databaseMethods.updateSpecificUserData(
                                 user.uid, name, newHandle);
                           }
-                            HelperFunctions.saveUsernameSharedPreferences(name);
-                            HelperFunctions.saveUserHandleSharedPreferences(handle);
-                            Constants.myName = name;
-                            Constants.myHandle = handle;
-                            print(Constants.myName);
-                            print(Constants.myHandle);
-                            setState(() {
-                              error = 'Update successful!';
-                              key = handle;
-                            });
+                          HelperFunctions.saveUsernameSharedPreferences(name);
+                          HelperFunctions.saveUserHandleSharedPreferences(
+                              handle);
+                          Constants.myName = name;
+                          Constants.myHandle = handle;
+                          print(Constants.myName);
+                          print(Constants.myHandle);
+                          setState(() {
+                            error = 'Update successful!';
+                            key = handle;
+                          });
                         }
-                      ),
+                      }),
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 3, right:0, top: 0, bottom: 0),

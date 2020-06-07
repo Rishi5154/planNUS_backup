@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/models/timetable.dart';
 import 'package:plannusandroidversion/models/todo/pages/task_page.dart';
