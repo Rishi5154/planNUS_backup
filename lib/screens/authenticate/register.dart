@@ -123,26 +123,7 @@ class _RegisterState extends State<Register> {
                         setState((){
                           loading = false;
                         });
-                        HelperWidgets.flushbar('FAILED TO SIGN IN!', Icons.account_box)..show(context);
-//                        Flushbar(
-//                          flushbarStyle: FlushbarStyle.FLOATING,
-//                          margin: EdgeInsets.all(16),
-//                          borderRadius: 8,
-//                          //message: 'FAILED TO SIGN IN!',
-//                          messageText: Text('Input valid email & password!',
-//                              style: GoogleFonts.lato(
-//                                fontSize: 16,
-//                                color: Colors.white,
-//                                fontWeight: FontWeight.w500,
-//                              )),
-//                          icon : Icon(
-//                              Icons.account_box,
-//                              size: 28,
-//                              color: Colors.lightBlueAccent
-//                          ),
-//                          duration: Duration(seconds: 3),
-//                          leftBarIndicatorColor: Colors.lightBlueAccent,
-//                        )..show(context);
+                        HelperWidgets.flushbar('Account already created!', Icons.account_box)..show(context);
                       } else {
                         HelperFunctions.saveUserLoggedInSharedPreferences(true);
                         HelperFunctions.saveUserEmailSharedPreferences(email);
