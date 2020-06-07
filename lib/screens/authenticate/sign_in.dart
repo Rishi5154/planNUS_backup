@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
@@ -7,6 +8,7 @@ import 'package:plannusandroidversion/screens/authenticate/resetpassword.dart';
 import 'package:plannusandroidversion/services/auth.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/shared/constants.dart';
+import 'package:plannusandroidversion/shared/helperwidgets.dart';
 import 'package:plannusandroidversion/shared/loading.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -147,14 +149,13 @@ class _SignInState extends State<SignIn> {
                         HelperFunctions
                           .saveUserHandleSharedPreferences(userInfoSnapshot.documents[0].data["handle"]);
                         });
-
                         setState(() => loading = true);
                         dynamic result = await auth.signInWithEmailAndPassword(email, password);
-                        if (result == null ) {
+                        if (result == null) {
                           setState(() {
-                            error = 'FAILED TO SIGN IN!';
                             loading = false;
                           });
+                          HelperWidgets.flushbar('FAILED TO SIGN IN!', Icons.account_box)..show(context);
                         } else {
                           print("here at signin");
                           HelperFunctions.saveUserLoggedInSharedPreferences(true);
@@ -191,9 +192,9 @@ class _SignInState extends State<SignIn> {
                       dynamic result = await auth.login();
                       if (result == null || result == false) {
                         setState(() {
-                          error = 'FAILED TO SIGN IN!';
                           loading = false;
                         });
+                        HelperWidgets.flushbar('FAILED TO SIGN IN!', Icons.account_box)..show(context);
                       } else {
                         auth.createProfileForGoogleAccounts();
                       }
