@@ -199,7 +199,7 @@ class DayTile extends StatelessWidget {
         color: Colors.yellow,
         child: SizedBox(
             height: 20.0,
-            width: 42,
+            width: 40,
             child: Text(day, textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 17.0))
         )
@@ -227,15 +227,15 @@ class ActivityCardState extends State<ActivityTile> {
           ? Colors.grey[200] : _isImportant
           ? Colors.red : Colors.lightGreenAccent[100],
       child: SizedBox(
-        width: 42,
+        width: 40,
         height: 50.0,
         child: Center(
           child: Text(_name,
             style: TextStyle(
               fontSize: _name.length < 5
-                  ? 14 :_name.length < 6
-                  ? 13 : _name.length < 7
-                  ? 12 : 11,
+                  ? 13.5 :_name.length < 6
+                  ? 12.5 : _name.length < 7
+                  ? 11.5 : 10.5,
               fontWeight: FontWeight.bold,
               color: Colors.black87,
             ),
