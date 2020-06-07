@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,6 +10,7 @@ import 'package:plannusandroidversion/messages/helperfunctions.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:plannusandroidversion/services/auth.dart';
 import 'package:plannusandroidversion/services/database.dart';
+import 'package:plannusandroidversion/shared/helperwidgets.dart';
 import 'package:plannusandroidversion/shared/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -55,27 +57,21 @@ class _ProfileState extends State<Profile> {
   }
 
   Future getImage() async {
-    print(AuthService.currentUser.uid + " here at image.dart");
-    PickedFile image = await ImagePicker().getImage(source: ImageSource.gallery);
-    //PickedFile image = await imagePicker.getImage(source: ImageSource.gallery);
-//    setState(() {
-//      _image = Image;
-//    });
-    await uploadImage(File(image.path));
-    return image;
+    ImagePicker imagePicker = new ImagePicker();
+    PickedFile Image = await imagePicker.getImage(source: ImageSource.gallery);
+    File image = File(Image.path);
+    await uploadImage(image);
   }
 
   Future uploadImage(File image) async {
     StorageUploadTask uploadTask = reference.putFile(image);
     print(AuthService.currentUser.uid + " here at image.dart");
-    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+    await uploadTask.onComplete;
   }
 
   Future downloadImage() async {
     String downloadUrl = await reference.getDownloadURL();
     return downloadUrl;
-    //Image img = Image
-    //StorageReference img = await FirebaseStorage.instance.getReferenceFromUrl(downloadUrl)
   }
 
 
@@ -117,10 +113,10 @@ class _ProfileState extends State<Profile> {
             child : Column (
               children: <Widget>[
                 Container(
-                  child: _image != null ? Padding(
-                    padding: const EdgeInsets.all(60),
-                    child: CircleAvatar(backgroundImage:FileImage(_image), radius: 100),
-                  ) :
+                    child: _image != null ? Padding(
+                      padding: const EdgeInsets.all(60),
+                      child: CircleAvatar(backgroundImage:FileImage(_image), radius: 100),
+                    ) :
                     url != null ? Padding(
                       padding: const EdgeInsets.all(60),
                       child: CircleAvatar(backgroundImage:img.image, radius: 100),
@@ -179,54 +175,52 @@ class _ProfileState extends State<Profile> {
                     Container(
                       margin: EdgeInsets.only(left: 10, right:0, top: 0, bottom: 0),
                       child: RaisedButton(
-                        color: Colors.blueAccent,
-                        child: Shimmer.fromColors(
-                          highlightColor: Colors.black,
-                          baseColor: Colors.white,
-                          child: Text(
-                            'Update',
-                            style: GoogleFonts.lato(color: Colors.white, fontWeight: FontWeight.w600),
+                          color: Colors.blueAccent,
+                          child: Shimmer.fromColors(
+                            highlightColor: Colors.black,
+                            baseColor: Colors.white,
+                            child: Text(
+                              'Update',
+                              style: GoogleFonts.lato(color: Colors.white, fontWeight: FontWeight.w600),
+                            ),
                           ),
-                        ),
-                      onPressed: () async {
-                        //print(handle);
-                        if (formKey.currentState.validate()) {
-                          print(AuthService.googleUserId);
-                          bool check = await auth.googleSignIn.isSignedIn();
-                          if (check) {
-//                            await databaseMethods.updateSpecificUserData(
-//                                AuthService.googleUserId, name, handle);
-                            await databaseMethods.updateSpecificUserData(
-                                user.uid, name, newHandle);
-                          } else {
-                            await databaseMethods.updateSpecificUserData(
-                                user.uid, name, newHandle);
-                          }
-                          HelperFunctions.saveUsernameSharedPreferences(name);
-                          HelperFunctions.saveUserHandleSharedPreferences(
-                              handle);
-                          Constants.myName = name;
-                          Constants.myHandle = handle;
-                          print(Constants.myName);
-                          print(Constants.myHandle);
-                          setState(() {
-                            error = 'Update successful!';
-                            key = handle;
-                          });
-                        }
-                      }),
+                          onPressed: () async {
+                            //print(handle);
+                            if (formKey.currentState.validate()) {
+                              print(AuthService.googleUserId);
+                              bool check = await auth.googleSignIn.isSignedIn();
+                              if (check) {
+                                await databaseMethods.updateSpecificUserData(
+                                    user.uid, name, newHandle);
+                              } else {
+                                await databaseMethods.updateSpecificUserData(
+                                    user.uid, name, newHandle);
+                              }
+                              HelperFunctions.saveUsernameSharedPreferences(name);
+                              HelperFunctions.saveUserHandleSharedPreferences(
+                                  handle);
+                              Constants.myName = name;
+                              Constants.myHandle = handle;
+                              print(Constants.myName);
+                              print(Constants.myHandle);
+                              setState(() {
+                                key = handle;
+                              });
+                              HelperWidgets.flushbar('Update successful!', Icons.update)..show(context);
+                            }
+                          }),
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 3, right:0, top: 0, bottom: 0),
                       child: RaisedButton(
                         onPressed: () async {
                           ImagePicker imagePicker = new ImagePicker();
-                          File Image = await ImagePicker.pickImage(source: ImageSource.gallery);
-                          //File image = await ImageSelector.getImage();
+                          PickedFile Image = await imagePicker.getImage(source: ImageSource.gallery);
+                          File image = File(Image.path);
                           setState(() {
-                            _image = Image;
+                            _image = image;
                           });
-                          await uploadImage(Image);
+                          await uploadImage(image);
 
                         },
                         color: Colors.blueAccent,
@@ -236,9 +230,9 @@ class _ProfileState extends State<Profile> {
                           child: Text(
                             'Update image',
                             style: GoogleFonts.lato(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
