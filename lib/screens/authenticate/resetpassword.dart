@@ -35,7 +35,7 @@ class _ResetPasswordState extends State<ResetPassword> {
           gradient: LinearGradient(
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
-            colors: [Colors.deepPurple[300], Colors.amber[700], Colors.deepPurpleAccent[100]],
+            colors: [Colors.deepPurple[300], Colors.deepPurple, Colors.deepPurpleAccent[100]],
           ),
         ),
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
@@ -55,38 +55,39 @@ class _ResetPasswordState extends State<ResetPassword> {
                   },
                 ),
               ),
-              SizedBox(height: 50),
-              RaisedButton(
-                color: Colors.blue,
-                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 45),
-                child: Shimmer.fromColors(
-                  highlightColor: Colors.black,
-                  baseColor: Colors.white,
+              SizedBox(height: 30),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 5.0),
+                width: 275,
+                child: RaisedButton(
+                  elevation: 5.0,
+                  onPressed: () async {
+                    if (formKey.currentState.validate()) {
+                      dynamic result = await auth.resetPassword(email);
+                      if (result == false) {
+                        HelperWidgets.flushbar('Invalid email!', Icons.account_box)..show(context);
+                      } else {
+                        HelperWidgets.flushbar('Success! Details to reset password '
+                            'have been sent to $email', Icons.email)..show(context);
+                      }
+                    }
+                  },
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  color: Colors.orangeAccent,
                   child: Text(
-                    'Reset password',
-                    style: TextStyle(color: Colors.white),
+                    'Reset Password',
+                    style: TextStyle(
+                      color: Colors.deepPurple[500],
+                      letterSpacing: 1.0,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w300,
+                    ),
                   ),
                 ),
-                onPressed: () async {
-                  if(formKey.currentState.validate()) {
-                    // checking whether content in form is valid
-                    dynamic result = await auth.resetPassword(email);
-                    if (result == false) {
-                      HelperWidgets.flushbar('Invalid email!', Icons.account_box)..show(context);
-                    } else {
-                      HelperWidgets.flushbar('Success! Details to reset password '
-                          'have been sent to $email', Icons.email)..show(context);
-                    }
-                  }
-                },
               ),
               SizedBox(height: 12),
-              Center(
-                child: Text(
-                  error,
-                  style: GoogleFonts.lato(color: Colors.black, fontSize: 16),
-                ),
-              )
             ],
           ),
         ),
