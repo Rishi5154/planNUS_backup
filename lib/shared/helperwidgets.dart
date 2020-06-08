@@ -28,6 +28,28 @@ class HelperWidgets {
     );
   }
 
+  static Flushbar TopFlushbar(String text, IconData icon) {
+    return Flushbar(
+      flushbarStyle: FlushbarStyle.FLOATING,
+      flushbarPosition: FlushbarPosition.TOP,
+      margin: EdgeInsets.all(16),
+      borderRadius: 8,
+      //message: 'FAILED TO SIGN IN!',
+      messageText: Text(text,
+          style: GoogleFonts.lato(
+            fontSize: 16,
+            color: Colors.white,
+            fontWeight: FontWeight.w500,
+          )),
+      icon: Icon(
+          icon,
+          size: 28,
+          color: Colors.lightBlueAccent
+      ),
+      duration: Duration(seconds: 3),
+      leftBarIndicatorColor: Colors.lightBlueAccent,
+    );
+  }
 
 
 }
