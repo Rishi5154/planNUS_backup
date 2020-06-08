@@ -27,9 +27,18 @@ class _MessagesState extends State<Messages> {
             shrinkWrap: true,
             itemCount: snapshot.data.documents.length,
             itemBuilder: (context, index) {
-              return ChatRoomsTile(snapshot.data.documents[index].data['chatroomID']
-                  .toString().replaceAll("_", "").replaceAll(Constants.myName, ""),
-                  snapshot.data.documents[index].data['chatroomID']);
+              return Column(
+                children: <Widget>[
+                  ChatRoomsTile(snapshot.data.documents[index].data['chatroomID']
+                      .toString().replaceAll("_", "").replaceAll(Constants.myName, ""),
+                      snapshot.data.documents[index].data['chatroomID']),
+                  Divider(
+                    color: Colors.grey[600],
+                    height: 0,
+                    thickness: 1,
+                  )
+                ],
+              );
             }) : Container();
       },
     );
@@ -101,7 +110,7 @@ class ChatRoomsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.amber[200],
+      color: Colors.white,
       padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Row(
         children: <Widget>[
