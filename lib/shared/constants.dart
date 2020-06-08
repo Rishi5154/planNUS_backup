@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 const textInputDecorationProfile = InputDecoration(
-    icon: Icon(Icons.person_outline, color: Colors.white),
+    icon: Icon(Icons.person_outline, color: Colors.amberAccent),
     fillColor: Colors.white,
     filled: true,
     enabledBorder: OutlineInputBorder(
@@ -13,7 +13,7 @@ const textInputDecorationProfile = InputDecoration(
 );
 
 const textInputDecorationPassword = InputDecoration(
-    icon: Icon(Icons.lock, color: Colors.white),
+    icon: Icon(Icons.lock, color: Colors.amberAccent),
     fillColor: Colors.white,
     filled: true,
     enabledBorder: OutlineInputBorder(
@@ -25,7 +25,7 @@ const textInputDecorationPassword = InputDecoration(
 );
 
 const textInputDecorationEmail = InputDecoration(
-    icon: Icon(Icons.alternate_email, color: Colors.white),
+    icon: Icon(Icons.alternate_email, color: Colors.amberAccent),
     fillColor: Colors.white,
     filled: true,
     enabledBorder: OutlineInputBorder(
