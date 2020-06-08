@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:plannusandroidversion/shared/helperwidgets.dart';
 import 'chatscreen.dart';
 import 'constants.dart';
 import '../services/database.dart';
@@ -11,8 +12,6 @@ class Chats extends StatefulWidget {
   _ChatsState createState() => _ChatsState();
 }
 
-String _myName;
-String _myHandle;
 
 class _ChatsState extends State<Chats> {
   TextEditingController searchTextEditingController =
@@ -28,13 +27,10 @@ class _ChatsState extends State<Chats> {
   }
 
   getUserInfo() async {
-    _myName = await HelperFunctions.getUsernameSharedPreferences();
-    _myHandle = await HelperFunctions.getUserHandleSharedPreferences();
-
-    setState(() {
-    });
-    print("$_myName");
-    print("$_myHandle");
+    String myName = await HelperFunctions.getUsernameSharedPreferences();
+    String myHandle = await HelperFunctions.getUserHandleSharedPreferences();
+    print("$myName");
+    print("$myHandle");
   }
 
   initiateSearch() {
@@ -177,17 +173,14 @@ class _ChatsState extends State<Chats> {
                       icon: new Icon(Icons.search, color: Colors.blue),
                       onPressed: () {
                         if (Constants.myName == null || Constants.myName.isEmpty) {
-                          setState(() {
-                            error = 'Please update your name at Profile!';
-                          });
+                          HelperWidgets.TopFlushbar('Please update your name at Profile!'
+                              , Icons.perm_identity)..show(context);
                         } else if (Constants.myHandle == null || Constants.myHandle.isEmpty) {
-                          setState(() {
-                            error = 'Please update your handle at Profile!';
-                          });
+                          HelperWidgets.TopFlushbar('Please update your handle at Profile!'
+                              , Icons.perm_identity)..show(context);
                         } else if (searchTextEditingController.text == Constants.myHandle) {
-                          setState(() {
-                            error = "You can't search for yourself! ";
-                          });
+                          HelperWidgets.TopFlushbar("You can't search for yourself!"
+                              , Icons.info_outline)..show(context);
                         } else {
                           initiateSearch();
                         }

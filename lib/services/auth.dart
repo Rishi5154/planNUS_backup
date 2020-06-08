@@ -75,19 +75,6 @@ class AuthService {
     }
   }
 
-  // sign in anon
-  Future signInAnon() async {
-    // try and sign in, return user if found,
-    // else catch the error when logging then return null
-    try {
-      AuthResult result = await _auth.signInAnonymously();
-      FirebaseUser user = result.user;
-      return userFromFirebaseUser(user);
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
-  }
 
   // sign in with email & password
   Future signInWithEmailAndPassword(String email, String password) async{
