@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
 import 'package:plannusandroidversion/screens/authenticate/resetpassword.dart';
-import 'package:plannusandroidversion/screens/home/profile.dart';
 import 'package:plannusandroidversion/services/auth.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/shared/constants.dart';

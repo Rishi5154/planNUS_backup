@@ -1,5 +1,5 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/models/timetable.dart';
 import 'package:plannusandroidversion/models/todo/pages/task_page.dart';
@@ -46,7 +46,7 @@ class _HomeState extends State<Home> {
         //home
         Provider<User>.value(value: user,
             child: Scaffold(
-                backgroundColor: Colors.yellow, body: TimeTableWidget(user))),
+                backgroundColor: Colors.yellow, body: TimeTableWidget())),
         //TimeTable.emptyTimeTable()))),
         Provider<User>.value(value: user, child: Messages()),
         MultiProvider(providers: [
@@ -71,23 +71,19 @@ class _HomeState extends State<Home> {
               IconButton(
                 icon: Icon(Icons.add, color: Colors.white),
                 tooltip: 'Add',
-                onPressed: () async {
-                  List x = await Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => WeeklyEventAdder()
-                  ));
-                  setState(() async {
-                    user.timetable.alter(x[4], x[0], x[1], x[2], x[3]);
-                    await user.update();
-                    print(user.timetable.timetable);
-                    tabs[0] = Scaffold(
-                        backgroundColor: Colors.deepOrangeAccent[100],
-                        body: TaskPage()
-                    ); //home
-                    tabs[1] = Scaffold(
-                        backgroundColor: Colors.yellow,
-                        body: TimeTableWidget(user)
-                    );
-                  });
+                onPressed: () {
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Dialog(
+                        child: Provider<User>.value(value: user, child: WeeklyEventAdder()),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(12))
+                        )
+                      );
+                    }
+                  );
                 },
               ),
               IconButton(
