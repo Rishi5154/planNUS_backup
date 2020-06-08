@@ -113,10 +113,10 @@ class _ProfileState extends State<Profile> {
             child : Column (
               children: <Widget>[
                 Container(
-                    child: _image != null ? Padding(
-                      padding: const EdgeInsets.all(60),
-                      child: CircleAvatar(backgroundImage:FileImage(_image), radius: 100),
-                    ) :
+                  child: _image != null ? Padding(
+                    padding: const EdgeInsets.all(60),
+                    child: CircleAvatar(backgroundImage:FileImage(_image), radius: 100),
+                  ) :
                     url != null ? Padding(
                       padding: const EdgeInsets.all(60),
                       child: CircleAvatar(backgroundImage:img.image, radius: 100),
@@ -175,40 +175,40 @@ class _ProfileState extends State<Profile> {
                     Container(
                       margin: EdgeInsets.only(left: 10, right:0, top: 0, bottom: 0),
                       child: RaisedButton(
-                          color: Colors.blueAccent,
-                          child: Shimmer.fromColors(
-                            highlightColor: Colors.black,
-                            baseColor: Colors.white,
-                            child: Text(
-                              'Update',
-                              style: GoogleFonts.lato(color: Colors.white, fontWeight: FontWeight.w600),
-                            ),
+                        color: Colors.blueAccent,
+                        child: Shimmer.fromColors(
+                          highlightColor: Colors.black,
+                          baseColor: Colors.white,
+                          child: Text(
+                            'Update',
+                            style: GoogleFonts.lato(color: Colors.white, fontWeight: FontWeight.w600),
                           ),
-                          onPressed: () async {
-                            //print(handle);
-                            if (formKey.currentState.validate()) {
-                              print(AuthService.googleUserId);
-                              bool check = await auth.googleSignIn.isSignedIn();
-                              if (check) {
-                                await databaseMethods.updateSpecificUserData(
-                                    user.uid, name, newHandle);
-                              } else {
-                                await databaseMethods.updateSpecificUserData(
-                                    user.uid, name, newHandle);
-                              }
-                              HelperFunctions.saveUsernameSharedPreferences(name);
-                              HelperFunctions.saveUserHandleSharedPreferences(
-                                  handle);
-                              Constants.myName = name;
-                              Constants.myHandle = handle;
-                              print(Constants.myName);
-                              print(Constants.myHandle);
-                              setState(() {
-                                key = handle;
-                              });
-                              HelperWidgets.flushbar('Update successful!', Icons.update)..show(context);
-                            }
-                          }),
+                        ),
+                      onPressed: () async {
+                        //print(handle);
+                        if (formKey.currentState.validate()) {
+                          print(AuthService.googleUserId);
+                          bool check = await auth.googleSignIn.isSignedIn();
+                          if (check) {
+                            await databaseMethods.updateSpecificUserData(
+                                user.uid, name, newHandle);
+                          } else {
+                            await databaseMethods.updateSpecificUserData(
+                                user.uid, name, newHandle);
+                          }
+                          HelperFunctions.saveUsernameSharedPreferences(name);
+                          HelperFunctions.saveUserHandleSharedPreferences(
+                              handle);
+                          Constants.myName = name;
+                          Constants.myHandle = handle;
+                          print(Constants.myName);
+                          print(Constants.myHandle);
+                          setState(() {
+                            key = handle;
+                          });
+                          HelperWidgets.flushbar('Update successful!', Icons.update)..show(context);
+                        }
+                      }),
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 3, right:0, top: 0, bottom: 0),
@@ -230,9 +230,9 @@ class _ProfileState extends State<Profile> {
                           child: Text(
                             'Update image',
                             style: GoogleFonts.lato(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),

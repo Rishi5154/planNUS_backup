@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:plannusandroidversion/models/user.dart';
-import 'package:provider/provider.dart';
 import 'schedule_time.dart';
 
 class WeeklyEventAdder extends StatefulWidget {
@@ -95,149 +93,153 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
 
   @override
   Widget build(BuildContext context) {
-    User user = Provider.of<User>(context);
-    return Padding(
-      padding: EdgeInsets.all(18.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
-            child: TextFormField(
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'What activity is it',
-                  filled: true,
-                  fillColor: Colors.grey,
-                  contentPadding: const EdgeInsets.all(0.0),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                    borderRadius: BorderRadius.circular(15.0),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
+              child: TextFormField(
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'What activity is it',
+                    filled: true,
+                    fillColor: Colors.grey,
+                    contentPadding: const EdgeInsets.all(0.0),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
                   ),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                ),
-                textAlign: TextAlign.center,
-                onChanged: (String input) {
-                  setState(() {
-                    _selectedName = input;
-                  });
-                }
+                  textAlign: TextAlign.center,
+                  onChanged: (String input) {
+                    setState(() {
+                      _selectedName = input;
+                    });
+                  }
+              ),
             ),
-          ),
-          Text('Which day?'),
-          SizedBox(height: 10.0),
-          Container(
-            padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: Colors.grey[300],
+            Text('Which day?'),
+            SizedBox(height: 10.0),
+            Container(
+              padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.grey[300],
+              ),
+              child: DropdownButton(
+                focusColor: Colors.red,
+                autofocus: true,
+                value: _selectedDay,
+                items: _dropdownDays,
+                onChanged: (selectedDay) => setState(() {
+                  _selectedDay = selectedDay;
+                }),
+              ),
             ),
-            child: DropdownButton(
-              focusColor: Colors.red,
-              autofocus: true,
-              value: _selectedDay,
-              items: _dropdownDays,
-              onChanged: (selectedDay) => setState(() {
-                _selectedDay = selectedDay;
-              }),
-            ),
-          ),
 
-          Text("Start"),
-          SizedBox(height: 8.0),
-          Container(
-            padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: Colors.grey[300],
+            Text("Start"),
+            SizedBox(height: 8.0),
+            Container(
+              padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.grey[300],
+              ),
+              child: DropdownButton(
+                value: _selectedStartTime,
+                items: _dropdownStartTimes,
+                onChanged: onChangeStartTime,
+              ),
             ),
-            child: DropdownButton(
-              value: _selectedStartTime,
-              items: _dropdownStartTimes,
-              onChanged: onChangeStartTime,
+            Text("End"),
+            SizedBox(height: 8.0),
+            Container(
+              padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.grey[300],
+              ),
+              child: DropdownButton(
+                value: _selectedEndTime,
+                items: _dropdownEndTimes,
+                onChanged: onChangeEndTime,
+              ),
             ),
-          ),
-          Text("End"),
-          SizedBox(height: 8.0),
-          Container(
-            padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: Colors.grey[300],
+            Text(
+              error,
+              style: TextStyle(color: Colors.red, fontSize: 14),
             ),
-            child: DropdownButton(
-              value: _selectedEndTime,
-              items: _dropdownEndTimes,
-              onChanged: onChangeEndTime,
+            Text("Is it important?"),
+            SizedBox(height: 8.0),
+            Container(
+              padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.grey[300],
+              ),
+              child: DropdownButton(
+                value: _selectedImportance,
+                items: <DropdownMenuItem<bool>>[
+                  DropdownMenuItem(
+                      value: true,
+                      child: Text("Yes")
+                  ),
+                  DropdownMenuItem(
+                      value: false,
+                      child: Text("No")
+                  )
+                ],
+                onChanged: onChangeImportance,
+              ),
             ),
-          ),
-          Text(
-            error,
-            style: TextStyle(color: Colors.red, fontSize: 14),
-          ),
-          Text("Is it important?"),
-          SizedBox(height: 8.0),
-          Container(
-            padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: Colors.grey[300],
-            ),
-            child: DropdownButton(
-              value: _selectedImportance,
-              items: <DropdownMenuItem<bool>>[
-                DropdownMenuItem(
-                    value: true,
-                    child: Text("Yes")
-                ),
-                DropdownMenuItem(
-                    value: false,
-                    child: Text("No")
-                )
-              ],
-              onChanged: onChangeImportance,
-            ),
-          ),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                RaisedButton(
-                  child: Text("Add"),
-                  onPressed: () async {
-                    if (_selectedImportance == null || _selectedEndTime == null ||
-                        _selectedStartTime == null || _selectedName == null || _selectedDay == null) {
-                      setState(() {
-                        addable = 'Please fill in all fields!';
-                      });
-                    } else {
-                      user.timetable.alter(day(_selectedDay), _selectedName,
-                          _selectedStartTime, _selectedEndTime, _selectedImportance);
-                      await user.update()
-                          .whenComplete(() => init())
-                          .whenComplete(() => Navigator.pop(context));
-                    }
-                  },
-                ),
-                SizedBox(width: 20.0),
-                RaisedButton(
-                    child: Text("Cancel"),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RaisedButton(
+                    child: Text("Add"),
                     onPressed: () {
-                      Navigator.pop(context);
-                    }
-                ),
-              ]
-          ),
-          SizedBox(height: 10),
-          Text(
-            addable,
-            style: TextStyle(
-              color: Colors.red,
+                      if (_selectedImportance == null || _selectedEndTime == null ||
+                          _selectedStartTime == null || _selectedName == null || _selectedDay == null) {
+                        setState(() {
+                          addable = 'Please fill in all fields!';
+                        });
+                      } else {
+                        Navigator.pop(context, [
+                          _selectedName,
+                          _selectedStartTime,
+                          _selectedEndTime,
+                          _selectedImportance,
+                          day(_selectedDay),
+                        ]);
+                        init();
+                      }
+                    },
+                  ),
+                  SizedBox(width: 20.0),
+                  RaisedButton(
+                      child: Text("Cancel"),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      }
+                  ),
+                ]
+            ),
+            SizedBox(height: 10),
+            Text(
+              addable,
+              style: TextStyle(
+                color: Colors.red,
+              )
             )
-          )
-        ],
+          ],
+        ),
       ),
     );
   }

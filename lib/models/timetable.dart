@@ -32,8 +32,8 @@ class TimeTable {
     });
   }
 
-  Widget timeTableWidget() {
-    return TimeTableWidget();
+  Widget timeTableWidget(User u) {
+    return TimeTableWidget(u);
   }
 
   void alter(String day, String bName, ScheduleTime bStart, ScheduleTime bEnd, bool isImportant) {
@@ -53,6 +53,9 @@ class TimeTable {
 }
 
 class TimeTableWidget extends StatefulWidget {
+  final User user;
+  TimeTableWidget(this.user);
+
   @override
   TimeTableWidgetState createState() => TimeTableWidgetState();
 }
@@ -69,71 +72,67 @@ class TimeTableWidgetState extends State<TimeTableWidget> {
   }
 
   Widget build(BuildContext context) {
+    tt = widget.user.timetable;
     user = Provider.of<User>(context);
-    tt = user.timetable;
-    return Stack(
-      children: <Widget>[
-        ListView.builder(
-          itemBuilder: (context, index) {
-            if (index == 0) {
-              return SizedBox(
-                height: 28.0,
-              );
-            } else {
-              String timeSlot = ScheduleTiming.allSlots[index-1].toString();
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              elevation: 0,
+              floating: false,
+              backgroundColor: Colors.transparent,
+              pinned: true,
+              title: Row(
+                children: [
+                  SizedBox(width: 30.0),
+                  DayTile('Mon'),
+                  DayTile('Tue'),
+                  DayTile('Wed'),
+                  DayTile('Thu'),
+                  DayTile('Fri'),
+                  DayTile('Sat'),
+                  DayTile('Sun'),
+                ]
+              )
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate((context, index1) {
+                ScheduleTiming slot = ScheduleTiming.allSlots[index1];
                 return Container(
-                  color: Colors.white,
                   child: Row(
-                    children: <Widget>[
+                    children: [
                       Card(
-                        color: Colors.blue,
-                        child: SizedBox(
+                          color: Colors.blue,
+                          child: SizedBox(
                             height: 50.0,
                             width: 40.0,
                             child: Column(
-                                children: [
-                                  Text(timeSlot.substring(0, 4),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(fontSize: 15.0)),
-                                  Text("-", style: TextStyle(fontSize: 12)),
-                                  Text(timeSlot.substring(5), textAlign: TextAlign
-                                      .center, style: TextStyle(fontSize: 15.0)),
-                                ]
+                              children: [
+                                Text(ScheduleTime(time: slot.start).toString(), textAlign: TextAlign.center, style: TextStyle(fontSize: 15.0)),
+                                Text("-", style: TextStyle(fontSize: 12)),
+                                Text(ScheduleTime(time: slot.end).toString(), textAlign: TextAlign.center, style: TextStyle(fontSize: 15.0)),
+                              ]
                             )
-                        )
-                    ),
-                    ttRow('1', timeSlot),
-                    ttRow('2', timeSlot),
-                    ttRow('3', timeSlot),
-                    ttRow('4', timeSlot),
-                    ttRow('5', timeSlot),
-                    ttRow('6', timeSlot),
-                    ttRow('7', timeSlot),
-                  ],
-              ),
+                          )
+                      ),
+                      ttRow('1', slot.toString()),
+                      ttRow('2', slot.toString()),
+                      ttRow('3', slot.toString()),
+                      ttRow('4', slot.toString()),
+                      ttRow('5', slot.toString()),
+                      ttRow('6', slot.toString()),
+                      ttRow('7', slot.toString()),
+                    ]
+                  )
                 );
-            }
-          },
-          itemCount: 13,
+              },
+              childCount: 12),
+            ),
+          ]
         ),
-        Container(
-          color: Colors.white,
-          child: Row(
-            children: <Widget>[
-              SizedBox(
-                width: 47,
-              ),
-              DayTile('Mon'),
-              DayTile('Tue'),
-              DayTile('Wed'),
-              DayTile('Thu'),
-              DayTile('Fri'),
-              DayTile('Sat'),
-              DayTile('Sun'),
-            ],
-          ),
-        ),
-      ],
+      )
     );
   }
 
@@ -199,7 +198,7 @@ class DayTile extends StatelessWidget {
         color: Colors.yellow,
         child: SizedBox(
             height: 20.0,
-            width: 40,
+            width: 39.2,
             child: Text(day, textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 17.0))
         )
@@ -227,16 +226,12 @@ class ActivityCardState extends State<ActivityTile> {
           ? Colors.grey[200] : _isImportant
           ? Colors.red : Colors.lightGreenAccent[100],
       child: SizedBox(
-        width: 40,
+        width: 39.0,
         height: 50.0,
         child: Center(
           child: Text(_name,
             style: TextStyle(
-              fontSize: _name.length < 5
-                  ? 13.5 :_name.length < 6
-                  ? 12.5 : _name.length < 7
-                  ? 11.5 : 10.5,
-              fontWeight: FontWeight.bold,
+              fontSize: 10,
               color: Colors.black87,
             ),
             textAlign: TextAlign.center,
