@@ -16,6 +16,10 @@ class DatabaseMethods {
   Stream<User> getUserStream2() {
     return users.document(uid).snapshots().map((ss) => User.fromJson(ss.data['user']));
   }
+
+  Stream<User> getUserStreamByUid(String uid) {
+    return users.document(uid).snapshots().map((ss) => User.fromJson(ss.data['user']));
+  }
   
   Stream<TodoData> getUserTodoDataStream() {
     return users.document(uid).snapshots().map((ss) => TodoData.fromJson(ss.data['tasks']));

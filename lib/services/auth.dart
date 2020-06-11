@@ -63,6 +63,7 @@ class AuthService {
         HelperFunctions
             .saveUserHandleSharedPreferences(snapshot.documents[0].data["handle"]);
       });
+      print(snapshot.documents[0].data["handle"]); // do not DELETE -> to force the error
     } catch (e) {
       print(e.toString());
       print(AuthService.googleUserId + " at exception");
