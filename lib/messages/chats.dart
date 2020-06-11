@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plannusandroidversion/models/timetable.dart';
 import 'package:plannusandroidversion/models/user.dart';
+import 'package:plannusandroidversion/services/auth.dart';
 import 'package:plannusandroidversion/shared/helperwidgets.dart';
 import 'package:provider/provider.dart';
 import 'chatscreen.dart';
@@ -56,7 +57,7 @@ class _ChatsState extends State<Chats> {
     }
   }
 
-  createChatRoomToStartConversation({String name}) {
+  createChatRoomToStartConversation({String name, User user}) {
     print(Constants.myName + " is now");
     print(name + " is here");
     print(Constants.myName /*+ " is here"*/);
@@ -65,7 +66,10 @@ class _ChatsState extends State<Chats> {
       String chatRoomID = getChatRoomId(name, Constants.myName);
       Map<String, dynamic> chatRoomMap = {
         "users": users,
-        "chatroomID": chatRoomID
+        "chatroomID": chatRoomID,
+        "otheruser" : user.toJson(),
+        "uidCurr" : AuthService.currentUser.uid,
+        "uidOther" : user.uid
       };
       DatabaseMethods().createChatRoom(chatRoomID, chatRoomMap);
       Navigator.push(context,
@@ -84,7 +88,7 @@ class _ChatsState extends State<Chats> {
               return searchTile(
                   name: searchSnapshot.documents[index].data['name'],
                   handle: searchSnapshot.documents[index].data['handle'],
-                  user : searchSnapshot.documents[index].data['user']);
+                  user: User.fromJson(searchSnapshot.documents[index].data['user']));
             })
         : Container();
   }
@@ -118,11 +122,26 @@ class _ChatsState extends State<Chats> {
             GestureDetector(
                   onTap: () {
                     print(name);
-                    return Provider<User>.value(value: user,
-                        child: MaterialApp(
-                          home: Scaffold(
-                              backgroundColor: Colors.yellow, body: TimeTableWidget()),
-                        ));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Provider<User>.value(value: user,
+                            child: MaterialApp(
+                              home: Scaffold(
+                                  appBar: AppBar(
+                                    elevation: 0,
+                                    backgroundColor: Colors.transparent,
+                                    leading: IconButton(
+                                      icon: new Icon(Icons.arrow_back_ios, color: Colors.white),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ),
+                                  backgroundColor: Colors.deepPurple,
+                                  body: TimeTableWidget()),
+                            )
+                        )
+                        )
+                    );
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -137,7 +156,7 @@ class _ChatsState extends State<Chats> {
             GestureDetector(
               onTap: () {
                 print(name);
-                createChatRoomToStartConversation(name: name);
+                createChatRoomToStartConversation(name: name, user: user);
               },
               child: Container(
                 decoration: BoxDecoration(
