@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
@@ -76,8 +75,11 @@ class _SignInState extends State<SignIn> {
                   key: formKey,
                   child: Column(
                     children: <Widget>[
-                      Image.asset('assets/planNUS.png',
-                          height: 250, width: 300),
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: Image.asset('assets/plannusupgraded.png',
+                            height: 250, width: 500,scale: 0.00001,),
+                      ),
                       SizedBox(height: 10),
                       Container(
                         alignment: Alignment.centerLeft,
@@ -226,6 +228,10 @@ class _SignInState extends State<SignIn> {
                                     ..show(context);
                                 } else {
                                   auth.createProfileForGoogleAccounts();
+                                  Constants.myName = await HelperFunctions
+                                      .getUsernameSharedPreferences();
+                                  Constants.myHandle = await HelperFunctions
+                                      .getUserHandleSharedPreferences();
                                 }
                               },
                               AssetImage(

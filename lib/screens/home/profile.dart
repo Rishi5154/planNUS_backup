@@ -105,7 +105,7 @@ class _ProfileState extends State<Profile> {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Colors.deepPurpleAccent, Colors.white70, Colors.deepPurple],
+              colors: [Colors.purple[100], Colors.purpleAccent[700], Colors.purple[300]],
             ),
           ),
           child: Form(
@@ -125,7 +125,7 @@ class _ProfileState extends State<Profile> {
                 ),
                 Container(
                   margin: EdgeInsets.only(right: 30),
-                  child: TextFormField(
+                  child: Constants.myName == null || Constants.myName.isEmpty ? TextFormField(
                     decoration: InputDecoration(
                         hintText: 'Name',
                         icon: Icon(Icons.person_outline, color: Colors.blue),
@@ -142,9 +142,9 @@ class _ProfileState extends State<Profile> {
                     onChanged: (val) {
                       setState(() => name = val);
                     },
-                  ),
+                  ) : Container(height: 10,),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: Constants.myName.isNotEmpty ? 5 : 20),
                 Container(
                   margin: EdgeInsets.only(right: 30),
                   child: TextFormField(
@@ -240,7 +240,7 @@ class _ProfileState extends State<Profile> {
                     )
                   ],
                 ),
-                SizedBox(height: 12),
+                SizedBox(height: Constants.myName.isNotEmpty ? 50 : 12),
                 Text(
                   error,
                   style: TextStyle(color: Colors.black, fontSize: 16),

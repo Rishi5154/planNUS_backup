@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:plannusandroidversion/models/timetable.dart';
 import 'package:plannusandroidversion/models/todo/todo_models/todo_data.dart';
 import 'package:plannusandroidversion/models/user.dart';
 
@@ -20,6 +21,14 @@ class DatabaseMethods {
     return users.document(uid).snapshots().map((ss) => TodoData.fromJson(ss.data['tasks']));
   }
 
+//  Future<User> getOtherUserViaHandle(String handle) {
+//    QuerySnapshot snapshot;
+//    print(handle);
+//    users.where("handle", isEqualTo: handle).getDocuments().then((value) => snapshot);
+//    return snapshot.hasData ? snapshot.documents.first.data['user'];
+//    //return snapshot.me.documents[0].data['user'];
+//  }
+
   Future<void> updateUserTodoData(TodoData data) async {
     return users.document(uid).updateData({
       'tasks' : data.toJson()
@@ -36,6 +45,13 @@ class DatabaseMethods {
       'user' : userData.toJson()
     });
   }
+
+  Future<TimeTable> getUserTimetable(String uid) async {
+    TimeTable userTimetable = await users.document(uid).get()
+        .then((val) => TimeTable.fromJson(val['user']['timetable']));
+    return userTimetable;
+  }
+
 
   Future<void> addUserData(String email, String name, String handle) async {
     print(uid);
