@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:plannusandroidversion/models/timetable.dart';
+import 'package:plannusandroidversion/models/user.dart';
 import 'package:plannusandroidversion/shared/helperwidgets.dart';
+import 'package:provider/provider.dart';
 import 'chatscreen.dart';
 import 'constants.dart';
 import '../services/database.dart';
@@ -18,6 +21,7 @@ class _ChatsState extends State<Chats> {
       new TextEditingController();
   DatabaseMethods databaseMethods = new DatabaseMethods();
   QuerySnapshot searchSnapshot;
+  Stream usersStream;
 
   @override
   void initState() {
@@ -79,12 +83,22 @@ class _ChatsState extends State<Chats> {
             itemBuilder: (context, index) {
               return searchTile(
                   name: searchSnapshot.documents[index].data['name'],
-                  handle: searchSnapshot.documents[index].data['handle']);
+                  handle: searchSnapshot.documents[index].data['handle'],
+                  user : searchSnapshot.documents[index].data['user']);
             })
         : Container();
   }
 
-  Widget searchTile({String name, String handle}) {
+//  syncTimetable(String handle) async {
+//    User user = await databaseMethods.getOtherUserViaHandle(handle);
+//    return Provider<User>.value(value: user,
+//        child: MaterialApp(
+//          home: Scaffold(
+//              backgroundColor: Colors.yellow, body: TimeTableWidget()),
+//        ));
+//  }
+
+  Widget searchTile({String name, String handle, User user}) {
     print(name);
     return Container(
         padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
@@ -99,6 +113,25 @@ class _ChatsState extends State<Chats> {
                 Text(handle,
                     style: TextStyle(fontSize: 14, color: Colors.white))
               ],
+            ),
+            Spacer(),
+            GestureDetector(
+                  onTap: () {
+                    print(name);
+                    return Provider<User>.value(value: user,
+                        child: MaterialApp(
+                          home: Scaffold(
+                              backgroundColor: Colors.yellow, body: TimeTableWidget()),
+                        ));
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    child: Text("Timetable"),
+                  ),
             ),
             Spacer(),
             GestureDetector(
