@@ -14,7 +14,6 @@ class AuthService {
   static String googleUserId;
   static FirebaseUser currentUser;
 
-
   // create user obj based on FireBase User
   User userFromFirebaseUser(FirebaseUser user) {
     return user != null ? User(uid: user.uid) : null;

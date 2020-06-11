@@ -18,7 +18,6 @@ class TimeTable {
 
   //propeties
   List<DaySchedule> timetable;
-
   TimeTable(this.timetable);
 
   static TimeTable emptyTimeTable() {

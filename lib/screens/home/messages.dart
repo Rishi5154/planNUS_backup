@@ -65,28 +65,28 @@ class _MessagesState extends State<Messages> {
     print("${Constants.myHandle}");
   }
 
-  queryTimings() async {
-    TimeTable currUserTimetable = await databaseMethods.getUserTimetable(AuthService.currentUser.uid);
-    List<List<Pair>> list = new List<List<Pair>>(7);
-    currUserTimetable.timetable.forEach((key, value) {
-      int k = key as int;
-      List<Pair> curr = list.removeAt(k);
-      curr.add(new Pair('0800-0900', value['0800-0900']['isFinish']));
-      curr.add(new Pair('0900-1000', value['0900-1000']['isFinish']));
-      curr.add(new Pair('1000-1100', value['1000-1100']['isFinish']));
-      curr.add(new Pair('1100-1200', value['1100-1200']['isFinish']));
-      curr.add(new Pair('1200-1300', value['1200-1300']['isFinish']));
-      curr.add(new Pair('1300-1400', value['1300-1400']['isFinish']));
-      curr.add(new Pair('1400-1500', value['1400-1500']['isFinish']));
-      curr.add(new Pair('1500-1600', value['1500-1600']['isFinish']));
-      curr.add(new Pair('1600-1700', value['1600-1700']['isFinish']));
-      curr.add(new Pair('1700-1800', value['1700-1800']['isFinish']));
-      curr.add(new Pair('1800-1900', value['1800-1900']['isFinish']));
-      curr.add(new Pair('1900-2000', value['1900-2000']['isFinish']));
-      list.insert(k - 1, curr);
-    });
-    //print(list.)
-  }
+//  queryTimings() async {
+//    TimeTable currUserTimetable = await databaseMethods.getUserTimetable(AuthService.currentUser.uid);
+//    List<List<Pair>> list = new List<List<Pair>>(7);
+//    currUserTimetable.timetable.forEach((key, value) {
+//      int k = key as int;
+//      List<Pair> curr = list.removeAt(k);
+//      curr.add(new Pair('0800-0900', value['0800-0900']['isFinish']));
+//      curr.add(new Pair('0900-1000', value['0900-1000']['isFinish']));
+//      curr.add(new Pair('1000-1100', value['1000-1100']['isFinish']));
+//      curr.add(new Pair('1100-1200', value['1100-1200']['isFinish']));
+//      curr.add(new Pair('1200-1300', value['1200-1300']['isFinish']));
+//      curr.add(new Pair('1300-1400', value['1300-1400']['isFinish']));
+//      curr.add(new Pair('1400-1500', value['1400-1500']['isFinish']));
+//      curr.add(new Pair('1500-1600', value['1500-1600']['isFinish']));
+//      curr.add(new Pair('1600-1700', value['1600-1700']['isFinish']));
+//      curr.add(new Pair('1700-1800', value['1700-1800']['isFinish']));
+//      curr.add(new Pair('1800-1900', value['1800-1900']['isFinish']));
+//      curr.add(new Pair('1900-2000', value['1900-2000']['isFinish']));
+//      list.insert(k - 1, curr);
+//    });
+//    //print(list.)
+//  }
 
 //  syncTimetable(String handle) async {
 //    User user = await databaseMethods.getOtherUserViaHandle(handle);
