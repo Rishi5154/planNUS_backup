@@ -82,11 +82,15 @@ class _HomeState extends State<Home> {
         StreamProvider<TodoData>.value(
             value: DatabaseMethods(uid: user.uid).getUserTodoDataStream(),
             child: Scaffold(backgroundColor: Colors.deepOrangeAccent[100],
-                body: ToDoPage())),
+                body: ToDoPage()
+            )
+        ),
         //home
         Provider<User>.value(value: user,
             child: Scaffold(
-                backgroundColor: Colors.yellow, body: TimeTableWidget())),
+                backgroundColor: Colors.yellow, body: TimeTableWidget()
+            )
+        ),
         //TimeTable.emptyTimeTable()))),
         Provider<User>.value(value: user, child: Messages()),
         MultiProvider(providers: [

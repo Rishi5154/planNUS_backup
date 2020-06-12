@@ -117,7 +117,7 @@ class HelperWidgets {
 
   Widget buildSocialBtnRow() {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 5.0),
+      padding: EdgeInsets.all(0.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
