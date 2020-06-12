@@ -4,7 +4,6 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:plannusandroidversion/models/schedule_time.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:provider/provider.dart';
-import 'activity.dart';
 import 'day_schedule.dart';
 
 //void main() => runApp(MaterialApp(debugShowCheckedModeBanner: false, home: TimeTableWidget(new User())));
@@ -15,39 +14,37 @@ part 'timetable.g.dart';
 class TimeTable {
   static List<String> days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   static List<int> weekdays = [1, 2, 3, 4, 5, 6, 7];
+  Map<String, Map<String, Map<String, Object>>> timetable;
 
-  //propeties
-  List<DaySchedule> timetable;
-
-  TimeTable(this.timetable);
+  TimeTable(Map<String, Map<String, Map<String, Object>>> timetable) {
+    this.timetable = timetable;
+  }
 
   static TimeTable emptyTimeTable() {
-    return new TimeTable([
-      DaySchedule.noSchedule(1), //Monday, index 0
-      DaySchedule.noSchedule(2), //Tuesday
-      DaySchedule.noSchedule(3),
-      DaySchedule.noSchedule(4),
-      DaySchedule.noSchedule(5),
-      DaySchedule.noSchedule(6),
-      DaySchedule.noSchedule(7) //Sunday, index 6
-    ]);
+    return new TimeTable({
+          '1' : DaySchedule.noSchedule().scheduler, //Monday
+          '2' : DaySchedule.noSchedule().scheduler, //Tuesday
+          '3' : DaySchedule.noSchedule().scheduler, //Wednesday
+          '4' : DaySchedule.noSchedule().scheduler, //Thursday
+          '5' : DaySchedule.noSchedule().scheduler, //Friday
+          '6' : DaySchedule.noSchedule().scheduler, //Saturday
+          '7' : DaySchedule.noSchedule().scheduler, //Sunday
+    });
   }
 
   Widget timeTableWidget() {
     return TimeTableWidget();
   }
 
-  void alter(int day, String bName, ScheduleTime bStart, ScheduleTime bEnd, bool isImportant) {
+  void alter(String day, String bName, ScheduleTime bStart, ScheduleTime bEnd, bool isImportant) {
     int s = bStart.time;
     int e = bEnd.time;
     while (s < e) {
-      timetable[day-1].alter(s, new Activity(bName, isImportant, false));
+      ScheduleTiming t = ScheduleTiming(s);
+      timetable[day][t.toString()]['name'] = bName;
+      timetable[day][t.toString()]['isImportant'] = isImportant;
       s += 100;
     }
-  }
-
-  void delete(int day, int startTime) {
-    timetable[day-1].alter(startTime, Activity.noActivity());
   }
 
   factory TimeTable.fromJson(Map<String, dynamic> data) => _$TimeTableFromJson(data);
@@ -83,8 +80,7 @@ class TimeTableWidgetState extends State<TimeTableWidget> {
                 height: 28.0,
               );
             } else {
-              int startTime = DaySchedule.allTimings[index - 1];
-              String timeSlot = ScheduleTiming(startTime).toString();
+              String timeSlot = ScheduleTiming.allSlots[index-1].toString();
                 return Container(
                   color: Colors.white,
                   child: Row(
@@ -106,13 +102,13 @@ class TimeTableWidgetState extends State<TimeTableWidget> {
                             )
                         )
                     ),
-                    ttRow(1, startTime),
-                    ttRow(2, startTime),
-                    ttRow(3, startTime),
-                    ttRow(4, startTime),
-                    ttRow(5, startTime),
-                    ttRow(6, startTime),
-                    ttRow(7, startTime),
+                    ttRow('1', timeSlot),
+                    ttRow('2', timeSlot),
+                    ttRow('3', timeSlot),
+                    ttRow('4', timeSlot),
+                    ttRow('5', timeSlot),
+                    ttRow('6', timeSlot),
+                    ttRow('7', timeSlot),
                   ],
               ),
                 );
@@ -141,13 +137,11 @@ class TimeTableWidgetState extends State<TimeTableWidget> {
     );
   }
 
-  Widget ttRow(int day, int startTime) {
-    String name = tt.timetable[day-1].ds[DaySchedule.getIndex(startTime)].name;
-    bool isImportant = tt.timetable[day-1].ds[DaySchedule.getIndex(startTime)].isImportant;
+  Widget ttRow(String day, String slot) {
     return GestureDetector(
-      child: ActivityTile(name, isImportant),
+      child: ActivityTile(tt.timetable[day][slot.toString()]['name'], tt.timetable[day][slot.toString()]['isImportant']),
       onLongPress: () {
-        _showPopupMenu(day, startTime);
+        _showPopupMenu(day, slot.toString());
       },
       onTapDown: _storePosition,
     );
@@ -155,7 +149,7 @@ class TimeTableWidgetState extends State<TimeTableWidget> {
 
   var _tapPosition;
 
-  _showPopupMenu(int _day, int _startTime) async {
+  _showPopupMenu(String _day, String _slot) async {
     final RenderBox overlay = Overlay.of(context).context.findRenderObject();
     await showMenu(
       context: context,
@@ -170,7 +164,8 @@ class TimeTableWidgetState extends State<TimeTableWidget> {
             child: Text("Delete"),
             onPressed: () async {
               setState(() {
-                user.timetable.delete(_day, _startTime);
+                user.timetable.timetable[_day][_slot]['name'] = 'No Activity';
+                user.timetable.timetable[_day][_slot]['isImportant'] = false;
               });
               await user.update().whenComplete(() => Navigator.pop(context));
             },
@@ -201,13 +196,13 @@ class DayTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.yellow,
-      child: SizedBox(
-        height: 20.0,
-        width: 40,
-        child: Text(day, textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 17.0))
-      )
+        color: Colors.yellow,
+        child: SizedBox(
+            height: 20.0,
+            width: 40,
+            child: Text(day, textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 17.0))
+        )
     );
   }
 }
