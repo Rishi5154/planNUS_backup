@@ -55,16 +55,16 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
     addable = '';
   }
 
-  int day(String selected) {
+  String day(String selected) {
     switch(selected) {
-      case 'Mon': return 1; break;
-      case 'Tue': return 2; break;
-      case 'Wed': return 3; break;
-      case 'Thu': return 4; break;
-      case 'Fri': return 5; break;
-      case 'Sat': return 6; break;
-      case 'Sun': return 7; break;
-      default: return 0; break;
+      case 'Mon': return '1'; break;
+      case 'Tue': return '2'; break;
+      case 'Wed': return '3'; break;
+      case 'Thu': return '4'; break;
+      case 'Fri': return '5'; break;
+      case 'Sat': return '6'; break;
+      case 'Sun': return '7'; break;
+      default: return '0'; break;
     }
   }
 

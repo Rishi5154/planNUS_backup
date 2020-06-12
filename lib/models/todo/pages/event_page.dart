@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:plannusandroidversion/models/activity.dart';
-import 'package:plannusandroidversion/models/day_schedule.dart';
-import 'package:plannusandroidversion/models/schedule_time.dart';
 import 'package:plannusandroidversion/models/todo/widgets/custom_icon_decoration.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:provider/provider.dart';
+//import 'package:plannusapk/models/activity.dart';
 
 class EventPage extends StatefulWidget {
   @override
@@ -31,19 +29,20 @@ class Event {
 //];
 
 class _EventPageState extends State<EventPage> {
-  static List<int> _orderedTime = DaySchedule.allTimings;
+  static List<String> _orderedTime = [
+    '0800-0900', '0900-1000', '1000-1100', '1100-1200', '1200-1300', '1300-1400',
+    '1400-1500', '1500-1600', '1600-1700', '1700-1800', '1800-1900', '1900-2000'
+  ];
   @override
   Widget build(BuildContext context) {
     double iconSize = 20;
-    DaySchedule ds = Provider.of<User>(context).timetable.timetable[DateTime.now().weekday - 1];
-    List<Event> _eventList = _orderedTime.map((val) {
-      String m = ScheduleTiming(val).toString();
-      Activity act = ds.getActivity(val);
+    Map<String, Map<String, Object>> map = Provider.of<User>(context).timetable.timetable[DateTime.now().weekday.toString()];
+    List<Event> _eventList = _orderedTime.map((m) {
       String time = m.substring(0,2) + ":" + m.substring(2,4);
-      String task = act.name;
+      String task = map[m]['name'];
       String desc = "";
-      bool isFinish = act.isFinish;
-      bool isImportant = act.isImportant;
+      bool isFinish = map[m]['isFinish'];
+      bool isImportant = map[m]['isImportant'];
       return new Event(time, task, desc, isFinish, isImportant);
     }).toList();
     return ListView.builder(

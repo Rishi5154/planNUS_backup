@@ -1,45 +1,47 @@
-import 'package:json_annotation/json_annotation.dart';
-
-part 'activity.g.dart';
-
-@JsonSerializable(explicitToJson: true)
 class Activity {
   static final nil = "No Activity";
-  String name;
-  bool isImportant;
-  bool isFinish;
+  Map<String, Object> data = {
+    'name': nil,
+    'isImportant': false,
+    'isFinish': false
+  };
 
-  Activity(this.name, this.isImportant, this.isFinish);
+  Activity(Map<String, Object> customActivityData) {
+    this.data = customActivityData;
+  }
 
   static Activity customActivity(String name, bool isImportant, bool isFinish) {
-    return new Activity(name, isImportant, isFinish);
+    return new Activity({
+      'name': name,
+      'isImportant': isImportant,
+      'isFinish': isFinish
+    });
   }
 
   static Activity noActivity() {
-    return new Activity(nil, false, false);
+    return new Activity({
+      'name': nil,
+      'isImportant': false,
+      'isFinish': false
+    });
   }
 
   void alter(String name) {
-    this.name = name;
+    data['name'] = name;
   }
 
   void deleteActivity() {
-    this.name = nil;
-    this.isImportant = false;
-    this.isFinish = false;
+    data['name'] = nil;
+    data['isImportant'] = false;
   }
 
   void toggleImportant() {
-    this.isImportant = true;
+    data['isImportant'] = true;
   }
 
   void toggleNotImportant() {
-    this.isImportant = false;
+    data['isImportant'] = false;
   }
-
-  factory Activity.fromJson(Map<String, dynamic> data) => _$ActivityFromJson(data);
-
-  Map<String, dynamic> toJson() => _$ActivityToJson(this);
 }
 // //continuation of Activity class
 //  Widget dailyActivityTemplate() {
