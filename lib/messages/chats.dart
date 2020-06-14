@@ -120,6 +120,40 @@ class _ChatsState extends State<Chats> {
             ),
             Spacer(),
             GestureDetector(
+                  onTap: () {
+                    print(name);
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Provider<User>.value(value: user,
+                            child: MaterialApp(
+                              home: Scaffold(
+                                  appBar: AppBar(
+                                    elevation: 0,
+                                    backgroundColor: Colors.transparent,
+                                    leading: IconButton(
+                                      icon: new Icon(Icons.arrow_back_ios, color: Colors.white),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ),
+                                  backgroundColor: Colors.deepPurple,
+                                  body: TimeTableWidget()),
+                            )
+                        )
+                        )
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    child: Text("Timetable"),
+                  ),
+            ),
+            Spacer(),
+            GestureDetector(
               onTap: () {
                 print(name);
                 Navigator.push(context,

@@ -86,6 +86,7 @@ class _HomeState extends State<Home> {
                 body: ToDoPage()
             ),
           catchError: (context, e) {return new TodoData();},
+            )
         ),
         //home
         Provider<User>.value(value: user,
