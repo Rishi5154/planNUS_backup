@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/models/timetable.dart';
 import 'package:plannusandroidversion/models/todo/todo_main.dart';
@@ -33,6 +34,45 @@ class _HomeState extends State<Home> {
 
   String header = 'Home';
 
+  setProfileDialog(BuildContext context) {
+    return showDialog(context: context,
+        barrierDismissible: false,
+        builder: (context) {
+      return AlertDialog(
+        title: Text(
+          "Update essential profile details",
+        ),
+        content: Container(
+          child: Row(
+            children: <Widget>[
+              Text(
+                Constants.myName == null || Constants.myName.isEmpty ? 'Please update your name at Profile.'
+                :  'Please update your handle at Profile.',
+                style: GoogleFonts.biryani(
+                  fontSize: 16,
+                ),
+              )
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            //color: Colors.deepPurple,
+            onPressed: () {
+              setState(() {
+                currentIndex = 3;
+              });
+              Navigator.of(context).pop();
+            },
+            child: Text(
+              'Noted!'
+            ),
+          )
+        ],
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     user = Provider.of<User>(context);
@@ -43,18 +83,16 @@ class _HomeState extends State<Home> {
         StreamProvider<TodoData>.value(
             value: DatabaseMethods(uid: user.uid).getUserTodoDataStream(),
             child: Scaffold(backgroundColor: Colors.deepOrangeAccent[100],
-<<<<<<< Updated upstream
-                body: ToDoPage())),
-=======
                 body: ToDoPage()
             ),
           catchError: (context, e) {return new TodoData();},
         ),
->>>>>>> Stashed changes
         //home
         Provider<User>.value(value: user,
             child: Scaffold(
-                backgroundColor: Colors.yellow, body: TimeTableWidget())),
+                backgroundColor: Colors.yellow, body: TimeTableWidget()
+            )
+        ),
         //TimeTable.emptyTimeTable()))),
         Provider<User>.value(value: user, child: Messages()),
         MultiProvider(providers: [
@@ -62,7 +100,7 @@ class _HomeState extends State<Home> {
             create: (_) => DatabaseMethods(uid: user.uid).getHandleStream(),
             catchError: (context, e) { return "(no name yet)";}),
           Provider<User>(create: (_) => user)
-        ], child: Profile()),
+          ], child: Profile()),
       ];
       return MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -240,6 +278,19 @@ class _HomeState extends State<Home> {
                   case 2: { header = 'Messages'; } break;
                   case 3: { header = 'Profile'; } break;
                 }
+                if (currentIndex < 3) {
+                  if (Constants.myName == null || Constants.myHandle == null) {
+                    setProfileDialog(context);
+                  } else if (Constants.myName.isEmpty || Constants.myHandle.isEmpty) {
+                    setProfileDialog(context);
+                  }
+                }
+//                if (currentIndex < 3  && Constants.myName == null || Constants.myHandle == null) {
+//
+//                }
+//                if (currentIndex < 3 && Constants.myName.isEmpty || Constants.myHandle.isEmpty) {
+//                  setProfileDialog(context);
+//                } else if (Constants.myName == null || Constants.myHandle == null)
               }
             ),
             backgroundColor: Colors.white,

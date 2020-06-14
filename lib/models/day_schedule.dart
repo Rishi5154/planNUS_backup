@@ -1,101 +1,65 @@
+import 'package:json_annotation/json_annotation.dart';
+import 'package:plannusandroidversion/models/activity.dart';
 import 'schedule_time.dart';
 
+part 'day_schedule.g.dart';
+
+@JsonSerializable(explicitToJson: true)
 class DaySchedule {
-  static final List<ScheduleTiming> allTimings = ScheduleTiming.allSlots;
+  static final List<int> allTimings = [0800, 0900, 1000, 1100, 1200, 1300,
+                                       1400, 1500, 1600, 1700, 1800, 1900];
 
-  Map<String, Map<String, Object>> scheduler;
-
-  DaySchedule(Map<String, Map<String, Object>> customScheduler) {
-    this.scheduler = customScheduler;
+  static int getIndex(int startTime) {
+    switch(startTime) {
+      case(0800): return 0; break;
+      case(0900): return 1; break;
+      case(1000): return 2; break;
+      case(1100): return 3; break;
+      case(1200): return 4; break;
+      case(1300): return 5; break;
+      case(1400): return 6; break;
+      case(1500): return 7; break;
+      case(1600): return 8; break;
+      case(1700): return 9; break;
+      case(1800): return 10; break;
+      case(1900): return 11; break;
+    }
   }
 
-  static Map<String, Map<String, Object>> emptySchedule = {
-    '0800-0900' : {'name' : 'No Activity', 'isImportant' : false, 'isFinish' : false},
-    '0900-1000' : {'name' : 'No Activity', 'isImportant' : false, 'isFinish' : false},
-    '1000-1100' : {'name' : 'No Activity', 'isImportant' : false, 'isFinish' : false},
-    '1100-1200' : {'name' : 'No Activity', 'isImportant' : false, 'isFinish' : false},
-    '1200-1300' : {'name' : 'No Activity', 'isImportant' : false, 'isFinish' : false},
-    '1300-1400' : {'name' : 'No Activity', 'isImportant' : false, 'isFinish' : false},
-    '1400-1500' : {'name' : 'No Activity', 'isImportant' : false, 'isFinish' : false},
-    '1500-1600' : {'name' : 'No Activity', 'isImportant' : false, 'isFinish' : false},
-    '1600-1700' : {'name' : 'No Activity', 'isImportant' : false, 'isFinish' : false},
-    '1700-1800' : {'name' : 'No Activity', 'isImportant' : false, 'isFinish' : false},
-    '1800-1900' : {'name' : 'No Activity', 'isImportant' : false, 'isFinish' : false},
-    '1900-2000' : {'name' : 'No Activity', 'isImportant' : false, 'isFinish' : false},
-  };
+  //properties of DaySchedule
+  int day;
+  List<Activity> ds;
 
-  static DaySchedule noSchedule() {
-    return new DaySchedule({
-      '0800-0900' : {'name' : 'No Activity', 'isImportant' : false, 'isFinish' : false},
-      '0900-1000' : {'name' : 'No Activity', 'isImportant' : false, 'isFinish' : false},
-      '1000-1100' : {'name' : 'No Activity', 'isImportant' : false, 'isFinish' : false},
-      '1100-1200' : {'name' : 'No Activity', 'isImportant' : false, 'isFinish' : false},
-      '1200-1300' : {'name' : 'No Activity', 'isImportant' : false, 'isFinish' : false},
-      '1300-1400' : {'name' : 'No Activity', 'isImportant' : false, 'isFinish' : false},
-      '1400-1500' : {'name' : 'No Activity', 'isImportant' : false, 'isFinish' : false},
-      '1500-1600' : {'name' : 'No Activity', 'isImportant' : false, 'isFinish' : false},
-      '1600-1700' : {'name' : 'No Activity', 'isImportant' : false, 'isFinish' : false},
-      '1700-1800' : {'name' : 'No Activity', 'isImportant' : false, 'isFinish' : false},
-      '1800-1900' : {'name' : 'No Activity', 'isImportant' : false, 'isFinish' : false},
-      '1900-2000' : {'name' : 'No Activity', 'isImportant' : false, 'isFinish' : false},
-    });
+  DaySchedule(this.day, this.ds);
+
+  static DaySchedule noSchedule(int day) {
+    return new DaySchedule(day, [
+      Activity.noActivity(), //0800 - 0900
+      Activity.noActivity(), //0900 - 1000
+      Activity.noActivity(), // .
+      Activity.noActivity(),
+      Activity.noActivity(),
+      Activity.noActivity(),
+      Activity.noActivity(),
+      Activity.noActivity(),
+      Activity.noActivity(),
+      Activity.noActivity(),
+      Activity.noActivity(),
+      Activity.noActivity(), //1900 - 2000, last activity of the day starts from 7pm and ends at 8pm
+    ]);
   }
 
-//  Widget dsWidget() {
-//    return DayScheduleWidget(ds: this);
-//  }
+  void alter(int startTime, Activity activity) {
+    int index = getIndex(startTime);
+    ds[index] = activity;
+  }
+
+  Activity getActivity(int startTime) {
+    int index = getIndex(startTime);
+    return ds[index];
+  }
+
+  factory DaySchedule.fromJson(Map<String, dynamic> data) => _$DayScheduleFromJson(data);
+
+  Map<String, dynamic> toJson() => _$DayScheduleToJson(this);
 }
-
-//class DayScheduleWidget extends StatefulWidget {
-//  final DaySchedule ds;
-//  DayScheduleWidget({this.ds});
-//
-//  @override
-//  DayScheduleWidgetState createState() {
-//    return DayScheduleWidgetState();
-//  }
-//}
-//
-//class DayScheduleWidgetState extends State<DayScheduleWidget> {
-//  DaySchedule ds;
-//
-//  int hex(int startTime) {
-//      switch (startTime) {
-//        case 800: return 0; break;
-//        case 900: return 1; break;
-//        case 1000: return 2; break;
-//        case 1100: return 3; break;
-//        case 1200: return 4; break;
-//        case 1300: return 5; break;
-//        case 1400: return 6; break;
-//        case 1500: return 7; break;
-//        case 1600: return 8; break;
-//        case 1700: return 9; break;
-//        case 1800: return 10; break;
-//        case 1900: return 11; break;
-//        default: return 0;
-//      }
-//  }
-//
-//  void alter(String bName, int bStart, int bEnd, bool isImportant) {
-//    int s = bStart;
-//    int e = bEnd;
-//    while (s < e) {
-//      ScheduleTiming t = ScheduleTiming(s);
-//      ds.scheduler[t.toString()]['name'] = (bName);
-//      if (isImportant) { ds.scheduler[t.toString()]['isImportant'] = true; }
-//      else { ds.scheduler[t.toString()]['isImportant'] = false; }
-//      s += 100;
-//    }
-//  }
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    ds = widget.ds;
-//    return Scaffold(
-//      body: ListView(
-//        children: ds.scheduler.values.map((s) => Activity(s).dailyActivityTemplate()).toList(),
-//      )
-//    );
-//  }
-//}

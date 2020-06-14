@@ -1,11 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plannusandroidversion/messages/chats.dart';
 import 'package:plannusandroidversion/messages/chatscreenredirect.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
+import 'package:plannusandroidversion/models/timetable.dart';
+import 'package:plannusandroidversion/models/user.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
 import 'package:plannusandroidversion/services/auth.dart';
+import 'package:provider/provider.dart';
 
 class Messages extends StatefulWidget {
 
@@ -18,7 +22,8 @@ class _MessagesState extends State<Messages> {
   AuthService auth = new AuthService();
   DatabaseMethods databaseMethods = new DatabaseMethods();
   Stream chatRoomsStream;
-
+  User user;
+  QuerySnapshot ss;
   Widget chatRoomList(){
     return StreamBuilder(
       stream: chatRoomsStream,
@@ -29,9 +34,17 @@ class _MessagesState extends State<Messages> {
             itemBuilder: (context, index) {
               return Column(
                 children: <Widget>[
-                  ChatRoomsTile(snapshot.data.documents[index].data['chatroomID']
-                      .toString().replaceAll("_", "").replaceAll(Constants.myName, ""),
-                      snapshot.data.documents[index].data['chatroomID']),
+                  StreamProvider<User>(
+                    //stream: databaseMethods.getUserStreamByUid(snapshot.data.documents[index].data['uidOther']),
+                    create: (_)  => databaseMethods.getUserStreamByUid(AuthService.currentUser.uid == snapshot.data.documents[index].data['uidOther']
+                        ? snapshot.data.documents[index].data['uidCurr'] : snapshot.data.documents[index].data['uidOther']),
+                    builder: (context, ss) {
+                      User user = Provider.of<User>(context);
+                      return ChatRoomsTile(snapshot.data.documents[index].data['chatroomID']
+                            .toString().replaceAll("_", "").replaceAll(Constants.myName, ""),
+                            snapshot.data.documents[index].data['chatroomID'], user);
+                    },
+                  ),
                   Divider(
                     color: Colors.grey[600],
                     height: 0,
@@ -62,6 +75,38 @@ class _MessagesState extends State<Messages> {
     print("${Constants.myName}" + " is my name");
     print("${Constants.myHandle}");
   }
+
+//  queryTimings() async {
+//    TimeTable currUserTimetable = await databaseMethods.getUserTimetable(AuthService.currentUser.uid);
+//    List<List<Pair>> list = new List<List<Pair>>(7);
+//    currUserTimetable.timetable.forEach((key, value) {
+//      int k = key as int;
+//      List<Pair> curr = list.removeAt(k);
+//      curr.add(new Pair('0800-0900', value['0800-0900']['isFinish']));
+//      curr.add(new Pair('0900-1000', value['0900-1000']['isFinish']));
+//      curr.add(new Pair('1000-1100', value['1000-1100']['isFinish']));
+//      curr.add(new Pair('1100-1200', value['1100-1200']['isFinish']));
+//      curr.add(new Pair('1200-1300', value['1200-1300']['isFinish']));
+//      curr.add(new Pair('1300-1400', value['1300-1400']['isFinish']));
+//      curr.add(new Pair('1400-1500', value['1400-1500']['isFinish']));
+//      curr.add(new Pair('1500-1600', value['1500-1600']['isFinish']));
+//      curr.add(new Pair('1600-1700', value['1600-1700']['isFinish']));
+//      curr.add(new Pair('1700-1800', value['1700-1800']['isFinish']));
+//      curr.add(new Pair('1800-1900', value['1800-1900']['isFinish']));
+//      curr.add(new Pair('1900-2000', value['1900-2000']['isFinish']));
+//      list.insert(k - 1, curr);
+//    });
+//    //print(list.)
+//  }
+
+//  syncTimetable(String handle) async {
+//    User user = await databaseMethods.getOtherUserViaHandle(handle);
+//    return Provider<User>.value(value: user,
+//        child: MaterialApp(
+//          home: Scaffold(
+//              backgroundColor: Colors.yellow, body: TimeTableWidget()),
+//        ));
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,15 +148,70 @@ class _MessagesState extends State<Messages> {
     );
   }
 }
-class ChatRoomsTile extends StatelessWidget {
+class ChatRoomsTile extends StatefulWidget {
   final String name;
   final String chatRoomID;
-  ChatRoomsTile(this.name, this.chatRoomID);
+  final User user;
+  ChatRoomsTile(this.name, this.chatRoomID, this.user);
+
+  @override
+  _ChatRoomsTileState createState() => _ChatRoomsTileState();
+}
+
+class _ChatRoomsTileState extends State<ChatRoomsTile> {
+  setProfileDialog(BuildContext context) {
+    return showDialog(context: context,
+        barrierDismissible: false,
+        builder: (context) {
+      return AlertDialog(
+        title: Text(
+          "Available timings",
+        ),
+        content: Container(
+          child: Row(
+            children: <Widget>[
+              Text(
+                Constants.myName == null || Constants.myName.isEmpty ? 'Please update your name at Profile.'
+                    :  'Please update your handle at Profile.',
+                style: GoogleFonts.biryani(
+                  fontSize: 14,
+                ),
+              )
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            //color: Colors.deepPurple,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text(
+                'Done'
+            ),
+          )
+        ],
+      );
+    });
+  }
+
+  showContactTimetable(User user) {
+    return MaterialApp(
+      home: Scaffold(),
+    );
+  }
+
+  blockContact(){
+    return MaterialApp(
+      home: Scaffold(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       child: Row(
         children: <Widget>[
           Container(
@@ -121,28 +221,84 @@ class ChatRoomsTile extends StatelessWidget {
               color: Colors.blue,
               borderRadius: BorderRadius.circular(50),
             ),
-            child: Text("${name.isNotEmpty ? name.substring(0,1).toUpperCase() : "-"}",
+            child: Text("${widget.name.isNotEmpty ? widget.name.substring(0,1).toUpperCase() : "-"}",
             style: TextStyle(fontSize: 18),),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(15, 8, 8, 8),
-            child: Container(width: 100, child: Text(name, style: GoogleFonts.biryani(fontSize: 16),)),
+            child: Container(width: 100, child: Text(widget.name, style: GoogleFonts.biryani(fontSize: 16),)),
           ),
-          SizedBox(width: 125),
+          SizedBox(width: 100),
           IconButton(
             icon: Icon(
               Icons.send
-            ), onPressed: () {
+            ),
+            onPressed: () {
                 Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) =>
-                          ChatscreenRedirect(chatRoomID),
+                          ChatscreenRedirect(widget.chatRoomID),
                     )
                 );
-              },
+            },
+            iconSize: 20,
           ),
+          SizedBox(width: 1,),
+          PopupMenuButton<String>(
+            onSelected: (String choice) => {
+              if (choice == 'Meet') {
+                setProfileDialog(context)
+              } else if (choice == 'Timetable display') {
+              Navigator.push(context,
+              MaterialPageRoute(builder: (context) =>
+                Provider<User>.value(value: widget.user,
+                  child: MaterialApp(
+                    home: Scaffold(
+                        appBar: AppBar(
+                          elevation: 0,
+                          backgroundColor: Colors.transparent,
+                          leading: IconButton(
+                            icon: new Icon(Icons.arrow_back_ios, color: Colors.white),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ),
+                        backgroundColor: Colors.deepPurple,
+                        body: TimeTableWidget()),
+                  )
+                )
+                )
+              )
+              } else {
+                blockContact()
+              }
+            },
+            itemBuilder: (BuildContext context)  {
+              return Choices.choices.map((String choice){
+                return PopupMenuItem<String> (
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
+          )
         ],
       ),
     );
+  }
+}
+class Choices {
+  static const String meet = 'Meet';
+  static const String timetable = 'Timetable display';
+  static const String block = 'Block';
+  static const List<String> choices = <String>[ meet, timetable, block ];
+}
+class Pair {
+  String timings;
+  bool isFinished;
+  Pair(String timings, bool isFinished) {
+    this.timings = timings;
+    this.isFinished = isFinished;
   }
 }

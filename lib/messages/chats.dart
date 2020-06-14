@@ -1,7 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:plannusandroidversion/models/timetable.dart';
+import 'package:plannusandroidversion/models/user.dart';
+import 'package:plannusandroidversion/services/auth.dart';
 import 'package:plannusandroidversion/shared/helperwidgets.dart';
+import 'package:provider/provider.dart';
 import 'chatscreen.dart';
 import 'constants.dart';
 import '../services/database.dart';
@@ -18,6 +22,7 @@ class _ChatsState extends State<Chats> {
       new TextEditingController();
   DatabaseMethods databaseMethods = new DatabaseMethods();
   QuerySnapshot searchSnapshot;
+  Stream usersStream;
 
   @override
   void initState() {
@@ -52,7 +57,7 @@ class _ChatsState extends State<Chats> {
     }
   }
 
-  createChatRoomToStartConversation({String name}) {
+  createChatRoomToStartConversation({String name, User user}) {
     print(Constants.myName + " is now");
     print(name + " is here");
     print(Constants.myName /*+ " is here"*/);
@@ -61,7 +66,10 @@ class _ChatsState extends State<Chats> {
       String chatRoomID = getChatRoomId(name, Constants.myName);
       Map<String, dynamic> chatRoomMap = {
         "users": users,
-        "chatroomID": chatRoomID
+        "chatroomID": chatRoomID,
+        "otheruser" : user.toJson(),
+        "uidCurr" : AuthService.currentUser.uid,
+        "uidOther" : user.uid
       };
       DatabaseMethods().createChatRoom(chatRoomID, chatRoomMap);
       Navigator.push(context,
@@ -79,12 +87,22 @@ class _ChatsState extends State<Chats> {
             itemBuilder: (context, index) {
               return searchTile(
                   name: searchSnapshot.documents[index].data['name'],
-                  handle: searchSnapshot.documents[index].data['handle']);
+                  handle: searchSnapshot.documents[index].data['handle'],
+                  user: User.fromJson(searchSnapshot.documents[index].data['user']));
             })
         : Container();
   }
 
-  Widget searchTile({String name, String handle}) {
+//  syncTimetable(String handle) async {
+//    User user = await databaseMethods.getOtherUserViaHandle(handle);
+//    return Provider<User>.value(value: user,
+//        child: MaterialApp(
+//          home: Scaffold(
+//              backgroundColor: Colors.yellow, body: TimeTableWidget()),
+//        ));
+//  }
+
+  Widget searchTile({String name, String handle, User user}) {
     print(name);
     return Container(
         padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
@@ -102,8 +120,6 @@ class _ChatsState extends State<Chats> {
             ),
             Spacer(),
             GestureDetector(
-<<<<<<< Updated upstream
-=======
               onTap: () {
                 print(name);
                 Navigator.push(context,
@@ -138,10 +154,9 @@ class _ChatsState extends State<Chats> {
             ),
             Spacer(),
             GestureDetector(
->>>>>>> Stashed changes
               onTap: () {
                 print(name);
-                createChatRoomToStartConversation(name: name);
+                createChatRoomToStartConversation(name: name, user: user);
               },
               child: Container(
                 decoration: BoxDecoration(
