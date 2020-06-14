@@ -43,7 +43,7 @@ class DatabaseMethods {
       'email' : email,
       'name' : name,
       'handle' : handle,
-      'user' : User(uid: uid).toJson(),
+      'user' : User(uid: uid, name: name).toJson(),
       'tasks' : TodoData().toJson(),
     });
   }
@@ -78,6 +78,10 @@ class DatabaseMethods {
   uploadUserInfo(userMap) {
     Firestore.instance.collection("users").add(userMap);
   }
+
+//  Future<User> getUserDataByHandle(String handle) async {
+//    return await users.where("handle", isEqualTo: handle).getDocuments();
+//  }
 
   Future<QuerySnapshot> getUserByHandle(String handle) async {
     return await users.where("handle", isEqualTo: handle).getDocuments();

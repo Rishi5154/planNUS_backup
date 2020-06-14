@@ -77,3 +77,4 @@ class _AddEventPageState extends State<AddEventPage> {
     );
   }
 }
+

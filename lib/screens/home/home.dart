@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/models/timetable.dart';
-import 'package:plannusandroidversion/models/todo/pages/task_page.dart';
 import 'package:plannusandroidversion/models/todo/todo_main.dart';
 import 'package:plannusandroidversion/models/todo/todo_models/todo_data.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:plannusandroidversion/models/weekly_event_adder.dart';
+import 'package:plannusandroidversion/screens/drawer/notification_page.dart';
 import 'package:plannusandroidversion/screens/home/messages.dart';
 import 'package:plannusandroidversion/screens/home/profile.dart';
 import 'package:plannusandroidversion/services/auth.dart';
@@ -14,6 +14,7 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/shared/loading.dart';
 import 'package:provider/provider.dart';
+import 'package:plannusandroidversion/screens/drawer/meet_page.dart';
 
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
@@ -42,7 +43,14 @@ class _HomeState extends State<Home> {
         StreamProvider<TodoData>.value(
             value: DatabaseMethods(uid: user.uid).getUserTodoDataStream(),
             child: Scaffold(backgroundColor: Colors.deepOrangeAccent[100],
+<<<<<<< Updated upstream
                 body: ToDoPage())),
+=======
+                body: ToDoPage()
+            ),
+          catchError: (context, e) {return new TodoData();},
+        ),
+>>>>>>> Stashed changes
         //home
         Provider<User>.value(value: user,
             child: Scaffold(
@@ -115,6 +123,7 @@ class _HomeState extends State<Home> {
               )
             ],
           ),
+          //********************DRAWER***********************//
           drawer: Drawer(
             child: ListView(
               children: [
@@ -130,7 +139,88 @@ class _HomeState extends State<Home> {
                     child: Image(image: AssetImage('assets/planNUS.png')),
                   )
                 ),
-
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8.0, 5.0, 8.0, 5.0),
+                  child: InkWell(
+                    splashColor: Colors.orange,
+                    onTap: () {
+                      showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Dialog(
+                                child: Provider<User>.value(value: user, child: MeetPage()),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(12))));
+                          });
+                    },
+                    child: Container(
+                      height: 40,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Icon(Icons.people),
+                          SizedBox(width: 20),
+                          Text('Meet', style: TextStyle(fontSize: 20.0),)
+                        ],
+                      ),
+                    )
+                  ),
+                ),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 5, 8, 5),
+                    child: InkWell(
+                        splashColor: Colors.orange,
+                        onTap: () {
+                          showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Dialog(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(12))
+                                  ),
+                                  child: Provider<User>.value(
+                                    value: user,
+                                    child: NotificationPage(),
+                                  ),
+                                );
+                              });
+                        },
+                        child: Container(
+                            height: 40,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Icon(Icons.notifications),
+                                SizedBox(width: 20),
+                                Text('Notifications', style: TextStyle(fontSize: 20.0),),
+                                SizedBox(width: 100),
+                                Text(user.unread.length.toString(),
+                                    style: TextStyle(fontSize: 20.0, color: Colors.red[800]))
+                              ],
+                            )
+                        )
+                    )
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 5, 8, 5),
+                  child: InkWell(
+                    splashColor: Colors.orange,
+                    onTap: () {},
+                    child: Container(
+                      height: 40,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Icon(Icons.settings),
+                          SizedBox(width: 20),
+                          Text('Settings', style: TextStyle(fontSize: 20.0),)
+                        ],
+                      )
+                    )
+                  )
+                ),
               ],
             ),
           ),

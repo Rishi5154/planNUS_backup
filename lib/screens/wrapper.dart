@@ -23,7 +23,7 @@ class Wrapper extends StatelessWidget {
               child: Home(),
               catchError: (context, e) => new TodoData(),
             ),
-          catchError: (context, e) {
+            catchError: (context, e) {
               return user;
           },
         );
