@@ -1,11 +1,15 @@
 const functions = require('firebase-functions');
 // The Firebase Admin SDK to access Cloud Firestore.
 const admin = require('firebase-admin');
-admin.initializeApp(functions.config().firebase);
+admin.initializeApp();
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
+//
+// exports.helloWorld = functions.https.onRequest((request, response) => {
+//  response.send("Hello from Firebase!");
+// });
 
-exports.timetableUpdate = functions.database.ref('/users/{documentId}/timetable')
+exports.timetableUpdate = functions.firestore.document('/userTimetables/{documentId}')
     .onUpdate(async (snap, context) => {
         const userUid = context.params.documentId;
         const token = [];
@@ -17,7 +21,7 @@ exports.timetableUpdate = functions.database.ref('/users/{documentId}/timetable'
         token.push(data.token);
         const payload = {
             notification: {
-                tile: 'Timetable Update',
+                title: 'Timetable Update',
                 body: 'You have updated your timetable!'
             }
         }

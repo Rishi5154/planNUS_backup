@@ -14,8 +14,8 @@ User _$UserFromJson(Map<String, dynamic> json) {
     ..timetable = json['timetable'] == null
         ? null
         : TimeTable.fromJson(json['timetable'] as Map<String, dynamic>)
-    ..phoneNumber = json['phoneNumber'] as int
-    ..schedule = json['schedule'] as bool
+//    ..phoneNumber = json['phoneNumber'] as int
+//    ..schedule = json['schedule'] as bool
     ..unread = (json['unread'] as List)
         ?.map((e) => e == null
             ? null
@@ -27,7 +27,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'uid': instance.uid,
       'name': instance.name,
       'timetable': instance.timetable?.toJson(),
-      'phoneNumber': instance.phoneNumber,
-      'schedule': instance.schedule,
+ //     'phoneNumber': instance.phoneNumber,
+ //     'schedule': instance.schedule,
       'unread': instance.unread?.map((e) => e?.toJson())?.toList(),
     };

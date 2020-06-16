@@ -10,8 +10,8 @@ class User {
   final String uid;
   String name;
   TimeTable timetable;
-  int phoneNumber;
-  bool schedule = false;
+//  int phoneNumber;
+//  bool schedule = false;
   List<CustomNotification> unread;
 
 
@@ -28,11 +28,11 @@ class User {
     this.name = name;
     return update();
   }
-
-  Future addPhoneNumber(int number) {
-    this.phoneNumber = number;
-    return update();
-  }
+//
+//  Future addPhoneNumber(int number) {
+//    this.phoneNumber = number;
+//    return update();
+//  }
 
   Future<void> addUnread(CustomNotification unreadNotification) {
     try {
