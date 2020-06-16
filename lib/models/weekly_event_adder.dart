@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plannusandroidversion/models/todo/widgets/custom_textfield.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:provider/provider.dart';
 import 'schedule_time.dart';
@@ -38,7 +39,7 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
   List<DropdownMenuItem<String>> _dropdownDays = buildDropDownMenuItems2(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
   List<DropdownMenuItem<ScheduleTime>> _dropdownStartTimes = buildDropDownMenuItems(ScheduleTime.startTimeList);
   List<DropdownMenuItem<ScheduleTime>> _dropdownEndTimes= buildDropDownMenuItems(ScheduleTime.endTimeList);
-  String _selectedName;
+  TextEditingController _selectedName = new TextEditingController();
   ScheduleTime _selectedStartTime;
   ScheduleTime _selectedEndTime;
   String _selectedDay;
@@ -103,37 +104,17 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
-            child: TextFormField(
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'What activity is it',
-                  filled: true,
-                  fillColor: Colors.grey,
-                  contentPadding: const EdgeInsets.all(0.0),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                ),
-                textAlign: TextAlign.center,
-                onChanged: (String input) {
-                  setState(() {
-                    _selectedName = input;
-                  });
-                }
-            ),
+            child: CustomTextField(labelText: "What activity is it?", controller: _selectedName,)
           ),
           Text('Which day?'),
           SizedBox(height: 10.0),
           Container(
-            padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: Colors.grey[300],
+            padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+            decoration: ShapeDecoration(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                side: BorderSide(width: 1.0, style: BorderStyle.solid, color: Colors.grey[500])
+              ),
             ),
             child: DropdownButton(
               focusColor: Colors.red,
@@ -145,14 +126,15 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
               }),
             ),
           ),
-
           Text("Start"),
           SizedBox(height: 8.0),
           Container(
-            padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: Colors.grey[300],
+            padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+            decoration: ShapeDecoration(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+                side: BorderSide(width: 1.0, style: BorderStyle.solid, color: Colors.grey[500])
+              ),
             ),
             child: DropdownButton(
               value: _selectedStartTime,
@@ -163,10 +145,12 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
           Text("End"),
           SizedBox(height: 8.0),
           Container(
-            padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: Colors.grey[300],
+            padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+            decoration: ShapeDecoration(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  side: BorderSide(width: 1.0, style: BorderStyle.solid, color: Colors.grey[500])
+              ),
             ),
             child: DropdownButton(
               value: _selectedEndTime,
@@ -181,10 +165,12 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
           Text("Is it important?"),
           SizedBox(height: 8.0),
           Container(
-            padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: Colors.grey[300],
+            padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+            decoration: ShapeDecoration(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  side: BorderSide(width: 1.0, style: BorderStyle.solid, color: Colors.grey[500])
+              ),
             ),
             child: DropdownButton(
               value: _selectedImportance,
@@ -208,12 +194,12 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
                   child: Text("Add"),
                   onPressed: () async {
                     if (_selectedImportance == null || _selectedEndTime == null ||
-                        _selectedStartTime == null || _selectedName == null || _selectedDay == null) {
+                        _selectedStartTime == null || _selectedName.text == null || _selectedDay == null) {
                       setState(() {
                         addable = 'Please fill in all fields!';
                       });
                     } else {
-                      user.timetable.alter(day(_selectedDay), _selectedName,
+                      user.timetable.alter(day(_selectedDay), _selectedName.text,
                           _selectedStartTime, _selectedEndTime, _selectedImportance);
                       await user.update()
                           .whenComplete(() => init())

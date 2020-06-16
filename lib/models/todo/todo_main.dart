@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:plannusandroidversion/models/todo/todo_models/todo_data.dart';
@@ -18,6 +20,15 @@ class _ToDoPageState extends State<ToDoPage> {
   double currentPage = 0;
 
   TodoData todoData;
+
+  Widget addPage() {
+    return Dialog(
+        child: currentPage == 0
+            ? Provider<TodoData>.value(value: todoData, child: AddTaskPage())
+            : Provider<TodoData>.value(value: todoData, child: AddEventPage()),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(12))));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +55,8 @@ class _ToDoPageState extends State<ToDoPage> {
             _mainContent(context),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: currentPage == 0
+            ? FloatingActionButton(
           onPressed: () {
             showDialog(
                 barrierDismissible: false,
@@ -59,7 +71,7 @@ class _ToDoPageState extends State<ToDoPage> {
                 });
           },
           child: Icon(Icons.add),
-        ),
+        ) : null,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }

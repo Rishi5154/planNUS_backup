@@ -190,13 +190,13 @@ class _ProfileState extends State<Profile> {
                               print(AuthService.googleUserId);
                               bool check = await auth.googleSignIn.isSignedIn();
                               if (check) {
-                                if (name.isNotEmpty) {
-                                  await databaseMethods.updateSpecificUserData(
-                                      user.uid, name, newHandle);
-                                }
+                                await databaseMethods.updateSpecificUserData(
+                                    user.uid, name, newHandle);
+                                await user.changeName(name);
                               } else {
                                 await databaseMethods.updateSpecificUserData(
                                     user.uid, name, newHandle);
+                                await user.changeName(name);
                               }
                               HelperFunctions.saveUsernameSharedPreferences(name);
                               HelperFunctions.saveUserHandleSharedPreferences(
