@@ -144,7 +144,7 @@ class _ProfileState extends State<Profile> {
                     },
                   ) : Container(height: 10,),
                 ),
-                SizedBox(height: Constants.myName.isNotEmpty ? 5 : 20),
+                SizedBox(height: Constants.myName != null || Constants.myName.isNotEmpty ? 5 : 20),
                 Container(
                   margin: EdgeInsets.only(right: 30),
                   child: TextFormField(
@@ -187,21 +187,28 @@ class _ProfileState extends State<Profile> {
                           onPressed: () async {
                             //print(handle);
                             if (formKey.currentState.validate()) {
-                              print(AuthService.googleUserId);
-                              bool check = await auth.googleSignIn.isSignedIn();
-                              if (check) {
-                                await databaseMethods.updateSpecificUserData(
-                                    user.uid, name, newHandle);
+                              await databaseMethods.updateSpecificUserData(
+                                  user.uid, name, newHandle);
+                              if (name.isNotEmpty) {
+                                HelperFunctions.saveUsernameSharedPreferences(name);
                                 await user.changeName(name);
-                              } else {
-                                await databaseMethods.updateSpecificUserData(
-                                    user.uid, name, newHandle);
-                                await user.changeName(name);
+                                Constants.myName = name;
                               }
-                              HelperFunctions.saveUsernameSharedPreferences(name);
+//                              print(AuthService.googleUserId);
+//                              bool check = await auth.googleSignIn.isSignedIn();
+//                              if (check) {
+//                                await databaseMethods.updateSpecificUserData(
+//                                    user.uid, name, newHandle);
+//                                await user.changeName(name);
+//                              } else {
+//                                await databaseMethods.updateSpecificUserData(
+//                                    user.uid, name, newHandle);
+//                                await user.changeName(name);
+//                              }
+//                              HelperFunctions.saveUsernameSharedPreferences(name);
                               HelperFunctions.saveUserHandleSharedPreferences(
                                   handle);
-                              Constants.myName = name;
+//                              Constants.myName = name;
                               Constants.myHandle = handle;
                               print(Constants.myName);
                               print(Constants.myHandle);

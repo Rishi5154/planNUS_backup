@@ -79,12 +79,10 @@ class _HomeState extends State<Home> {
     //var now = new DateTime.now();
     String now = new DateFormat("H:m").format(new DateTime.now());
     return now;
-
   }
   @override
   Widget build(BuildContext context) {
     user = Provider.of<User>(context);
-
     if (user == null) {
       return Loading();
     } else {
@@ -95,8 +93,7 @@ class _HomeState extends State<Home> {
                 body: ToDoPage()
             ),
           catchError: (context, e) {return new TodoData();},
-            )
-        ),
+            ),
         //home
         Provider<User>.value(value: user,
             child: Scaffold(

@@ -9,17 +9,20 @@ class DatabaseMethods {
 
   final CollectionReference users = Firestore.instance.collection("users");
   final CollectionReference tokens = Firestore.instance.collection("userNotificationTokens");
+  final CollectionReference userTimetables = Firestore.instance.collection("userTimetables");
 
   Stream<String> getHandleStream() {
     return users.document(uid).snapshots().map((ss) => ss.data['handle']);
   }
 
   Stream<User> getUserStream2() {
+    return userTimetables.document(uid).snapshots().map((ss) => User.fromJson(ss.data['user']));
     return users.document(uid).snapshots().map((ss) => User.fromJson(ss.data['user']));
   }
 
   Stream<User> getUserStreamByUid(String uid) {
-    return users.document(uid).snapshots().map((ss) => User.fromJson(ss.data['user']));
+    return userTimetables.document(uid).snapshots().map((ss) => User.fromJson(ss.data['user']));
+    //return users.document(uid).snapshots().map((ss) => User.fromJson(ss.data['user']));
   }
   
   Stream<TodoData> getUserTodoDataStream() {
@@ -46,35 +49,38 @@ class DatabaseMethods {
   }
 
   Future<void> updateUserData2(User userData) async {
-    return await users.document(uid).updateData({
+    return await userTimetables.document(uid).updateData({
       'user' : userData.toJson()
     });
   }
 
   Future<TimeTable> getUserTimetable(String uid) async {
-    TimeTable userTimetable = await users.document(uid).get()
-        .then((val) => TimeTable.fromJson(val['user']['timetable']));
+//    TimeTable userTimetable = await users.document(uid).get()
+//        .then((val) => TimeTable.fromJson(val['user']['timetable']));
+    TimeTable userTimetable = await userTimetables
+        .document(uid).get()
+        .then((value) => TimeTable.fromJson(value['user']['timetable']));
     return userTimetable;
   }
 
+  Future<User> retrieveTimetable(String uid) async {
+    return await userTimetables
+        .document(uid)
+        .get()
+        .then((value) => User.fromJson(value['user']));
+  }
 
   Future<void> addUserData(String email, String name, String handle) async {
     print(uid);
+    await userTimetables.document(uid).setData({
+      'user': User(uid: uid, name: name).toJson()
+    });
     return await users.document(uid).setData({
       'email' : email,
       'name' : name,
       'handle' : handle,
-      'user' : User(uid: uid, name: name).toJson(),
+      //'user' : User(uid: uid, name: name).toJson(),
       'tasks' : TodoData().toJson(),
-    });
-  }
-
-  Future<void> updateUserData(String email, String name, String handle) async {
-    print(uid);
-    return await users.document(uid).updateData({
-      'email' : email,
-      'name' : name,
-      'handle' : handle,
     });
   }
 
@@ -87,10 +93,17 @@ class DatabaseMethods {
   Future<void> updateSpecificUserData(String uid, String name, String handle) async {
     print(uid + " here");
     print(handle.isEmpty);
-    return await users.document(uid).updateData({
-      'name' : name,
-      'handle' : handle,
-    });
+    if (name.isEmpty) {
+      return await users.document(uid).updateData({'handle' : handle});
+    }
+    if (handle.isEmpty) {
+      return await users.document(uid).updateData({'name' : name});
+    } else {
+      return await users.document(uid).updateData({
+        'name': name,
+        'handle': handle,
+      });
+    }
   }
 
   Future<String> getSpecificUserData(String uid) async {
@@ -102,9 +115,9 @@ class DatabaseMethods {
     return user;
   }
 
-  uploadUserInfo(userMap) {
-    Firestore.instance.collection("users").add(userMap);
-  }
+//  uploadUserInfo(userMap) {
+//    Firestore.instance.collection("users").add(userMap);
+//  }
 
 //  Future<User> getUserDataByHandle(String handle) async {
 //    return await users.where("handle", isEqualTo: handle).getDocuments();
