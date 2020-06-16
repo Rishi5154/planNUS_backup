@@ -192,9 +192,11 @@ class _ProfileState extends State<Profile> {
                               if (check) {
                                 await databaseMethods.updateSpecificUserData(
                                     user.uid, name, newHandle);
+                                await user.changeName(name);
                               } else {
                                 await databaseMethods.updateSpecificUserData(
                                     user.uid, name, newHandle);
+                                await user.changeName(name);
                               }
                               HelperFunctions.saveUsernameSharedPreferences(name);
                               HelperFunctions.saveUserHandleSharedPreferences(
