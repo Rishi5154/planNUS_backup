@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:plannusandroidversion/models/meeting/meeting_request.dart';
 import 'package:plannusandroidversion/models/timetable.dart';
 import 'package:plannusandroidversion/models/todo/todo_models/todo_data.dart';
 import 'package:plannusandroidversion/models/user.dart';
@@ -39,6 +40,7 @@ class DatabaseMethods {
     });
   }
 
+  //reference getData() async { }
   Future<TodoData> getUserTodoData() async {
     TodoData result = await users.document(uid).get().then((val) => TodoData.fromJson(val['tasks']));
     return result;
@@ -50,11 +52,11 @@ class DatabaseMethods {
     });
   }
 
-  Future<TimeTable> getUserTimetable(String uid) async {
-    TimeTable userTimetable = await users.document(uid).get()
-        .then((val) => TimeTable.fromJson(val['user']['timetable']));
-    return userTimetable;
-  }
+//  Future<TimeTable> getUserTimetable(String uid) async {
+//    TimeTable userTimetable = await users.document(uid).get()
+//        .then((val) => TimeTable.fromJson(val['user']['timetable']));
+//    return userTimetable;
+//  }
 
 
   Future<void> addUserData(String email, String name, String handle) async {
@@ -170,6 +172,12 @@ class DatabaseMethods {
         .snapshots();
   }
 
-  //##########################//
-
+  //##########################// newly added
+  Future<void> addMeetingRequest(MeetingRequest meetingRequest) async {
+    User currUser = await users.document(uid).get().then((val) => User.fromJson(val['user']));
+    currUser.requests.add(meetingRequest);
+    return users.document(uid).updateData({
+      'user' : currUser.toJson()
+    });
+  }
 }

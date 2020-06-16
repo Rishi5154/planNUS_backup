@@ -46,8 +46,9 @@ class _HomeState extends State<Home> {
           child: Row(
             children: <Widget>[
               Text(
-                Constants.myName == null || Constants.myName.isEmpty ? 'Please update your name at Profile.'
-                :  'Please update your handle at Profile.',
+                Constants.myName == null || Constants.myName.isEmpty
+                  ? 'Please update your name at Profile.'
+                  : 'Please update your handle at Profile.',
                 style: GoogleFonts.biryani(
                   fontSize: 16,
                 ),
@@ -99,7 +100,10 @@ class _HomeState extends State<Home> {
           StreamProvider<String>(
             create: (_) => DatabaseMethods(uid: user.uid).getHandleStream(),
             catchError: (context, e) { return "(no name yet)";}),
-          Provider<User>(create: (_) => user)
+          StreamProvider<User>(
+              create: (_) => DatabaseMethods(uid: user.uid).getUserStream2(),
+            catchError: (context, e) { return user; },
+          )
           ], child: Profile()),
       ];
       return MaterialApp(
@@ -206,39 +210,40 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 5, 8, 5),
-                    child: InkWell(
-                        splashColor: Colors.orange,
-                        onTap: () {
-                          showDialog(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (BuildContext context) {
-                                return Dialog(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(12))
-                                  ),
-                                  child: Provider<User>.value(
-                                    value: user,
-                                    child: NotificationPage(),
-                                  ),
-                                );
-                              });
-                        },
-                        child: Container(
-                            height: 40,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Icon(Icons.notifications),
-                                SizedBox(width: 20),
-                                Text('Notifications', style: TextStyle(fontSize: 20.0),),
-                                SizedBox(width: 100),
-                                Text(user.unread.length.toString(),
-                                    style: TextStyle(fontSize: 20.0, color: Colors.red[800]))
-                              ],
-                            )
-                        )
+                  padding: const EdgeInsets.fromLTRB(8, 5, 8, 5),
+                  child: InkWell(
+                      splashColor: Colors.orange,
+                      onTap: () {
+                        showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Dialog(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(12))
+                                ),
+                                child: StreamProvider<User>.value(
+                                  value: Stream.value(user),
+                                  child: NotificationPage(),
+                                ),
+                              );
+                            });
+                      },
+                      child: Container(
+                          height: 40,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Icon(Icons.notifications),
+                              SizedBox(width: 20),
+                              Text('Notifications', style: TextStyle(fontSize: 20.0),),
+                              SizedBox(width: 100),
+                              Text(user.requests.length.toString(), //user.unread.length.toString(),
+                                style: TextStyle(fontSize: 20.0, color: Colors.red[800])
+                              )
+                            ],
+                          )
+                      )
                     )
                 ),
                 Padding(

@@ -1,5 +1,6 @@
+import 'dart:collection';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:plannusandroidversion/models/meeting/custom_notification.dart';
+import 'package:plannusandroidversion/models/meeting/meeting_request.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'timetable.dart';
 
@@ -12,46 +13,42 @@ class User {
   TimeTable timetable;
   int phoneNumber;
   bool schedule = false;
-  List<CustomNotification> unread;
-
+  List<MeetingRequest> requests;
 
   User({this.uid, this.name}) {
     timetable = TimeTable.emptyTimeTable();
-    unread = new List<CustomNotification>();
+    requests = new List<MeetingRequest>();
   }
 
   factory User.fromJson(Map<String, dynamic> data) => _$UserFromJson(data);
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
-  Future<void> changeName(String name) {
-    this.name = name;
-    return update();
-  }
-
-  Future addPhoneNumber(int number) {
-    this.phoneNumber = number;
-    return update();
-  }
-
-  Future<void> addUnread(CustomNotification unreadNotification) {
-    try {
-      this.unread.add(unreadNotification);
-      print('added unread notification');
-      return DatabaseMethods(uid: this.uid).updateUserData2(this);
-    } catch (e) {
-      print('not added');
+  Future<void> changeName(String name) async {
+    if (this.name == null) {
+      this.name = name;
       return this.update();
+    } else {
+       return null;
     }
   }
 
-  Future<void> removeNotification(CustomNotification notification) {
-    int hash = notification.hashCode;
-    unread.removeWhere((x) => x.hashCode == hash);
-    return update();
+  Future addPhoneNumber(int number) async {
+    this.phoneNumber = number;
+    return await update();
   }
 
   Future<void> update() async {
     return DatabaseMethods(uid: this.uid).updateUserData2(this);
+  }
+
+  Future addMeetingRequest(MeetingRequest mr) {
+    this.requests.add(mr);
+    return this.update();
+  }
+
+  Future deletedMeetingRequest(MeetingRequest mr) {
+    this.requests.removeWhere((req) => req.meeting.uid == mr.meeting.uid);
+    return this.update();
   }
 }

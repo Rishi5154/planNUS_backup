@@ -58,8 +58,8 @@ class _ProfileState extends State<Profile> {
 
   Future getImage() async {
     ImagePicker imagePicker = new ImagePicker();
-    PickedFile Image = await imagePicker.getImage(source: ImageSource.gallery);
-    File image = File(Image.path);
+    PickedFile imagePicked = await imagePicker.getImage(source: ImageSource.gallery);
+    File image = File(imagePicked.path);
     await uploadImage(image);
   }
 
@@ -217,13 +217,12 @@ class _ProfileState extends State<Profile> {
                       child: RaisedButton(
                         onPressed: () async {
                           ImagePicker imagePicker = new ImagePicker();
-                          PickedFile Image = await imagePicker.getImage(source: ImageSource.gallery);
-                          File image = File(Image.path);
+                          PickedFile imagePicked = await imagePicker.getImage(source: ImageSource.gallery);
+                          File image = File(imagePicked.path);
                           setState(() {
                             _image = image;
                           });
                           await uploadImage(image);
-
                         },
                         color: Colors.blueAccent,
                         child: Shimmer.fromColors(

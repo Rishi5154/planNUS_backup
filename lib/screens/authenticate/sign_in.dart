@@ -77,7 +77,7 @@ class _SignInState extends State<SignIn> {
                     children: <Widget>[
                       Align(
                         alignment: Alignment.topCenter,
-                        child: Image.asset('assets/plannusupgraded.png',
+                        child: Image.asset('assets/newplanNUS.png',
                             height: 250, width: 500,scale: 0.00001,),
                       ),
                       SizedBox(height: 10),
