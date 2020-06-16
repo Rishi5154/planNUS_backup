@@ -74,11 +74,11 @@ class _ProfileState extends State<Profile> {
     return downloadUrl;
   }
 
-
   @override
   void initState() {
     // TODO: implement initState
     getPhoto();
+    print(TimeOfDay.now());
     super.initState();
   }
 
