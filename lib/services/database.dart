@@ -8,6 +8,7 @@ class DatabaseMethods {
   DatabaseMethods({this.uid});
 
   final CollectionReference users = Firestore.instance.collection("users");
+  final CollectionReference tokens = Firestore.instance.collection("userNotificationTokens");
 
   Stream<String> getHandleStream() {
     return users.document(uid).snapshots().map((ss) => ss.data['handle']);
@@ -74,6 +75,12 @@ class DatabaseMethods {
       'email' : email,
       'name' : name,
       'handle' : handle,
+    });
+  }
+
+  Future<void> updateNotificationToken(String token, String uid) async {
+    return await tokens.document(uid).setData({
+      'token' : token
     });
   }
 

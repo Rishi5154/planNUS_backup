@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
@@ -9,11 +10,11 @@ class AuthService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = new GoogleSignIn();
+  final FirebaseMessaging fcm = new FirebaseMessaging();
   String googleEmail = "";
   static GoogleSignInAccount googleSignInAccount;
   static String googleUserId;
   static FirebaseUser currentUser;
-
   // create user obj based on FireBase User
   User userFromFirebaseUser(FirebaseUser user) {
     return user != null ? User(uid: user.uid) : null;
@@ -25,6 +26,7 @@ class AuthService {
   }
 
   Future login() async {
+    String token = await fcm.getToken();
     try{
         GoogleSignInAccount user = await googleSignIn.signIn();
         GoogleSignInAuthentication gsa = await user.authentication;
@@ -37,6 +39,7 @@ class AuthService {
         currentUser = curr;
         print(currentUser.uid + ": id of current Firebase User, Google Signed in");
         print("true");
+        await DatabaseMethods(uid: AuthService.googleUserId).updateNotificationToken(token,googleUserId);
         //await DatabaseMethods(uid: curr.uid).updateUserData('', '@changeHandle');
         return userFromFirebaseUser(curr);
     } catch (err){
@@ -49,6 +52,7 @@ class AuthService {
   Future createProfileForGoogleAccounts() async {
     String email = googleSignInAccount.email;
     String name = googleSignInAccount.displayName;
+    String token = await fcm.getToken();
 //    QuerySnapshot snapshot;
     HelperFunctions.saveUserLoggedInSharedPreferences(true);
     try {
@@ -63,12 +67,14 @@ class AuthService {
             .saveUserHandleSharedPreferences(snapshot.documents[0].data["handle"]);
       });
       print(snapshot.documents[0].data["handle"]); // do not DELETE -> to force the error
+      await DatabaseMethods(uid: AuthService.googleUserId).updateNotificationToken(token, googleSignInAccount.id);
     } catch (e) {
       print(e.toString());
       print(AuthService.googleUserId + " at exception");
       String handle = '';
       await DatabaseMethods(uid: AuthService.googleUserId).addUserData(
           email, name, handle);
+      await DatabaseMethods(uid: AuthService.googleUserId).updateNotificationToken(token, AuthService.googleUserId);
       HelperFunctions.saveUserEmailSharedPreferences(email);
       HelperFunctions.saveUsernameSharedPreferences(name);
       HelperFunctions.saveUserHandleSharedPreferences(handle);
@@ -78,12 +84,16 @@ class AuthService {
 
   // sign in with email & password
   Future signInWithEmailAndPassword(String email, String password) async{
+    String token = await fcm.getToken();
     try { // sign in
       AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = result.user;
       print(user.uid);
       currentUser = user;
       print(currentUser.uid + ": id of current Firebase User with registered account");
+      await DatabaseMethods(uid: currentUser.uid).updateNotificationToken(token, currentUser.uid);
+      String tkn = await fcm.getToken();
+      print(tkn);
       return userFromFirebaseUser(user);
     } catch (e) { // else return null
       print(e.toString());
@@ -95,9 +105,11 @@ class AuthService {
   Future registerWithEmailAndPassword(String email, String password, String handle) async{
     try { // registration
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      String token = await fcm.getToken();
       FirebaseUser user = result.user;
       // create a new collection for the user with id on firebase database
       await DatabaseMethods(uid: user.uid).addUserData(email, '', handle);
+      await DatabaseMethods(uid: user.uid).updateNotificationToken(token, user.uid);
       currentUser = user;
       print(currentUser.uid + ": id of current Firebase User with registered account");
       return userFromFirebaseUser(user);

@@ -74,11 +74,11 @@ class _ProfileState extends State<Profile> {
     return downloadUrl;
   }
 
-
   @override
   void initState() {
     // TODO: implement initState
     getPhoto();
+    print(TimeOfDay.now());
     super.initState();
   }
 
@@ -190,8 +190,10 @@ class _ProfileState extends State<Profile> {
                               print(AuthService.googleUserId);
                               bool check = await auth.googleSignIn.isSignedIn();
                               if (check) {
-                                await databaseMethods.updateSpecificUserData(
-                                    user.uid, name, newHandle);
+                                if (name.isNotEmpty) {
+                                  await databaseMethods.updateSpecificUserData(
+                                      user.uid, name, newHandle);
+                                }
                               } else {
                                 await databaseMethods.updateSpecificUserData(
                                     user.uid, name, newHandle);
