@@ -282,7 +282,7 @@ class _ChatsState extends State<Chats> {
                               , Icons.info_outline)..show(context);
                         } else {
                           initiateSearch();
-                          print(otherUid+ " here again!!!");
+                          print('${otherUid ?? 'null detected'}' + " here again!!!");
                         }
                       },
                     )
