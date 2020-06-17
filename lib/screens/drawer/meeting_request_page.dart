@@ -124,7 +124,7 @@ class _MeetingRequestPageState extends State<MeetingRequestPage> {
                             meetingHandler.requesterName,
                             meetingHandler.memberNames);
                         MeetingRequest mr = new MeetingRequest(newMRID, meeting);
-                        Firestore.instance.collection('meeting').document(newMRID).updateData({
+                        Firestore.instance.collection('meetings').document(newMRID).updateData({
                           'meeting': mr.toJson(),
                         });
                         meetingHandler.memberUID.forEach((uid) async {

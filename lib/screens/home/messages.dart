@@ -120,10 +120,13 @@ class _MessagesState extends State<Messages> {
             children: <Widget>[
             Padding(
               padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 0),//const EdgeInsets.all(15),
-              child: TextField(
-                controller: _titleController,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.search),
+              child: Container(
+                color: Colors.grey[100],
+                child: TextField(
+                  controller: _titleController,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search),
+                  ),
                 ),
               ),
             ),
