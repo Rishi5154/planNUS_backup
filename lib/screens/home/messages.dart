@@ -119,12 +119,18 @@ class _MessagesState extends State<Messages> {
           child: Column(
             children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 0),//const EdgeInsets.all(15),
+              padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 5),//const EdgeInsets.all(15),
               child: Container(
-                color: Colors.grey[100],
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.all(Radius.circular(15))
+                ),
                 child: TextField(
                   controller: _titleController,
                   decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    ),
                     prefixIcon: Icon(Icons.search),
                   ),
                 ),
