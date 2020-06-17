@@ -45,11 +45,11 @@ class _MessagesState extends State<Messages> {
                             snapshot.data.documents[index].data['chatroomID'], user);
                     },
                   ),
-                  Divider(
-                    color: Colors.grey[600],
-                    height: 0,
-                    thickness: 1,
-                  )
+//                  Divider(
+//                    color: Colors.grey[600],
+//                    height: 0,
+//                    thickness: 1,
+//                  )
                 ],
               );
             }) : Container();
@@ -114,6 +114,7 @@ class _MessagesState extends State<Messages> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home : Scaffold(
+        backgroundColor: Colors.orange[300],
         body: Center(
           child: Column(
             children: <Widget>[
@@ -210,80 +211,116 @@ class _ChatRoomsTileState extends State<ChatRoomsTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-      child: Row(
-        children: <Widget>[
-          Container(
-            height: 50, width: 50,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.circular(50),
+      height: 80,
+      width: 500,
+      padding: EdgeInsets.only(left: 5, right: 5),
+      child: Card(
+        color: Colors.white,
+        elevation: 5,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Row(
+          children: <Widget>[
+            Container(
+              //padding: EdgeInsets.only(left: 5),
+              margin: EdgeInsets.only(left: 7),
+              height: 54, width: 54,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(54),
+              ),
+              child: Text("${widget.name.isNotEmpty ? widget.name.substring(0,1).toUpperCase() : "-"}",
+              style: TextStyle(fontSize: 18,color: Colors.white),),
             ),
-            child: Text("${widget.name.isNotEmpty ? widget.name.substring(0,1).toUpperCase() : "-"}",
-            style: TextStyle(fontSize: 18),),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(15, 8, 8, 8),
-            child: Container(width: 100, child: Text(widget.name, style: GoogleFonts.biryani(fontSize: 16),)),
-          ),
-          SizedBox(width: 100),
-          IconButton(
-            icon: Icon(
-              Icons.send
+            Padding(
+              padding: const EdgeInsets.fromLTRB(15, 8, 8, 8),
+              child: Container(width: 100,
+                  child: Text(widget.name,
+                    style: GoogleFonts.actor(fontSize: 16, fontWeight: FontWeight.w400),
+                  )
+              ),
             ),
-            onPressed: () {
+            SizedBox(width: 100),
+            IconButton(
+              color: Colors.lightBlueAccent,
+              icon: Icon(
+                Icons.send
+              ),
+              onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ChatscreenRedirect(widget.chatRoomID),
+                      )
+                  );
+              },
+              iconSize: 20,
+            ),
+            SizedBox(width: 1,),
+            PopupMenuButton<String>(
+              color: Colors.deepPurpleAccent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.5),
+              ),
+              elevation: 4,
+              onSelected: (String choice) => {
+                if (choice == 'Meet') {
+                  setProfileDialog(context)
+                } else if (choice == 'Timetable display') {
+//              Navigator.of(context).push(
+//              MaterialPageRoute(
+//                builder: (context) =>
+//                    Chats(),
+//              )
+//          );
                 Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          ChatscreenRedirect(widget.chatRoomID),
-                    )
-                );
-            },
-            iconSize: 20,
-          ),
-          SizedBox(width: 1,),
-          PopupMenuButton<String>(
-            onSelected: (String choice) => {
-              if (choice == 'Meet') {
-                setProfileDialog(context)
-              } else if (choice == 'Timetable display') {
-              Navigator.push(context,
-              MaterialPageRoute(builder: (context) =>
-                Provider<User>.value(value: widget.user,
-                  child: MaterialApp(
-                    home: Scaffold(
-                        appBar: AppBar(
-                          elevation: 0,
-                          backgroundColor: Colors.transparent,
-                          leading: IconButton(
-                            icon: new Icon(Icons.arrow_back_ios, color: Colors.white),
+                MaterialPageRoute(builder: (context) =>
+                  Provider<User>.value(value: widget.user,
+                    child: MaterialApp(
+                      debugShowCheckedModeBanner: false,
+                      home: Scaffold(
+//                        appBar: AppBar(
+//                          elevation: 0,
+//                          backgroundColor: Colors.transparent,
+//                          leading: IconButton(
+//                            icon: new Icon(Icons.arrow_back_ios, color: Colors.black),
+//                            onPressed: () {
+//                              Navigator.pop(context);
+//                            },
+//                          ),
+//                        ),
+                          backgroundColor: Colors.white,
+                          body: TimeTableWidget(),
+                        floatingActionButton: FloatingActionButton.extended(
+                            backgroundColor: Colors.transparent,
+                            elevation: 5,
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                          ),
-                        ),
-                        backgroundColor: Colors.deepPurple,
-                        body: TimeTableWidget()),
+                            label: new Icon(Icons.arrow_back, color: Colors.white, size: 24,)
+                      )
+                      ),
+                    )
+                  )
                   )
                 )
-                )
-              )
-              } else {
-                blockContact()
-              }
-            },
-            itemBuilder: (BuildContext context)  {
-              return Choices.choices.map((String choice){
-                return PopupMenuItem<String> (
-                  value: choice,
-                  child: Text(choice),
-                );
-              }).toList();
-            },
-          )
-        ],
+                } else {
+                  blockContact()
+                }
+              },
+              itemBuilder: (BuildContext context)  {
+                return Choices.choices.map((String choice){
+                  return PopupMenuItem<String> (
+                    value: choice,
+                    child: Text(choice, style: GoogleFonts.actor(color: Colors.white),),
+                  );
+                }).toList();
+              },
+            )
+          ],
+        ),
       ),
     );
   }
