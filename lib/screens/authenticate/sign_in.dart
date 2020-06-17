@@ -6,6 +6,7 @@ import 'package:plannusandroidversion/messages/helperfunctions.dart';
 import 'package:plannusandroidversion/screens/authenticate/resetpassword.dart';
 import 'package:plannusandroidversion/services/auth.dart';
 import 'package:plannusandroidversion/services/database.dart';
+import 'package:plannusandroidversion/services/notificationservice.dart';
 import 'package:plannusandroidversion/shared/constants.dart';
 import 'package:plannusandroidversion/shared/helperwidgets.dart';
 import 'package:plannusandroidversion/shared/loading.dart';
@@ -24,6 +25,7 @@ class _SignInState extends State<SignIn> {
   final AuthService auth = AuthService();
   final formKey = GlobalKey<FormState>(); // 'id' of form
   bool loading = false;
+
 
   // text field state
   String email = '';
@@ -77,7 +79,7 @@ class _SignInState extends State<SignIn> {
                     children: <Widget>[
                       Align(
                         alignment: Alignment.topCenter,
-                        child: Image.asset('assets/newplanNUS.png',
+                        child: Image.asset('assets/plannusupgraded.png',
                             height: 250, width: 500,scale: 0.00001,),
                       ),
                       SizedBox(height: 10),

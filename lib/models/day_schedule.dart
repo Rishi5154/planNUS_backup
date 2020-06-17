@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:plannusandroidversion/models/activity.dart';
+import 'schedule_time.dart';
 
 part 'day_schedule.g.dart';
 
@@ -22,7 +23,6 @@ class DaySchedule {
       case(1700): return 9; break;
       case(1800): return 10; break;
       case(1900): return 11; break;
-      default: return 0; break;
     }
   }
 

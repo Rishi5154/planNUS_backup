@@ -44,13 +44,13 @@ class _NotificationPageState extends State<NotificationPage> {
                                             child: Column(
                                                 children: [
                                                   Text(name,
-                                                    style: TextStyle(fontSize: 20.0)
+                                                    style: TextStyle(fontSize: 24.0)
                                                   ),
                                                   Text('Requested by: $requesterName',
-                                                    style: TextStyle(fontSize: 10.0)
+                                                    style: TextStyle(fontSize: 12.0)
                                                   ),
                                                   Text('Members: $memberNames',
-                                                    style: TextStyle(fontSize: 8.0)
+                                                    style: TextStyle(fontSize: 12.0)
                                                   ),
                                                 ]
                                             ),
@@ -88,6 +88,7 @@ class _NotificationPageState extends State<NotificationPage> {
                   )
               ),
               Align(
+                alignment: Alignment.topLeft,
                 child: BackButton(
                   onPressed: () {
                     Navigator.pop(context);

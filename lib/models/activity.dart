@@ -8,6 +8,7 @@ class Activity {
   String name;
   bool isImportant;
   bool isFinish;
+
   Activity(this.name, this.isImportant, this.isFinish);
 
   static Activity customActivity(String name, bool isImportant, bool isFinish) {

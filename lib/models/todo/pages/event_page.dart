@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plannusandroidversion/models/activity.dart';
 import 'package:plannusandroidversion/models/day_schedule.dart';
+import 'package:plannusandroidversion/models/schedule_time.dart';
 import 'package:plannusandroidversion/models/schedule_timing.dart';
 import 'package:plannusandroidversion/models/todo/widgets/custom_icon_decoration.dart';
 import 'package:plannusandroidversion/models/user.dart';

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/models/timetable.dart';
 import 'package:plannusandroidversion/models/todo/todo_main.dart';
@@ -16,6 +17,7 @@ import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/shared/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:plannusandroidversion/screens/drawer/meet_page.dart';
+import 'package:timer_builder/timer_builder.dart';
 
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
@@ -46,9 +48,8 @@ class _HomeState extends State<Home> {
           child: Row(
             children: <Widget>[
               Text(
-                Constants.myName == null || Constants.myName.isEmpty
-                  ? 'Please update your name at Profile.'
-                  : 'Please update your handle at Profile.',
+                Constants.myName == null || Constants.myName.isEmpty ? 'Please update your name at Profile.'
+                :  'Please update your handle at Profile.',
                 style: GoogleFonts.biryani(
                   fontSize: 16,
                 ),
@@ -74,6 +75,11 @@ class _HomeState extends State<Home> {
     });
   }
 
+   getSystemTime() {
+    //var now = new DateTime.now();
+    String now = new DateFormat("H:m").format(new DateTime.now());
+    return now;
+  }
   @override
   Widget build(BuildContext context) {
     user = Provider.of<User>(context);
@@ -87,8 +93,7 @@ class _HomeState extends State<Home> {
                 body: ToDoPage()
             ),
           catchError: (context, e) {return new TodoData();},
-            )
-        ),
+            ),
         //home
         Provider<User>.value(value: user,
             child: Scaffold(
@@ -101,10 +106,7 @@ class _HomeState extends State<Home> {
           StreamProvider<String>(
             create: (_) => DatabaseMethods(uid: user.uid).getHandleStream(),
             catchError: (context, e) { return "(no name yet)";}),
-          StreamProvider<User>(
-              create: (_) => DatabaseMethods(uid: user.uid).getUserStream2(),
-            catchError: (context, e) { return user; },
-          )
+          Provider<User>(create: (_) => user)
           ], child: Profile()),
       ];
       return MaterialApp(
@@ -119,28 +121,49 @@ class _HomeState extends State<Home> {
             backgroundColor: Colors.black54,
             elevation: 0.0,
             actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.add, color: Colors.white),
-                tooltip: 'Add',
-                onPressed: () {
-                  showDialog(
-                    barrierDismissible: false,
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Dialog(
-                        child: Provider<User>.value(value: user, child: WeeklyEventAdder()),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(12))
-                        )
-                      );
-                    }
+              Container(
+                margin: EdgeInsets.only(top: 1.5),
+                child: IconButton(
+                  icon: Icon(Icons.add, color: Colors.white),
+                  tooltip: 'Add',
+                  onPressed: () {
+                    showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Dialog(
+                          child: Provider<User>.value(value: user, child: WeeklyEventAdder()),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(12))
+                          )
+                        );
+                      }
+                    );
+                  },
+                ),
+              ),
+              TimerBuilder.periodic(
+                Duration(seconds: 1),
+                builder:(context) {
+                  return Center(
+                    child: Container(
+                      margin: EdgeInsets.only(top: 1.5),
+                      height: 35,
+                      width: 75,
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0, right: 8),
+                            child: Icon(Icons.access_time, size: 18,),
+                          ),
+                          Text("${getSystemTime()}",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                        ],
+                      ),
+                    ),
                   );
-                },
-              ),
-              IconButton(
-                icon: Icon(Icons.search, color: Colors.white),
-                onPressed: () {},
-              ),
+                }),
               FlatButton.icon(
                   icon: Icon(Icons.person,
                     color: Colors.yellow,
@@ -211,40 +234,39 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 5, 8, 5),
-                  child: InkWell(
-                      splashColor: Colors.orange,
-                      onTap: () {
-                        showDialog(
-                            barrierDismissible: false,
-                            context: context,
-                            builder: (BuildContext context) {
-                              return Dialog(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(12))
-                                ),
-                                child: StreamProvider<User>.value(
-                                  value: Stream.value(user),
-                                  child: NotificationPage(),
-                                ),
-                              );
-                            });
-                      },
-                      child: Container(
-                          height: 40,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Icon(Icons.notifications),
-                              SizedBox(width: 20),
-                              Text('Notifications', style: TextStyle(fontSize: 20.0),),
-                              SizedBox(width: 100),
-                              Text(user.requests.length.toString(), //user.unread.length.toString(),
-                                style: TextStyle(fontSize: 20.0, color: Colors.red[800])
-                              )
-                            ],
-                          )
-                      )
+                    padding: const EdgeInsets.fromLTRB(8, 5, 8, 5),
+                    child: InkWell(
+                        splashColor: Colors.orange,
+                        onTap: () {
+                          showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Dialog(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(12))
+                                  ),
+                                  child: Provider<User>.value(
+                                    value: user,
+                                    child: NotificationPage(),
+                                  ),
+                                );
+                              });
+                        },
+                        child: Container(
+                            height: 40,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Icon(Icons.notifications),
+                                SizedBox(width: 20),
+                                Text('Notifications', style: TextStyle(fontSize: 20.0),),
+                                SizedBox(width: 100),
+                                Text(user.requests.length.toString(),
+                                    style: TextStyle(fontSize: 20.0, color: Colors.red[800]))
+                              ],
+                            )
+                        )
                     )
                 ),
                 Padding(

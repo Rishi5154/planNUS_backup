@@ -22,7 +22,10 @@ class _ChatsState extends State<Chats> {
       new TextEditingController();
   DatabaseMethods databaseMethods = new DatabaseMethods();
   QuerySnapshot searchSnapshot;
+  QuerySnapshot timetableSnapshot;
   Stream usersStream;
+  String otherUid;
+  User user;
 
   @override
   void initState() {
@@ -38,14 +41,23 @@ class _ChatsState extends State<Chats> {
     print("$myHandle");
   }
 
-  initiateSearch() {
-    databaseMethods
+   initiateSearch() async {
+     await databaseMethods
         .getUserByHandle(searchTextEditingController.text)
         .then((value) {
       setState(() {
         searchSnapshot = value;
+        otherUid = value.documents[0].documentID;
       });
     });
+     await databaseMethods.userTimetables
+         .document(otherUid)
+         .get()
+     .then((value){
+       setState(() {
+         user = User.fromJson(value.data['user']);
+       });
+     });
   }
 
   getChatRoomId(String a, String b) {
@@ -57,7 +69,7 @@ class _ChatsState extends State<Chats> {
     }
   }
 
-  createChatRoomToStartConversation({String name, User user}) {
+  createChatRoomToStartConversation({String name,/*String otherUid,*/ User user}) {
     print(Constants.myName + " is now");
     print(name + " is here");
     print(Constants.myName /*+ " is here"*/);
@@ -79,8 +91,9 @@ class _ChatsState extends State<Chats> {
     }
   }
 
+
   Widget searchList() {
-    return searchSnapshot != null
+    return searchSnapshot != null && user != null
         ? ListView.builder(
             shrinkWrap: true,
             itemCount: searchSnapshot.documents.length,
@@ -88,7 +101,7 @@ class _ChatsState extends State<Chats> {
               return searchTile(
                   name: searchSnapshot.documents[index].data['name'],
                   handle: searchSnapshot.documents[index].data['handle'],
-                  user: User.fromJson(searchSnapshot.documents[index].data['user']));
+                  user: user);
             })
         : Container();
   }
@@ -102,7 +115,7 @@ class _ChatsState extends State<Chats> {
 //        ));
 //  }
 
-  Widget searchTile({String name, String handle, User user}) {
+  Widget searchTile({String name, String handle,/*String otherUid,*/ User user}) {
     print(name);
     return Container(
         padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
@@ -118,40 +131,40 @@ class _ChatsState extends State<Chats> {
                     style: TextStyle(fontSize: 14, color: Colors.white))
               ],
             ),
-            Spacer(),
-            GestureDetector(
-                  onTap: () {
-                    print(name);
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Provider<User>.value(value: user,
-                            child: MaterialApp(
-                              home: Scaffold(
-                                  appBar: AppBar(
-                                    elevation: 0,
-                                    backgroundColor: Colors.transparent,
-                                    leading: IconButton(
-                                      icon: new Icon(Icons.arrow_back_ios, color: Colors.white),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                  ),
-                                  backgroundColor: Colors.deepPurple,
-                                  body: TimeTableWidget()),
-                            )
-                        )
-                        )
-                    );
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                    child: Text("Timetable"),
-                  ),
-            ),
+//            Spacer(),
+//            GestureDetector(
+//                  onTap: () {
+//                    print(name);
+//                    Navigator.push(context,
+//                        MaterialPageRoute(builder: (context) => Provider<User>.value(value: user,
+//                            child: MaterialApp(
+//                              home: Scaffold(
+//                                  appBar: AppBar(
+//                                    elevation: 0,
+//                                    backgroundColor: Colors.transparent,
+//                                    leading: IconButton(
+//                                      icon: new Icon(Icons.arrow_back_ios, color: Colors.white),
+//                                      onPressed: () {
+//                                        Navigator.pop(context);
+//                                      },
+//                                    ),
+//                                  ),
+//                                  backgroundColor: Colors.deepPurple,
+//                                  body: TimeTableWidget()),
+//                            )
+//                        )
+//                        )
+//                    );
+//                  },
+//                  child: Container(
+//                    decoration: BoxDecoration(
+//                      color: Colors.blue,
+//                      borderRadius: BorderRadius.circular(30),
+//                    ),
+//                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+//                    child: Text("Timetable"),
+//                  ),
+//            ),
             Spacer(),
             GestureDetector(
               onTap: () {
@@ -257,7 +270,7 @@ class _ChatsState extends State<Chats> {
                     IconButton(
                       padding: EdgeInsets.fromLTRB(20, 2, 2, 2),
                       icon: new Icon(Icons.search, color: Colors.blue),
-                      onPressed: () {
+                      onPressed: () async {
                         if (Constants.myName == null || Constants.myName.isEmpty) {
                           HelperWidgets.TopFlushbar('Please update your name at Profile!'
                               , Icons.perm_identity)..show(context);
@@ -269,6 +282,7 @@ class _ChatsState extends State<Chats> {
                               , Icons.info_outline)..show(context);
                         } else {
                           initiateSearch();
+                          print(otherUid+ " here again!!!");
                         }
                       },
                     )

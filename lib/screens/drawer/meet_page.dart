@@ -29,7 +29,11 @@ class _MeetPageState extends State<MeetPage> {
                     try {
                       toAdd = await DatabaseMethods(uid: Provider.of<User>(context, listen: false).uid)
                           .getUserByHandle(handle)
-                          .then((val) => User.fromJson(val.documents[0].data['user']));
+                          .then((val) => val.documents[0].documentID)
+                          .then((uid) async {
+                            return await DatabaseMethods(uid: uid).getUserByUID(uid);
+                      });
+//                          .then((val) => User.fromJson(val.documents[0].data['user']));
                       setState(() {
                         toChecks.add(toAdd);
                         _textEditingController.clear();

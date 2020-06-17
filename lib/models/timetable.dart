@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:plannusandroidversion/models/schedule_time.dart';
+import 'package:plannusandroidversion/models/schedule_timing.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:provider/provider.dart';
 import 'activity.dart';
 import 'day_schedule.dart';
-import 'schedule_time.dart';
-import 'schedule_timing.dart';
+
 //void main() => runApp(MaterialApp(debugShowCheckedModeBanner: false, home: TimeTableWidget(new User())));
 
 part 'timetable.g.dart';
@@ -92,18 +92,18 @@ class TimeTableWidgetState extends State<TimeTableWidget> {
                       Card(
                         color: Colors.blue,
                         child: SizedBox(
-                          height: 50.0,
-                          width: 40.0,
-                          child: Column(
-                            children: [
-                              Text(timeSlot.substring(0, 4),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 15.0)),
-                              Text("-", style: TextStyle(fontSize: 12)),
-                              Text(timeSlot.substring(5), textAlign: TextAlign
-                                  .center, style: TextStyle(fontSize: 15.0)),
-                            ]
-                          )
+                            height: 50.0,
+                            width: 40.0,
+                            child: Column(
+                                children: [
+                                  Text(timeSlot.substring(0, 4),
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize: 15.0)),
+                                  Text("-", style: TextStyle(fontSize: 12)),
+                                  Text(timeSlot.substring(5), textAlign: TextAlign
+                                      .center, style: TextStyle(fontSize: 15.0)),
+                                ]
+                            )
                         )
                     ),
                     ttRow(1, startTime),
@@ -114,8 +114,8 @@ class TimeTableWidgetState extends State<TimeTableWidget> {
                     ttRow(6, startTime),
                     ttRow(7, startTime),
                   ],
-                ),
-              );
+              ),
+                );
             }
           },
           itemCount: 13,
