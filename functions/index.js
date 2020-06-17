@@ -37,3 +37,31 @@ exports.timetableUpdate = functions.firestore.document('/userTimetables/{documen
         }); 
         return null;
     });
+    });
+exports.chatUpdate = functions.firestore.document('ChatRoom/{user1user2}/chats/{id}')
+    .onWrite(async (snap,context) => {
+        const data = snap.after.data()
+        const sender = await data.sendBy
+        const message = await data.message
+        const ss = await admin.firestore()
+        .collection('users')
+        .where('name', '==', sender)
+        .get()
+        const uid = ss.docs[0].id;
+        const doc = await admin.firestore()
+        .collection('userNotificationTokens')
+        .doc(uid)
+        .get()
+        const token = doc.data().token
+        const payload = {
+            notification: {
+                title: sender,
+                body: message
+            }
+        }
+        // eslint-disable-next-line promise/always-return
+        const response = await admin.messaging().sendToDevice(token, payload).then((res) => {
+            console.log("Message sent successfully!", res.body) 
+        });
+        return null;
+    })

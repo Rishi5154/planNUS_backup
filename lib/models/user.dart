@@ -13,6 +13,7 @@ class User {
   String name;
   TimeTable timetable;
   List<MeetingRequest> requests;
+  List<CustomNotification> unread;
 
   User({this.uid, this.name}) {
     timetable = TimeTable.emptyTimeTable();
