@@ -12,7 +12,6 @@ class NotificationService {
   void showNotification(message) async {
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
       Platform.isAndroid ? 'com.dfa.plannusandroid' : 'com.duytq.flutterchatdemo',
-      'Timetable',
       '',
       'Your timetable has been updated',
       playSound: true,

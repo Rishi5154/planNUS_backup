@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:plannusandroidversion/models/meeting/meeting_request.dart';
 import 'package:plannusandroidversion/models/timetable.dart';
 import 'package:plannusandroidversion/models/todo/todo_models/todo_data.dart';
 import 'package:plannusandroidversion/models/user.dart';
@@ -192,15 +191,5 @@ class DatabaseMethods {
   }
 
   //##########################//
-  Future<void> addMeetingRequest(MeetingRequest meetingRequest) async {
-    User currUser = await userTimetables.document(uid).get().then((val) => User.fromJson(val['user']));
-    currUser.requests.add(meetingRequest);
-    return userTimetables.document(uid).updateData({
-      'user' : currUser.toJson()
-    });
-  }
 
-  Future<User> getUserByUID(String uid) async {
-    return userTimetables.document(uid).get().then((val) => User.fromJson(val.data['user']));
-  }
 }

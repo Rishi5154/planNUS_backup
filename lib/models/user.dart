@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:plannusandroidversion/models/meeting/meeting_request.dart';
+import 'package:plannusandroidversion/models/meeting/custom_notification.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'timetable.dart';
 
@@ -8,16 +8,16 @@ part 'user.g.dart';
 @JsonSerializable(explicitToJson: true)
 class User {
   final String uid;
-
-  //User properties
   String name;
   TimeTable timetable;
-  List<MeetingRequest> requests;
+//  int phoneNumber;
+//  bool schedule = false;
   List<CustomNotification> unread;
+
 
   User({this.uid, this.name}) {
     timetable = TimeTable.emptyTimeTable();
-    requests = new List<MeetingRequest>();
+    unread = new List<CustomNotification>();
   }
 
   factory User.fromJson(Map<String, dynamic> data) => _$UserFromJson(data);
@@ -26,17 +26,29 @@ class User {
 
   Future<void> changeName(String name) {
     this.name = name;
-    return this.update();
+    return update();
+  }
+//
+//  Future addPhoneNumber(int number) {
+//    this.phoneNumber = number;
+//    return update();
+//  }
+
+  Future<void> addUnread(CustomNotification unreadNotification) {
+    try {
+      this.unread.add(unreadNotification);
+      print('added unread notification');
+      return DatabaseMethods(uid: this.uid).updateUserData2(this);
+    } catch (e) {
+      print('not added');
+      return this.update();
+    }
   }
 
-  Future addMeetingRequest(MeetingRequest mr) {
-    this.requests.add(mr);
-    return this.update();
-  }
-
-  Future deletedMeetingRequest(MeetingRequest mr) {
-    this.requests.removeWhere((req) => req.meeting.uid == mr.meeting.uid);
-    return this.update();
+  Future<void> removeNotification(CustomNotification notification) {
+    int hash = notification.hashCode;
+    unread.removeWhere((x) => x.hashCode == hash);
+    return update();
   }
 
   Future<void> update() async {

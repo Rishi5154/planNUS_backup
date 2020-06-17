@@ -1,28 +1,19 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:plannusandroidversion/models/schedule_timing.dart';
+import 'package:plannusandroidversion/models/user.dart';
 
 part 'meeting.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Meeting {
-  final String uid;
-  final String name;
-  String userUID;
-  List<String> groupUID;
-  ScheduleTiming slot;
+  String name;
+  User requester;
+  List<User> group;
   int day;
+  int start; //scheduletiming
+  int end;
   bool isImportant;
 
-  String requesterName;
-  String memberNames;
-
-  Meeting(this.uid, this.name, this.userUID, this.groupUID, this.requesterName, this.memberNames);
-
-  void setDay(int day) { this.day = day; }
-
-  void setSlot(ScheduleTiming slot) { this.slot = slot; }
-
-  void setIsImportant(bool isImportant) { this.isImportant = isImportant; }
+  Meeting(this.name, this.requester, this.group, this.day, this.start, this.end, this.isImportant);
 
   factory Meeting.fromJson(Map<String, dynamic> data) => _$MeetingFromJson(data);
 

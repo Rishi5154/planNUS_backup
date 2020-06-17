@@ -14,17 +14,20 @@ User _$UserFromJson(Map<String, dynamic> json) {
     ..timetable = json['timetable'] == null
         ? null
         : TimeTable.fromJson(json['timetable'] as Map<String, dynamic>)
-    ..requests = (json['requests'] as List)
+//    ..phoneNumber = json['phoneNumber'] as int
+//    ..schedule = json['schedule'] as bool
     ..unread = (json['unread'] as List)
         ?.map((e) => e == null
             ? null
-            : MeetingRequest.fromJson(e as Map<String, dynamic>))
+            : CustomNotification.fromJson(e as Map<String, dynamic>))
         ?.toList();
 }
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'uid': instance.uid,
       'name': instance.name,
-      'requests': instance.requests?.map((e) => e?.toJson())?.toList(),
+      'timetable': instance.timetable?.toJson(),
+ //     'phoneNumber': instance.phoneNumber,
+ //     'schedule': instance.schedule,
       'unread': instance.unread?.map((e) => e?.toJson())?.toList(),
     };

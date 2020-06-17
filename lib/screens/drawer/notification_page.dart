@@ -1,8 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:plannusandroidversion/models/meeting/meeting_request.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:provider/provider.dart';
+import 'package:plannusandroidversion/models/meeting/custom_notification.dart';
 
 class NotificationPage extends StatefulWidget {
   @override
@@ -11,84 +10,67 @@ class NotificationPage extends StatefulWidget {
 
 class _NotificationPageState extends State<NotificationPage> {
   User _currUser;
-  List<MeetingRequest> unreadNotifications;
+  List<CustomNotification> unreadNotifications;
 
   @override
   Widget build(BuildContext context) {
     _currUser = Provider.of<User>(context);
-    unreadNotifications = _currUser.requests;
-    List<MeetingRequest> refUnread = unreadNotifications.reversed.toList();
+    unreadNotifications = _currUser.unread;
+    List<CustomNotification> refUnread = unreadNotifications.reversed.toList();
     if(unreadNotifications.length > 0) {
       return Padding(
           padding: const EdgeInsets.fromLTRB(8, 5, 8, 5),
           child: Stack(
             children: <Widget>[
               SingleChildScrollView(
-                  child: SizedBox(
-                    height: 400.0,
-                    child: ListView.builder(
-                        itemCount: unreadNotifications.length,
-                        itemBuilder: (context, index) {
-                          MeetingRequest req = refUnread[index];
-                          String name = req.meeting.name;
-                          String requesterName = req.meeting.requesterName;
-                          String memberNames = req.meeting.memberNames;
-                          return Container(
-                            height: 80,
-                            child: Card(
-                                child: Container(
-                                    child: Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 2,
-                                            child: Column(
-                                                children: [
-                                                  Text(name,
-                                                    style: TextStyle(fontSize: 24.0)
-                                                  ),
-                                                  Text('Requested by: $requesterName',
-                                                    style: TextStyle(fontSize: 12.0)
-                                                  ),
-                                                  Text('Members: $memberNames',
-                                                    style: TextStyle(fontSize: 12.0)
-                                                  ),
-                                                ]
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Row(
-                                              children: [
-                                                IconButton(
-                                                  icon: Icon(Icons.check),
-                                                  onPressed: () async {
-                                                    MeetingRequest mr = await Firestore.instance.collection('meeting')
-                                                        .document(req.id).get().then((val) => MeetingRequest.fromJson(val.data['meeting']));
-                                                    mr.accept();
-                                                    await Firestore.instance.collection('meeting').document(req.id).updateData({
-                                                      'meeting' : mr.toJson()
-                                                    });
-                                                  },
-                                                ),
-                                                IconButton(
-                                                  icon: Icon(Icons.clear),
-                                                  onPressed: () async {
-                                                    await _currUser.deletedMeetingRequest(req);
-                                                  },
-                                                ),
-                                              ]
-                                            )
-                                          ),
-                                        ]
-                                    )
-                                )
-                            ),
-                          );
+                  child: ListView.builder(
+                      itemCount: unreadNotifications.length,
+                      itemBuilder: (context, index) {
+                        CustomNotification not = refUnread[index];
+                        String names = '';
+                        if (not.info.group.length <= 5) {
+                          not.info.group.forEach((user) =>
+                          names + user.name + ", ");
+                        } else {
+                          List<User> refNames = not.info.group;
+                          names = refNames[0].name + ", "
+                              + refNames[1].name + ", "
+                              + refNames[2].name + ", "
+                              + refNames[3].name + "...";
                         }
-                    ),
+                        names.substring(0, names.length - 2);
+                        return Card(
+                            child: Container(
+                                child: Row(
+                                    children: [
+                                      Column(
+                                          children: [
+                                            Text(refUnread[index].info.name,
+                                                style: TextStyle(fontSize: 15.0)),
+                                            Text(names,
+                                                style: TextStyle(fontSize: 10.0))
+                                          ]
+                                      ),
+                                      FlatButton(
+                                        child: Icon(Icons.check),
+                                        onPressed: () {
+
+                                        },
+                                      ),
+                                      FlatButton(
+                                        child: Icon(Icons.clear),
+                                        onPressed: () async {
+                                          await _currUser.removeNotification(not);
+                                        },
+                                      ),
+                                    ]
+                                )
+                            )
+                        );
+                      }
                   )
               ),
               Align(
-                alignment: Alignment.topLeft,
                 child: BackButton(
                   onPressed: () {
                     Navigator.pop(context);
@@ -125,7 +107,7 @@ class _NotificationPageState extends State<NotificationPage> {
 
   Widget notificationTile(BuildContext context) {
     _currUser = Provider.of<User>(context);
-    unreadNotifications = _currUser.requests;
+    unreadNotifications = _currUser.unread;
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 5, 8, 5),
       child: InkWell(
