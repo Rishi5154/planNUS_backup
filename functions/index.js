@@ -37,6 +37,7 @@ exports.timetableUpdate = functions.firestore.document('/userTimetables/{documen
         }); 
         return null;
     });
+    });
 exports.chatUpdate = functions.firestore.document('ChatRoom/{user1user2}/chats/{id}')
     .onWrite(async (snap,context) => {
         const data = snap.after.data()

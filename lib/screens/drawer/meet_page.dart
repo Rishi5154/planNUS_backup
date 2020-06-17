@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plannusandroidversion/models/user.dart';
+import 'package:plannusandroidversion/screens/drawer/meeting_request_page.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:plannusandroidversion/models/meeting/meeting_handler.dart';
@@ -28,7 +29,11 @@ class _MeetPageState extends State<MeetPage> {
                     try {
                       toAdd = await DatabaseMethods(uid: Provider.of<User>(context, listen: false).uid)
                           .getUserByHandle(handle)
-                          .then((val) => User.fromJson(val.documents[0].data['user']));
+                          .then((val) => val.documents[0].documentID)
+                          .then((uid) async {
+                            return await DatabaseMethods(uid: uid).getUserByUID(uid);
+                      });
+//                          .then((val) => User.fromJson(val.documents[0].data['user']));
                       setState(() {
                         toChecks.add(toAdd);
                         _textEditingController.clear();
@@ -67,7 +72,7 @@ class _MeetPageState extends State<MeetPage> {
                     child: FlatButton(
                         color: Colors.grey[300],
                         onPressed: () {
-                          MeetingHandler meeting = new MeetingHandler(Provider.of<User>(context, listen: false), toChecks);
+                          MeetingHandler meetingHandler = new MeetingHandler(Provider.of<User>(context, listen: false), toChecks);
                           showDialog(
                               barrierDismissible: false,
                               context: context,
@@ -77,7 +82,9 @@ class _MeetPageState extends State<MeetPage> {
                                         value: Provider.of<User>(context),
                                         child: Stack(
                                             children: [
-                                              meeting.showCommonFreeTiming(cont),
+                                              MeetingRequestPage(
+                                                  meetingHandler
+                                              ),
                                               BackButton(
                                                 onPressed: () async {
                                                   Navigator.pop(cont);
@@ -100,7 +107,7 @@ class _MeetPageState extends State<MeetPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: FlatButton(
                         color: Colors.grey[300],
-                        onPressed: (){
+                        onPressed: () {
                           Navigator.pop(context);
                         },
                         child: Text('Cancel')

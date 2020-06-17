@@ -262,7 +262,7 @@ class _HomeState extends State<Home> {
                                 SizedBox(width: 20),
                                 Text('Notifications', style: TextStyle(fontSize: 20.0),),
                                 SizedBox(width: 100),
-                                Text(user.unread.length.toString(),
+                                Text(user.requests.length.toString(),
                                     style: TextStyle(fontSize: 20.0, color: Colors.red[800]))
                               ],
                             )

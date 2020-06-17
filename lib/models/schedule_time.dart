@@ -1,22 +1,8 @@
-class ScheduleTiming {
-  int start;
-  int end;
-  ScheduleTiming(int start) {
-    this.start = start;
-    this.end = start + 100;
-  }
+import 'package:json_annotation/json_annotation.dart';
 
-  static List<ScheduleTiming> allSlots = ScheduleTime.startTimeList
-        .map((startTime) => ScheduleTiming(startTime.time)).toList();
+part 'schedule_time.g.dart';
 
-  @override
-  String toString() {
-    String s = start < 1000 ? "0${start.toString()}" : start.toString();
-    String e = end < 1000 ? "0${end.toString()}" : end.toString();
-    return s + '-' + e;
-  }
-}
-
+@JsonSerializable(explicitToJson: true)
 class ScheduleTime {
   final int time;
   ScheduleTime({this.time});
@@ -39,4 +25,8 @@ class ScheduleTime {
     ScheduleTime(time: 1300), ScheduleTime(time: 1400), ScheduleTime(time: 1500), ScheduleTime(time: 1600),
     ScheduleTime(time: 1700), ScheduleTime(time: 1800), ScheduleTime(time: 1900), ScheduleTime(time: 2000),
   ];
+
+  factory ScheduleTime.fromJson(Map<String, dynamic> data) => _$ScheduleTimeFromJson(data);
+
+  Map<String, dynamic> toJson() => _$ScheduleTimeToJson(this);
 }
