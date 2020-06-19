@@ -30,6 +30,7 @@ class MeetingHandler {
     Map<int, List<ScheduleTiming>> result = new Map<int, List<ScheduleTiming>>();
     for (int i = 0; i < 6; i++) {
       List<Activity> ref = requester.timetable.timetable[i].ds;
+      print(requester);
       print(requester.name);
       List<ScheduleTiming> addable = new List<ScheduleTiming>();
       for (int j = 0; j < 12; j++) {

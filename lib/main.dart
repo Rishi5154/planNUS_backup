@@ -46,6 +46,11 @@ class _MyAppState extends State<MyApp> {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          accentColor: Colors.deepPurple,
+          brightness: Brightness.dark,
+          primaryColor: Colors.deepPurple,
+        ),
         home: Wrapper()
       ),
     );

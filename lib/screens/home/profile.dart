@@ -23,7 +23,8 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
 
-  final AuthService auth = AuthService();
+//  final AuthService auth = AuthService();
+  User user;
   final formKey = GlobalKey<FormState>(); // 'id' of form
   bool loading = false;
   // text field state
@@ -39,8 +40,9 @@ class _ProfileState extends State<Profile> {
   DatabaseMethods databaseMethods = new DatabaseMethods();
   QuerySnapshot currentUser;
 
-  StorageReference reference = FirebaseStorage.instance.ref()
-      .child('${AuthService.currentUser.uid}/profileimage.jpg');
+  bool gotName;
+
+  StorageReference reference;
 
   getPhoto() async {
     try {
@@ -81,183 +83,186 @@ class _ProfileState extends State<Profile> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    User user = Provider.of<User>(context);
+    user = Provider.of<User>(context);
+    reference = FirebaseStorage.instance.ref()
+        .child('${user.uid}/profileimage.jpg');
     handle = Provider.of<String>(context);
-    return handle == null || img == null ? Loading() : Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        title: Center(
-          child: Text("Welcome, " + handle,
-              style: TextStyle(color: Colors.black)
-          ),
-        ),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Colors.purple[100], Colors.purpleAccent[700], Colors.purple[300]],
+    return handle == null || img == null
+      ? Loading()
+      : Scaffold(
+          extendBodyBehindAppBar: true,
+          appBar: AppBar(
+            title: Center(
+              child: Text("Welcome, " + handle,
+                  style: TextStyle(color: Colors.black)
+              ),
             ),
+            elevation: 0,
+            backgroundColor: Colors.transparent,
           ),
-          child: Form(
-            key: formKey, // keep track of form and its state
-            child : Column (
-              children: <Widget>[
-                Container(
-                    child: _image != null ? Padding(
-                      padding: const EdgeInsets.all(60),
-                      child: CircleAvatar(backgroundImage:FileImage(_image), radius: 100),
-                    ) :
-                    url != null ? Padding(
-                      padding: const EdgeInsets.all(60),
-                      child: CircleAvatar(backgroundImage:img.image, radius: 100),
-                    )
-                        : img
+          body: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [Colors.purple[100], Colors.purpleAccent[700], Colors.purple[300]],
                 ),
-                Container(
-                  margin: EdgeInsets.only(right: 30),
-                  child: Constants.myName == null || Constants.myName.isEmpty ? TextFormField(
-                    decoration: InputDecoration(
-                        hintText: 'Name',
-                        icon: Icon(Icons.person_outline, color: Colors.blue),
-                        fillColor: Colors.white,
-                        filled: true,
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey[300], width: 2),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue, width: 2),
-                        )
-                    ),
-                    validator: (val) => val.isEmpty ? 'Enter your name' : null,
-                    onChanged: (val) {
-                      setState(() => name = val);
-                    },
-                  ) : Container(height: 10,),
-                ),
-                SizedBox(height: Constants.myName != null || Constants.myName.isNotEmpty ? 5 : 20),
-                Container(
-                  margin: EdgeInsets.only(right: 30),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                        hintText: 'Handle',
-                        icon: Icon(Icons.alternate_email, color: Colors.blue),
-                        fillColor: Colors.white,
-                        filled: true,
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey[300], width: 2),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue, width: 2),
-                        )
-                    ),
-                    obscureText: false,
-                    validator: (val) => val[0] != '@' ? 'Handle starts with @!' : null,
-                    onChanged: (val) {
-                      setState(() => newHandle = val);
-                      //print(handle);
-                    },
-                  ),
-                ),
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget> [
+              ),
+              child: Form(
+                key: formKey, // keep track of form and its state
+                child : Column (
+                  children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(left: 10, right:0, top: 0, bottom: 0),
-                      child: RaisedButton(
-                          color: Colors.blueAccent,
-                          child: Shimmer.fromColors(
-                            highlightColor: Colors.black,
-                            baseColor: Colors.white,
-                            child: Text(
-                              'Update',
-                              style: GoogleFonts.lato(color: Colors.white, fontWeight: FontWeight.w600),
+                        child: _image != null ? Padding(
+                          padding: const EdgeInsets.all(60),
+                          child: CircleAvatar(backgroundImage:FileImage(_image), radius: 100),
+                        ) :
+                        url != null ? Padding(
+                          padding: const EdgeInsets.all(60),
+                          child: CircleAvatar(backgroundImage:img.image, radius: 100),
+                        )
+                            : img
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(right: 30),
+                      child: Constants.myName == null || Constants.myName.isEmpty ? TextFormField(
+                        decoration: InputDecoration(
+                            hintText: 'Name',
+                            icon: Icon(Icons.person_outline, color: Colors.blue),
+                            fillColor: Colors.white,
+                            filled: true,
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey[300], width: 2),
                             ),
-                          ),
-                          onPressed: () async {
-                            //print(handle);
-                            if (formKey.currentState.validate()) {
-                              await databaseMethods.updateSpecificUserData(
-                                  user.uid, name, newHandle);
-                              if (name.isNotEmpty) {
-                                HelperFunctions.saveUsernameSharedPreferences(name);
-                                await user.changeName(name);
-                                Constants.myName = name;
-                              }
-//                              print(AuthService.googleUserId);
-//                              bool check = await auth.googleSignIn.isSignedIn();
-//                              if (check) {
-//                                await databaseMethods.updateSpecificUserData(
-//                                    user.uid, name, newHandle);
-//                                await user.changeName(name);
-//                              } else {
-//                                await databaseMethods.updateSpecificUserData(
-//                                    user.uid, name, newHandle);
-//                                await user.changeName(name);
-//                              }
-//                              HelperFunctions.saveUsernameSharedPreferences(name);
-                              HelperFunctions.saveUserHandleSharedPreferences(
-                                  handle);
-//                              Constants.myName = name;
-                              Constants.myHandle = handle;
-                              print(Constants.myName);
-                              print(Constants.myHandle);
-                              setState(() {
-                                key = handle;
-                              });
-                              HelperWidgets.flushbar('Update successful!', Icons.update)..show(context);
-                            }
-                          }),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 3, right:0, top: 0, bottom: 0),
-                      child: RaisedButton(
-                        onPressed: () async {
-                          ImagePicker imagePicker = new ImagePicker();
-                          PickedFile Image = await imagePicker.getImage(source: ImageSource.gallery);
-                          File image = File(Image.path);
-                          setState(() {
-                            _image = image;
-                          });
-                          await uploadImage(image);
-
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue, width: 2),
+                            )
+                        ),
+                        validator: (val) => val.isEmpty ? 'Enter your name' : null,
+                        onChanged: (val) {
+                          setState(() => name = val);
                         },
-                        color: Colors.blueAccent,
-                        child: Shimmer.fromColors(
-                          highlightColor: Colors.black,
-                          baseColor: Colors.white,
-                          child: Text(
-                            'Update image',
-                            style: GoogleFonts.lato(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
+                      ) : Container(height: 10,),
+                    ),
+                    SizedBox(height: Constants.myName != null || Constants.myName.isNotEmpty ? 5 : 20),
+                    Container(
+                      margin: EdgeInsets.only(right: 30),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                            hintText: 'Handle',
+                            icon: Icon(Icons.alternate_email, color: Colors.blue),
+                            fillColor: Colors.white,
+                            filled: true,
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey[300], width: 2),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue, width: 2),
+                            )
+                        ),
+                        obscureText: false,
+                        validator: (val) => val[0] != '@' ? 'Handle starts with @!' : null,
+                        onChanged: (val) {
+                          setState(() => newHandle = val);
+                          //print(handle);
+                        },
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget> [
+                        Container(
+                          margin: EdgeInsets.only(left: 10, right:0, top: 0, bottom: 0),
+                          child: RaisedButton(
+                              color: Colors.blueAccent,
+                              child: Shimmer.fromColors(
+                                highlightColor: Colors.black,
+                                baseColor: Colors.white,
+                                child: Text(
+                                  'Update',
+                                  style: GoogleFonts.lato(color: Colors.white, fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                              onPressed: () async {
+                                //print(handle);
+                                if (formKey.currentState.validate()) {
+                                  await databaseMethods.updateSpecificUserData(
+                                      user.uid, name, newHandle);
+                                  if (name.isNotEmpty) {
+                                    HelperFunctions.saveUsernameSharedPreferences(name);
+                                    await user.changeName(name);
+                                    Constants.myName = name;
+                                  }
+    //                              print(AuthService.googleUserId);
+    //                              bool check = await auth.googleSignIn.isSignedIn();
+    //                              if (check) {
+    //                                await databaseMethods.updateSpecificUserData(
+    //                                    user.uid, name, newHandle);
+    //                                await user.changeName(name);
+    //                              } else {
+    //                                await databaseMethods.updateSpecificUserData(
+    //                                    user.uid, name, newHandle);
+    //                                await user.changeName(name);
+    //                              }
+    //                              HelperFunctions.saveUsernameSharedPreferences(name);
+                                  HelperFunctions.saveUserHandleSharedPreferences(
+                                      handle);
+    //                              Constants.myName = name;
+                                  Constants.myHandle = handle;
+                                  print(Constants.myName);
+                                  print(Constants.myHandle);
+                                  setState(() {
+                                    key = handle;
+                                  });
+                                  HelperWidgets.flushbar('Update successful!', Icons.update)..show(context);
+                                }
+                              }),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 3, right:0, top: 0, bottom: 0),
+                          child: RaisedButton(
+                            onPressed: () async {
+                              ImagePicker imagePicker = new ImagePicker();
+                              PickedFile Image = await imagePicker.getImage(source: ImageSource.gallery);
+                              File image = File(Image.path);
+                              setState(() {
+                                _image = image;
+                              });
+                              await uploadImage(image);
+
+                            },
+                            color: Colors.blueAccent,
+                            child: Shimmer.fromColors(
+                              highlightColor: Colors.black,
+                              baseColor: Colors.white,
+                              child: Text(
+                                'Update image',
+                                style: GoogleFonts.lato(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: Constants.myName.isNotEmpty ? 50 : 12),
+                    Text(
+                      error,
+                      style: TextStyle(color: Colors.black, fontSize: 16),
                     )
                   ],
                 ),
-                SizedBox(height: Constants.myName.isNotEmpty ? 50 : 12),
-                Text(
-                  error,
-                  style: TextStyle(color: Colors.black, fontSize: 16),
-                )
-              ],
+              ),
             ),
           ),
-        ),
-      ),
-    );
+        );
   }
 }

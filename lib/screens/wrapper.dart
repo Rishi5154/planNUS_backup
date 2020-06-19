@@ -26,7 +26,7 @@ class Wrapper extends StatelessWidget {
               (value: DatabaseMethods(uid: user.uid).getUserTodoDataStream(), catchError: (context, e) => new TodoData(),
             ),
             StreamProvider<User>.value(
-              value: DatabaseMethods(uid: user.uid).getUserStream2(), catchError: (context, e) => new User(uid: user.uid),
+              value: DatabaseMethods(uid: user.uid).getUserStream2(), catchError: (context, e) => new User(uid: user.uid, name: 'no name yet'),
             ),
           ],
           child: Home(),

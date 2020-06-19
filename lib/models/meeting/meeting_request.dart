@@ -12,6 +12,7 @@ class MeetingRequest {
 
   MeetingRequest(this.id, this.meeting) {
     this.counter = 1;
+    this.isAccepted = false;
   }
 
   void accept() {

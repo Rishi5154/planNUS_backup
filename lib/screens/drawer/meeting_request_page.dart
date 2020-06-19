@@ -66,7 +66,7 @@ class _MeetingRequestPageState extends State<MeetingRequestPage> {
                 child: InkWell(
                   child: Text(slot.toString()),
                   onTap: () {
-                    onTapDialog(context);
+                    onTapDialog(context, day, slot);
                   },
                 ),
               );
@@ -79,7 +79,7 @@ class _MeetingRequestPageState extends State<MeetingRequestPage> {
     }
   }
 
-  onTapDialog(BuildContext context) {
+  onTapDialog(BuildContext context, int day, ScheduleTiming slot) {
     TextEditingController _tec = new TextEditingController();
     showDialog(
       barrierDismissible: false,
@@ -90,16 +90,22 @@ class _MeetingRequestPageState extends State<MeetingRequestPage> {
             borderRadius: BorderRadius.all(Radius.circular(12))
           ),
           child: Container(
-            height: 150.0,
+            height: 200.0,
             child: Column(
               children: [
-                Text('Meeting Request',
-                style: TextStyle(fontSize: 28.0),),
-                TextField(
-                  controller: _tec,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Purpose of Meeting',
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8.0, 15.0, 8.0, 8.0),
+                  child: Text('Meeting Request',
+                  style: TextStyle(fontSize: 28.0),),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 8.0),
+                  child: TextField(
+                    controller: _tec,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Purpose of Meeting',
+                    ),
                   ),
                 ),
                 Row(
@@ -118,8 +124,11 @@ class _MeetingRequestPageState extends State<MeetingRequestPage> {
                             meetingHandler.memberUID,
                             meetingHandler.requesterName,
                             meetingHandler.memberNames);
+                        meeting.setDay(1);
+                        meeting.setSlot(slot);
+                        meeting.setIsImportant(false); //TESTING ** SET ALL IMPORTANCE TO FALSE **
                         MeetingRequest mr = new MeetingRequest(newMRID, meeting);
-                        Firestore.instance.collection('meetings').document(newMRID).updateData({
+                        Firestore.instance.collection('meetings').document(newMRID).setData({
                           'meeting': mr.toJson(),
                         });
                         meetingHandler.memberUID.forEach((uid) async {
@@ -131,6 +140,7 @@ class _MeetingRequestPageState extends State<MeetingRequestPage> {
                             .whenComplete(() => Navigator.pop(context));
                       },
                     ),
+                    SizedBox(width: 30.0),
                     RaisedButton(
                       child: Text('Cancel'),
                       onPressed: () {

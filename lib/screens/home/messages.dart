@@ -19,7 +19,7 @@ class Messages extends StatefulWidget {
 
 class _MessagesState extends State<Messages> {
 
-  AuthService auth = new AuthService();
+//  AuthService auth = new AuthService();
   DatabaseMethods databaseMethods = new DatabaseMethods();
   Stream chatRoomsStream;
   User user;
@@ -36,7 +36,7 @@ class _MessagesState extends State<Messages> {
                 children: <Widget>[
                   StreamProvider<User>.value(
                     //stream: databaseMethods.getUserStreamByUid(snapshot.data.documents[index].data['uidOther']),
-                    value: databaseMethods.getUserStreamByUid(AuthService.currentUser.uid == snapshot.data.documents[index].data['uidOther']
+                    value: databaseMethods.getUserStreamByUid(user.uid == snapshot.data.documents[index].data['uidOther']
                         ? snapshot.data.documents[index].data['uidCurr'] : snapshot.data.documents[index].data['uidOther']),
                     builder: (context, ss) {
                       User user = Provider.of<User>(context);
@@ -111,6 +111,7 @@ class _MessagesState extends State<Messages> {
   @override
   Widget build(BuildContext context) {
     TextEditingController _titleController = new TextEditingController();
+    user = Provider.of<User>(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home : Scaffold(
@@ -181,8 +182,9 @@ class _ChatRoomsTileState extends State<ChatRoomsTile> {
           child: Row(
             children: <Widget>[
               Text(
-                Constants.myName == null || Constants.myName.isEmpty ? 'Please update your name at Profile.'
-                    :  'Please update your handle at Profile.',
+                Constants.myName == null || Constants.myName.isEmpty
+                    ? 'Please update your name at Profile.'
+                    : 'Please update your handle at Profile.',
                 style: GoogleFonts.biryani(
                   fontSize: 14,
                 ),

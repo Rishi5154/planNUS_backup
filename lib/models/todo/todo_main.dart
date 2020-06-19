@@ -50,11 +50,8 @@ class _ToDoPageState extends State<ToDoPage> {
     return Scaffold(
         body: Stack(
           children: <Widget>[
-            Container(
-              height: 35,
-              color: Theme.of(context).accentColor,
-            ),
             Positioned(
+              top: -30,
               right: 0,
               child: Text(
                 DateTime.now().day.toString(),

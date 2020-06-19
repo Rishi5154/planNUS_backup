@@ -17,7 +17,7 @@ class AuthService {
   static FirebaseUser currentUser;
   // create user obj based on FireBase User
   User userFromFirebaseUser(FirebaseUser user) {
-    return user != null ? User(uid: user.uid) : null;
+    return user != null ? User(uid: user.uid, name: 'no name yet') : null;
   }
 
   // auth change user stream
@@ -77,7 +77,7 @@ class AuthService {
       print(AuthService.googleUserId + " at exception");
       String handle = '';
       await DatabaseMethods(uid: AuthService.googleUserId).addUserData(
-          email, name, handle);
+          email, (name == null ? 'no name yet' : name), handle);
       await DatabaseMethods(uid: AuthService.googleUserId).updateNotificationToken(token, AuthService.googleUserId);
       HelperFunctions.saveUserEmailSharedPreferences(email);
       HelperFunctions.saveUsernameSharedPreferences(name);

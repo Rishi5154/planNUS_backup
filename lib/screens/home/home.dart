@@ -261,8 +261,8 @@ class _HomeState extends State<Home> {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.all(Radius.circular(12))
                                   ),
-                                  child: Provider<User>.value(
-                                    value: user,
+                                  child: StreamProvider<User>.value(
+                                    value: DatabaseMethods(uid: user.uid).getUserStream2(),
                                     child: NotificationPage(),
                                   ),
                                 );

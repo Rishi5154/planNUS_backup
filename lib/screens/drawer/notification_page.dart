@@ -88,7 +88,7 @@ class _NotificationPageState extends State<NotificationPage> {
                   )
               ),
               Align(
-                alignment: Alignment.topLeft,
+                alignment: Alignment.bottomLeft,
                 child: BackButton(
                   onPressed: () {
                     Navigator.pop(context);
