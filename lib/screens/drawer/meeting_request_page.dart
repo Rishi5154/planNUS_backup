@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:plannusandroidversion/models/meeting/meeting_handler.dart';
@@ -43,11 +41,6 @@ class _MeetingRequestPageState extends State<MeetingRequestPage> {
               ]
             ),
           ),
-//          BackButton(
-//            onPressed: () {
-//              Navigator.pop(context);
-//            },
-//          )
         ]
       ),
     );
@@ -97,9 +90,11 @@ class _MeetingRequestPageState extends State<MeetingRequestPage> {
             borderRadius: BorderRadius.all(Radius.circular(12))
           ),
           child: Container(
-            height: 110.0,
+            height: 150.0,
             child: Column(
               children: [
+                Text('Meeting Request',
+                style: TextStyle(fontSize: 28.0),),
                 TextField(
                   controller: _tec,
                   decoration: InputDecoration(
@@ -111,7 +106,7 @@ class _MeetingRequestPageState extends State<MeetingRequestPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    FlatButton(
+                    RaisedButton(
                       child: Text('Request'),
                       onPressed: () async {
                         //meeting that is not important (test)
@@ -136,7 +131,7 @@ class _MeetingRequestPageState extends State<MeetingRequestPage> {
                             .whenComplete(() => Navigator.pop(context));
                       },
                     ),
-                    FlatButton(
+                    RaisedButton(
                       child: Text('Cancel'),
                       onPressed: () {
                         Navigator.pop(context);

@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:plannusandroidversion/screens/wrapper.dart';
 import 'package:plannusandroidversion/services/auth.dart';
+import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/services/notificationservice.dart';
 import 'package:provider/provider.dart';
 import 'models/user.dart';
@@ -30,19 +33,20 @@ class _MyAppState extends State<MyApp> {
   }
   @override
   void initState() {
-    // TODO: implement initState
     initialize();
     configLocalNotification();
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<User>.value(
-      value: AuthService().user,
-      child:
-        MaterialApp(
-          debugShowCheckedModeBanner: false,
-          home: Wrapper()
+    return MultiProvider(
+      providers: [
+        StreamProvider<User>.value(value: AuthService().user),
+        StreamProvider<QuerySnapshot>.value(value: DatabaseMethods().userList,)
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Wrapper()
       ),
     );
   }

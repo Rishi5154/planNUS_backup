@@ -66,7 +66,6 @@ class _ChatscreenState extends State<Chatscreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     databaseMethods.getConversationMessages(widget.chatRoomID).then((value) {
       setState(() {
         chatMessagesStream = value;

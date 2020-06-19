@@ -25,6 +25,10 @@ class AuthService {
     return _auth.onAuthStateChanged.map(userFromFirebaseUser);
   }
 
+//  Stream<FirebaseUser> get user {
+//    return _auth.onAuthStateChanged;
+//  }
+
   Future login() async {
     String token = await fcm.getToken();
     try{

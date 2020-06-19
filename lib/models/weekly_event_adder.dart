@@ -98,7 +98,7 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
   Widget build(BuildContext context) {
     User user = Provider.of<User>(context);
     return Padding(
-      padding: EdgeInsets.all(18.0),
+      padding: EdgeInsets.all(4.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[

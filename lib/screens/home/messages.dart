@@ -34,9 +34,9 @@ class _MessagesState extends State<Messages> {
             itemBuilder: (context, index) {
               return Column(
                 children: <Widget>[
-                  StreamProvider<User>(
+                  StreamProvider<User>.value(
                     //stream: databaseMethods.getUserStreamByUid(snapshot.data.documents[index].data['uidOther']),
-                    create: (_)  => databaseMethods.getUserStreamByUid(AuthService.currentUser.uid == snapshot.data.documents[index].data['uidOther']
+                    value: databaseMethods.getUserStreamByUid(AuthService.currentUser.uid == snapshot.data.documents[index].data['uidOther']
                         ? snapshot.data.documents[index].data['uidCurr'] : snapshot.data.documents[index].data['uidOther']),
                     builder: (context, ss) {
                       User user = Provider.of<User>(context);

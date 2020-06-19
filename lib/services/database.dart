@@ -122,8 +122,7 @@ class DatabaseMethods {
 
 //  Future<User> getUserDataByHandle(String handle) async {
 //    return await users.where("handle", isEqualTo: handle).getDocuments();
-//  }
-
+//  )
   Future<QuerySnapshot> getUserByHandle(String handle) async {
     return await users.where("handle", isEqualTo: handle).getDocuments();
   }
@@ -134,10 +133,10 @@ class DatabaseMethods {
   Future<QuerySnapshot> getUserByUserEmail(String email) async {
     return await users.where("email", isEqualTo: email).getDocuments();
   }
-
-  Future<DocumentSnapshot> getHandleByEmail(String uid) async {
-    return await users.document(uid).get();
-  }
+//
+//  Future<DocumentSnapshot> getHandleByEmail(String uid) async {
+//    return await users.document(uid).get();
+//  }
 
   // user data from snapshot
   Stream<QuerySnapshot> get userInfo {
@@ -202,5 +201,17 @@ class DatabaseMethods {
 
   Future<User> getUserByUID(String uid) async {
     return userTimetables.document(uid).get().then((val) => User.fromJson(val.data['user']));
+  }
+
+  Stream<QuerySnapshot> get userList {
+    return users.snapshots();
+  }
+
+  Future<String> getHandleByUID(String uid) async {
+    return users.document(uid).get().then((val) => val.data['handle']);
+  }
+
+  Future<String> getNameByUID(String uid) async {
+    return users.document(uid).get().then((val) => val.data['name']);
   }
 }
