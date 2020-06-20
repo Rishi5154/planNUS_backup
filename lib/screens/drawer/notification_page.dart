@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:plannusandroidversion/messages/constants.dart';
+import 'package:plannusandroidversion/models/meeting/meeting.dart';
 import 'package:plannusandroidversion/models/meeting/meeting_request.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +20,7 @@ class _NotificationPageState extends State<NotificationPage> {
     _currUser = Provider.of<User>(context);
     unreadNotifications = _currUser.requests;
     List<MeetingRequest> refUnread = unreadNotifications.reversed.toList();
-    if(unreadNotifications.length > 0) {
+    if (unreadNotifications.length > 0) {
       return Padding(
           padding: const EdgeInsets.fromLTRB(8, 5, 8, 5),
           child: Stack(
@@ -30,56 +32,64 @@ class _NotificationPageState extends State<NotificationPage> {
                         itemCount: unreadNotifications.length,
                         itemBuilder: (context, index) {
                           MeetingRequest req = refUnread[index];
-                          String name = req.meeting.name;
-                          String requesterName = req.meeting.requesterName;
-                          String memberNames = req.meeting.memberNames;
+                          Meeting reqMeeting = req.meeting;
+                          String name = reqMeeting.name;
+                          String requesterName = reqMeeting.requesterName;
+                          String memberNames = reqMeeting.memberNames;
+                          String stringDay = Constants.stringDay(reqMeeting.day);
+                          String stringSlot = reqMeeting.slot.toString();
                           return Container(
                             height: 80,
                             child: Card(
                                 child: Container(
-                                    child: Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 2,
-                                            child: Column(
-                                                children: [
-                                                  Text(name,
-                                                    style: TextStyle(fontSize: 24.0)
-                                                  ),
-                                                  Text('Requested by: $requesterName',
-                                                    style: TextStyle(fontSize: 12.0)
-                                                  ),
-                                                  Text('Members: $memberNames',
-                                                    style: TextStyle(fontSize: 12.0)
-                                                  ),
-                                                ]
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Row(
+                                  height: 100,
+                                  child: Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 2,
+                                          child: Column(
                                               children: [
-                                                IconButton(
-                                                  icon: Icon(Icons.check),
-                                                  onPressed: () async {
-                                                    MeetingRequest mr = await Firestore.instance.collection('meeting')
-                                                        .document(req.id).get().then((val) => MeetingRequest.fromJson(val.data['meeting']));
-                                                    mr.accept();
-                                                    await Firestore.instance.collection('meeting').document(req.id).updateData({
-                                                      'meeting' : mr.toJson()
-                                                    });
-                                                  },
+                                                Text(name,
+                                                  style: TextStyle(fontSize: 24.0)
                                                 ),
-                                                IconButton(
-                                                  icon: Icon(Icons.clear),
-                                                  onPressed: () async {
-                                                    await _currUser.deletedMeetingRequest(req);
-                                                  },
+                                                Text('Requested by: $requesterName',
+                                                  style: TextStyle(fontSize: 12.0)
                                                 ),
+                                                Text('Members: $memberNames',
+                                                  style: TextStyle(fontSize: 12.0)
+                                                ),
+                                                Text('$stringDay, $stringSlot',
+                                                  style: TextStyle(fontSize: 10.0, color: Colors.red)
+                                                )
                                               ]
-                                            )
                                           ),
-                                        ]
-                                    )
+                                        ),
+                                        Expanded(
+                                          child: Row(
+                                            children: [
+                                              IconButton(
+                                                icon: Icon(Icons.check),
+                                                onPressed: () async {
+                                                  MeetingRequest mr = await Firestore.instance.collection("meetings")
+                                                      .document(req.id).get().then((val) => MeetingRequest.fromJson(val.data['meeting']));
+                                                  mr.accept();
+                                                  await Firestore.instance.collection("meetings").document(req.id).updateData({
+                                                    'meeting' : mr.toJson()
+                                                  });
+                                                  await _currUser.deleteMeetingRequest(mr);
+                                                },
+                                              ),
+                                              IconButton(
+                                                icon: Icon(Icons.clear),
+                                                onPressed: () async {
+                                                  await _currUser.deleteMeetingRequest(req);
+                                                },
+                                              ),
+                                            ]
+                                          )
+                                        ),
+                                      ]
+                                  )
                                 )
                             ),
                           );

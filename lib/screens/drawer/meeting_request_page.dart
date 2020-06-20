@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:plannusandroidversion/models/meeting/meeting_handler.dart';
 import 'package:plannusandroidversion/models/meeting/meeting_request.dart';
-import 'package:plannusandroidversion/models/schedule_timing.dart';
+import 'package:plannusandroidversion/models/timetable/schedule_timing.dart';
 import 'package:plannusandroidversion/models/meeting/meeting.dart';
 import 'package:plannusandroidversion/services/database.dart';
 
@@ -124,7 +124,7 @@ class _MeetingRequestPageState extends State<MeetingRequestPage> {
                             meetingHandler.memberUID,
                             meetingHandler.requesterName,
                             meetingHandler.memberNames);
-                        meeting.setDay(1);
+                        meeting.setDay(day);
                         meeting.setSlot(slot);
                         meeting.setIsImportant(false); //TESTING ** SET ALL IMPORTANCE TO FALSE **
                         MeetingRequest mr = new MeetingRequest(newMRID, meeting);
@@ -134,8 +134,11 @@ class _MeetingRequestPageState extends State<MeetingRequestPage> {
                         meetingHandler.memberUID.forEach((uid) async {
                           await DatabaseMethods(uid: uid).addMeetingRequest(mr);
                         });
-                        await DatabaseMethods(uid: meetingHandler.requesterUID).addMeetingRequest(mr)
-                        .whenComplete(() => Navigator.pop(context))
+//                        await DatabaseMethods(uid: meetingHandler.requesterUID).addMeetingRequest(mr)
+//                        .whenComplete(() => Navigator.pop(context))
+//                            .whenComplete(() => Navigator.pop(context))
+//                            .whenComplete(() => Navigator.pop(context));
+                          await Future.delayed(Duration(milliseconds: 10)).whenComplete(() => Navigator.pop(context))
                             .whenComplete(() => Navigator.pop(context))
                             .whenComplete(() => Navigator.pop(context));
                       },

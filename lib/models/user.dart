@@ -1,7 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:plannusandroidversion/models/meeting/meeting_request.dart';
+import 'package:plannusandroidversion/models/timetable/activity.dart';
+import 'package:plannusandroidversion/models/timetable/schedule_time.dart';
+import 'package:plannusandroidversion/models/timetable/schedule_timing.dart';
 import 'package:plannusandroidversion/services/database.dart';
-import 'timetable.dart';
+import 'package:plannusandroidversion/models/timetable/timetable.dart';
 
 part 'user.g.dart';
 
@@ -28,17 +31,22 @@ class User {
     return this.update();
   }
 
-  Future addMeetingRequest(MeetingRequest mr) {
+  Future<void> addMeetingRequest(MeetingRequest mr) {
     this.requests.add(mr);
     return this.update();
   }
 
-  Future deletedMeetingRequest(MeetingRequest mr) {
+  Future<void> deleteMeetingRequest(MeetingRequest mr) {
     this.requests.removeWhere((req) => req.meeting.uid == mr.meeting.uid);
     return this.update();
   }
 
   Future<void> update() async {
     return DatabaseMethods(uid: this.uid).updateUserData2(this);
+  }
+
+  Future<void> addEvent(int day, Activity activity, ScheduleTiming slot) {
+    this.timetable.alter(day, activity.name, ScheduleTime(time: slot.start), ScheduleTime(time: slot.end), activity.isImportant);
+    return this.update();
   }
 }

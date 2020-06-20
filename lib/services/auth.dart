@@ -106,13 +106,13 @@ class AuthService {
   }
 
   // register with email & password
-  Future registerWithEmailAndPassword(String email, String password, String handle) async{
+  Future registerWithEmailAndPassword(String name, String email, String password, String handle) async{
     try { // registration
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       String token = await fcm.getToken();
       FirebaseUser user = result.user;
       // create a new collection for the user with id on firebase database
-      await DatabaseMethods(uid: user.uid).addUserData(email, '', handle);
+      await DatabaseMethods(uid: user.uid).addUserData(email, name, handle);
       await DatabaseMethods(uid: user.uid).updateNotificationToken(token, user.uid);
       currentUser = user;
       print(currentUser.uid + ": id of current Firebase User with registered account");

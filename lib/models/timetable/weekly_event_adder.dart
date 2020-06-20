@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:plannusandroidversion/models/timetable/schedule_time.dart';
 import 'package:plannusandroidversion/models/todo/widgets/custom_textfield.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:provider/provider.dart';
-import 'schedule_time.dart';
 
 class WeeklyEventAdder extends StatefulWidget {
   @override

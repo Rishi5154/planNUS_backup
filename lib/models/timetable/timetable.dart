@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:plannusandroidversion/models/schedule_time.dart';
-import 'package:plannusandroidversion/models/schedule_timing.dart';
+import 'package:plannusandroidversion/models/timetable/schedule_time.dart';
+import 'package:plannusandroidversion/models/timetable/schedule_timing.dart';
+import 'package:plannusandroidversion/models/timetable/activity.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:provider/provider.dart';
 import 'activity.dart';

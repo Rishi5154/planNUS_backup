@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:plannusandroidversion/models/meeting/meeting_request.dart';
-import 'package:plannusandroidversion/models/timetable.dart';
+import 'package:plannusandroidversion/models/timetable/timetable.dart';
 import 'package:plannusandroidversion/models/todo/todo_models/todo_data.dart';
 import 'package:plannusandroidversion/models/user.dart';
 
@@ -11,6 +11,7 @@ class DatabaseMethods {
   final CollectionReference users = Firestore.instance.collection("users");
   final CollectionReference tokens = Firestore.instance.collection("userNotificationTokens");
   final CollectionReference userTimetables = Firestore.instance.collection("userTimetables");
+  final CollectionReference meetingRequests = Firestore.instance.collection("meetings");
 
   Stream<String> getHandleStream() {
     return users.document(uid).snapshots().map((ss) => ss.data['handle']);
@@ -18,7 +19,7 @@ class DatabaseMethods {
 
   Stream<User> getUserStream2() {
     return userTimetables.document(uid).snapshots().map((ss) => User.fromJson(ss.data['user']));
-    return users.document(uid).snapshots().map((ss) => User.fromJson(ss.data['user']));
+    //return users.document(uid).snapshots().map((ss) => User.fromJson(ss.data['user']));
   }
 
   Stream<User> getUserStreamByUid(String uid) {
@@ -214,4 +215,5 @@ class DatabaseMethods {
   Future<String> getNameByUID(String uid) async {
     return users.document(uid).get().then((val) => val.data['name']);
   }
+
 }

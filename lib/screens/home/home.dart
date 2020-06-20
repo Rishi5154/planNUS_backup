@@ -1,15 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
-import 'package:plannusandroidversion/models/timetable.dart';
+import 'package:plannusandroidversion/models/timetable/timetable.dart';
 import 'package:plannusandroidversion/models/todo/todo_main.dart';
 import 'package:plannusandroidversion/models/todo/todo_models/todo_data.dart';
 import 'package:plannusandroidversion/models/user.dart';
-import 'package:plannusandroidversion/models/weekly_event_adder.dart';
+import 'package:plannusandroidversion/models/timetable/weekly_event_adder.dart';
 import 'package:plannusandroidversion/screens/drawer/notification_page.dart';
 import 'package:plannusandroidversion/screens/drawer/user_search.dart';
 import 'package:plannusandroidversion/screens/home/messages.dart';
@@ -264,6 +263,9 @@ class _HomeState extends State<Home> {
                                   child: StreamProvider<User>.value(
                                     value: DatabaseMethods(uid: user.uid).getUserStream2(),
                                     child: NotificationPage(),
+                                    catchError: (context, e) {
+                                      return user;
+                                    },
                                   ),
                                 );
                               });

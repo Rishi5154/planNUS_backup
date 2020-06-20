@@ -1,5 +1,5 @@
-import 'package:plannusandroidversion/models/activity.dart';
-import 'package:plannusandroidversion/models/schedule_timing.dart';
+import 'package:plannusandroidversion/models/timetable/activity.dart';
+import 'package:plannusandroidversion/models/timetable/schedule_timing.dart';
 import 'package:plannusandroidversion/models/user.dart';
 
 class MeetingHandler {
@@ -72,13 +72,15 @@ class MeetingHandler {
   get memberNames {
     String names = '';
     if (toCheck.length <= 5) {
-      toCheck.forEach((user) =>
-      names + user.name + ", ");
+      toCheck.forEach((user) => (names =
+      names + user.name + ", "));
+      names = names.substring(0, names.length - 2);
     } else {
       names = toCheck[0].name + ", "
           + toCheck[1].name + ", "
           + toCheck[2].name + ", "
           + toCheck[3].name + "...";
     }
+    return names;
   }
 }
