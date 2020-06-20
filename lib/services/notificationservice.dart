@@ -9,10 +9,23 @@ class NotificationService {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
   final FirebaseMessaging fcm = FirebaseMessaging();
 
+  Future<List<PendingNotificationRequest>> getScheduledNotifications() async {
+    final pendingNotifications = await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+    return pendingNotifications;
+  }
+
+  Future<void> cancelNotification(int id) async {
+    await flutterLocalNotificationsPlugin.cancel(id);
+  }
+
+  Future<void> cancelAllNotifications() async {
+    await flutterLocalNotificationsPlugin.cancelAll();
+  }
+
   void showNotification(message) async {
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
       Platform.isAndroid ? 'com.dfa.plannusandroid' : 'com.duytq.flutterchatdemo',
-      'Timetable',
+      '',
       'Your timetable has been updated',
       playSound: true,
       enableVibration: true,
@@ -27,6 +40,25 @@ class NotificationService {
         payload: json.encode(message));
   }
 
+  Future<void> scheduleAtTime(DateTime time, int id, String title, String description) async {
+    final androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'show weekly channel id',
+      'show weekly channel name',
+      'show weekly description',
+    );
+    final iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    final platformChannelSpecifics = NotificationDetails(
+      androidPlatformChannelSpecifics,
+      iOSPlatformChannelSpecifics,
+    );
+    await flutterLocalNotificationsPlugin.schedule(
+      id,
+      title,
+      description,
+      time,
+      platformChannelSpecifics,
+    );
+  }
 
   Future initialise() async {
     if (Platform.isIOS) {
