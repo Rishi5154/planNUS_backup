@@ -144,7 +144,7 @@ class _ProfileState extends State<Profile> {
                     },
                   ) : Container(height: 10,),
                 ),
-                SizedBox(height: Constants.myName != null || Constants.myName.isNotEmpty ? 5 : 20),
+                SizedBox(height: Constants.myName == null || Constants.myName.isNotEmpty ? 5 : 20),
                 Container(
                   margin: EdgeInsets.only(right: 30),
                   child: TextFormField(

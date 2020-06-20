@@ -15,7 +15,6 @@ User _$UserFromJson(Map<String, dynamic> json) {
         ? null
         : TimeTable.fromJson(json['timetable'] as Map<String, dynamic>)
     ..requests = (json['requests'] as List)
-    ..unread = (json['unread'] as List)
         ?.map((e) => e == null
             ? null
             : MeetingRequest.fromJson(e as Map<String, dynamic>))
@@ -25,6 +24,6 @@ User _$UserFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'uid': instance.uid,
       'name': instance.name,
+      'timetable': instance.timetable?.toJson(),
       'requests': instance.requests?.map((e) => e?.toJson())?.toList(),
-      'unread': instance.unread?.map((e) => e?.toJson())?.toList(),
     };

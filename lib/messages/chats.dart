@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -118,19 +120,35 @@ class _ChatsState extends State<Chats> {
   Widget searchTile({String name, String handle,/*String otherUid,*/ User user}) {
     print(name);
     return Container(
-        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-        child: Row(
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                Text(
-                  name,
-                  style: TextStyle(fontSize: 14, color: Colors.white),
+        height: 90,
+        width: 500,
+        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+        child: Card(
+          color: Colors.white,
+          elevation: 5,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Row(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 17.5, 0, 0),
+                child: Container(
+                  width: 100,
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        name,
+                        style: GoogleFonts.actor(fontSize: 16, color: Colors.black),
+//                        textAlign: TextAlign.right,
+                      ),
+                      Text(handle,
+                          textAlign: TextAlign.left,
+                          style: GoogleFonts.lato(fontSize: 18, color: Colors.blueAccent,letterSpacing: 0))
+                    ],
+                  ),
                 ),
-                Text(handle,
-                    style: TextStyle(fontSize: 14, color: Colors.white))
-              ],
-            ),
+              ),
 //            Spacer(),
 //            GestureDetector(
 //                  onTap: () {
@@ -165,56 +183,59 @@ class _ChatsState extends State<Chats> {
 //                    child: Text("Timetable"),
 //                  ),
 //            ),
-            Spacer(),
-            GestureDetector(
-              onTap: () {
-                print(name);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Provider<User>.value(value: user,
-                        child: MaterialApp(
-                          home: Scaffold(
-                              appBar: AppBar(
-                                elevation: 0,
-                                backgroundColor: Colors.transparent,
-                                leading: IconButton(
-                                  icon: new Icon(Icons.arrow_back_ios, color: Colors.white),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
+              Spacer(),
+              GestureDetector(
+                onTap: () {
+                  print(name);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Provider<User>.value(value: user,
+                          child: MaterialApp(
+                            debugShowCheckedModeBanner: false,
+                            home: Scaffold(
+                                appBar: AppBar(
+                                  elevation: 0,
+                                  backgroundColor: Colors.deepPurple,
+                                  leading: IconButton(
+                                    icon: new Icon(Icons.arrow_back_ios, color: Colors.black),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
                                 ),
-                              ),
-                              backgroundColor: Colors.deepPurple,
-                              body: TimeTableWidget()),
-                        )
-                    )
-                    )
-                );
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(30),
+                                backgroundColor: Colors.deepPurple,
+                                body: TimeTableWidget()),
+                          )
+                      )
+                      )
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.deepOrangeAccent,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  child: Icon(Icons.calendar_today,size: 20,),
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                child: Text("Timetable"),
               ),
-            ),
-            Spacer(),
-            GestureDetector(
-              onTap: () {
-                print(name);
-                createChatRoomToStartConversation(name: name, user: user);
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(30),
+              SizedBox(width: 15,),
+              GestureDetector(
+                onTap: () {
+                  print(name);
+                  createChatRoomToStartConversation(name: name, user: user);
+                },
+                child: Container(
+                  margin: EdgeInsets.only(right: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.deepOrangeAccent,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  child: Icon(Icons.message,size: 22,)/*Text("Message")*/,
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                child: Text("Message"),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ));
   }
 
@@ -243,7 +264,7 @@ class _ChatsState extends State<Chats> {
             children: <Widget>[
               Container(
                 color: Colors.deepPurple,
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Row(
                   children: <Widget>[
                     Expanded(
@@ -269,7 +290,7 @@ class _ChatsState extends State<Chats> {
                     )),
                     IconButton(
                       padding: EdgeInsets.fromLTRB(20, 2, 2, 2),
-                      icon: new Icon(Icons.search, color: Colors.blue),
+                      icon: new Icon(Icons.search, color: Colors.cyanAccent, size: 30,),
                       onPressed: () async {
                         if (Constants.myName == null || Constants.myName.isEmpty) {
                           HelperWidgets.TopFlushbar('Please update your name at Profile!'
@@ -281,7 +302,7 @@ class _ChatsState extends State<Chats> {
                           HelperWidgets.TopFlushbar("You can't search for yourself!"
                               , Icons.info_outline)..show(context);
                         } else {
-                          initiateSearch();
+                          await initiateSearch();
                           print(otherUid+ " here again!!!");
                         }
                       },

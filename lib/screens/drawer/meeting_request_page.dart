@@ -115,7 +115,7 @@ class _MeetingRequestPageState extends State<MeetingRequestPage> {
                       child: Text('Request'),
                       onPressed: () async {
                         //meeting that is not important (test)
-                        String newMRID = Firestore.instance.collection('meeting').document().documentID;
+                        String newMRID = Firestore.instance.collection('meetings').document().documentID;
                         Meeting meeting = Meeting(
                             newMRID,
                             _tec.text,
@@ -124,7 +124,7 @@ class _MeetingRequestPageState extends State<MeetingRequestPage> {
                             meetingHandler.requesterName,
                             meetingHandler.memberNames);
                         MeetingRequest mr = new MeetingRequest(newMRID, meeting);
-                        Firestore.instance.collection('meeting').document(newMRID).updateData({
+                        Firestore.instance.collection('meetings').document(newMRID).updateData({
                           'meeting': mr.toJson(),
                         });
                         meetingHandler.memberUID.forEach((uid) async {
