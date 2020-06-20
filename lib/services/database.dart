@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:plannusandroidversion/models/meeting/meeting_request.dart';
-import 'package:plannusandroidversion/models/timetable.dart';
+import 'package:plannusandroidversion/models/timetable/timetable.dart';
 import 'package:plannusandroidversion/models/todo/todo_models/todo_data.dart';
 import 'package:plannusandroidversion/models/user.dart';
 
@@ -11,6 +11,7 @@ class DatabaseMethods {
   final CollectionReference users = Firestore.instance.collection("users");
   final CollectionReference tokens = Firestore.instance.collection("userNotificationTokens");
   final CollectionReference userTimetables = Firestore.instance.collection("userTimetables");
+  final CollectionReference meetingRequests = Firestore.instance.collection("meetings");
 
   Stream<String> getHandleStream() {
     return users.document(uid).snapshots().map((ss) => ss.data['handle']);
@@ -18,7 +19,7 @@ class DatabaseMethods {
 
   Stream<User> getUserStream2() {
     return userTimetables.document(uid).snapshots().map((ss) => User.fromJson(ss.data['user']));
-    return users.document(uid).snapshots().map((ss) => User.fromJson(ss.data['user']));
+    //return users.document(uid).snapshots().map((ss) => User.fromJson(ss.data['user']));
   }
 
   Stream<User> getUserStreamByUid(String uid) {
@@ -122,8 +123,7 @@ class DatabaseMethods {
 
 //  Future<User> getUserDataByHandle(String handle) async {
 //    return await users.where("handle", isEqualTo: handle).getDocuments();
-//  }
-
+//  )
   Future<QuerySnapshot> getUserByHandle(String handle) async {
     return await users.where("handle", isEqualTo: handle).getDocuments();
   }
@@ -134,10 +134,10 @@ class DatabaseMethods {
   Future<QuerySnapshot> getUserByUserEmail(String email) async {
     return await users.where("email", isEqualTo: email).getDocuments();
   }
-
-  Future<DocumentSnapshot> getHandleByEmail(String uid) async {
-    return await users.document(uid).get();
-  }
+//
+//  Future<DocumentSnapshot> getHandleByEmail(String uid) async {
+//    return await users.document(uid).get();
+//  }
 
   // user data from snapshot
   Stream<QuerySnapshot> get userInfo {
@@ -203,4 +203,17 @@ class DatabaseMethods {
   Future<User> getUserByUID(String uid) async {
     return userTimetables.document(uid).get().then((val) => User.fromJson(val.data['user']));
   }
+
+  Stream<QuerySnapshot> get userList {
+    return users.snapshots();
+  }
+
+  Future<String> getHandleByUID(String uid) async {
+    return users.document(uid).get().then((val) => val.data['handle']);
+  }
+
+  Future<String> getNameByUID(String uid) async {
+    return users.document(uid).get().then((val) => val.data['name']);
+  }
+
 }

@@ -1,6 +1,5 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
+import 'package:plannusandroidversion/models/user.dart';
 import 'package:provider/provider.dart';
 import 'package:plannusandroidversion/models/todo/todo_models/todo_data.dart';
 import 'package:plannusandroidversion/models/todo/pages/add_event_page.dart';
@@ -8,6 +7,7 @@ import 'package:plannusandroidversion/models/todo/pages/add_task_page.dart';
 import 'package:plannusandroidversion/models/todo/pages/event_page.dart';
 import 'package:plannusandroidversion/models/todo/pages/task_page.dart';
 import 'package:plannusandroidversion/models/todo/widgets/custom_button.dart';
+
 
 class ToDoPage extends StatefulWidget {
   @override
@@ -20,11 +20,19 @@ class _ToDoPageState extends State<ToDoPage> {
   double currentPage = 0;
 
   TodoData todoData;
+  User user;
+
 
   Widget addPage() {
     return Dialog(
         child: currentPage == 0
-            ? Provider<TodoData>.value(value: todoData, child: AddTaskPage())
+            ? MultiProvider(
+                providers: [
+                  Provider<TodoData>.value(value: todoData),
+                  Provider<User>.value(value: user)
+                ],
+                child: Provider<User>.value(value: user, child: AddTaskPage())
+              )
             : Provider<TodoData>.value(value: todoData, child: AddEventPage()),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(12))));
@@ -38,14 +46,12 @@ class _ToDoPageState extends State<ToDoPage> {
       });
     });
     todoData = Provider.of<TodoData>(context, listen: true);
+    user = Provider.of<User>(context, listen: false);
     return Scaffold(
         body: Stack(
           children: <Widget>[
-            Container(
-              height: 35,
-              color: Theme.of(context).accentColor,
-            ),
             Positioned(
+              top: -30,
               right: 0,
               child: Text(
                 DateTime.now().day.toString(),

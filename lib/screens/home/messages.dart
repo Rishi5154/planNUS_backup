@@ -4,11 +4,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:plannusandroidversion/messages/chats.dart';
 import 'package:plannusandroidversion/messages/chatscreenredirect.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
-import 'package:plannusandroidversion/models/timetable.dart';
+import 'package:plannusandroidversion/models/timetable/timetable.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
-import 'package:plannusandroidversion/services/auth.dart';
 import 'package:provider/provider.dart';
 
 class Messages extends StatefulWidget {
@@ -19,7 +18,7 @@ class Messages extends StatefulWidget {
 
 class _MessagesState extends State<Messages> {
 
-  AuthService auth = new AuthService();
+//  AuthService auth = new AuthService();
   DatabaseMethods databaseMethods = new DatabaseMethods();
   Stream chatRoomsStream;
   User user;
@@ -34,9 +33,9 @@ class _MessagesState extends State<Messages> {
             itemBuilder: (context, index) {
               return Column(
                 children: <Widget>[
-                  StreamProvider<User>(
+                  StreamProvider<User>.value(
                     //stream: databaseMethods.getUserStreamByUid(snapshot.data.documents[index].data['uidOther']),
-                    create: (_)  => databaseMethods.getUserStreamByUid(AuthService.currentUser.uid == snapshot.data.documents[index].data['uidOther']
+                    value: databaseMethods.getUserStreamByUid(user.uid == snapshot.data.documents[index].data['uidOther']
                         ? snapshot.data.documents[index].data['uidCurr'] : snapshot.data.documents[index].data['uidOther']),
                     builder: (context, ss) {
                       User user = Provider.of<User>(context);
@@ -111,6 +110,7 @@ class _MessagesState extends State<Messages> {
   @override
   Widget build(BuildContext context) {
     TextEditingController _titleController = new TextEditingController();
+    user = Provider.of<User>(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home : Scaffold(
@@ -182,8 +182,9 @@ class _ChatRoomsTileState extends State<ChatRoomsTile> {
           child: Row(
             children: <Widget>[
               Text(
-                Constants.myName == null || Constants.myName.isEmpty ? 'Please update your name at Profile.'
-                    :  'Please update your handle at Profile.',
+                Constants.myName == null || Constants.myName.isEmpty
+                    ? 'Please update your name at Profile.'
+                    : 'Please update your handle at Profile.',
                 style: GoogleFonts.biryani(
                   fontSize: 14,
                 ),

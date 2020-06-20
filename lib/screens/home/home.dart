@@ -1,14 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
-import 'package:plannusandroidversion/models/timetable.dart';
+import 'package:plannusandroidversion/models/timetable/timetable.dart';
 import 'package:plannusandroidversion/models/todo/todo_main.dart';
 import 'package:plannusandroidversion/models/todo/todo_models/todo_data.dart';
 import 'package:plannusandroidversion/models/user.dart';
-import 'package:plannusandroidversion/models/weekly_event_adder.dart';
+import 'package:plannusandroidversion/models/timetable/weekly_event_adder.dart';
 import 'package:plannusandroidversion/screens/drawer/notification_page.dart';
+import 'package:plannusandroidversion/screens/drawer/user_search.dart';
 import 'package:plannusandroidversion/screens/home/messages.dart';
 import 'package:plannusandroidversion/screens/home/profile.dart';
 import 'package:plannusandroidversion/services/auth.dart';
@@ -16,7 +18,6 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/shared/loading.dart';
 import 'package:provider/provider.dart';
-import 'package:plannusandroidversion/screens/drawer/meet_page.dart';
 import 'package:timer_builder/timer_builder.dart';
 
 class Home extends StatefulWidget {
@@ -48,8 +49,9 @@ class _HomeState extends State<Home> {
           child: Row(
             children: <Widget>[
               Text(
-                Constants.myName == null || Constants.myName.isEmpty ? 'Please update your name at Profile.'
-                :  'Please update your handle at Profile.',
+                Constants.myName == null || Constants.myName.isEmpty
+                    ? 'Please update your name at Profile.'
+                    : 'Please update your handle at Profile.',
                 style: GoogleFonts.biryani(
                   fontSize: 16,
                 ),
@@ -87,13 +89,20 @@ class _HomeState extends State<Home> {
       return Loading();
     } else {
       tabs = [
-        StreamProvider<TodoData>.value(
-            value: DatabaseMethods(uid: user.uid).getUserTodoDataStream(),
-            child: Scaffold(backgroundColor: Colors.deepOrangeAccent[100],
-                body: ToDoPage()
+        MultiProvider(
+          providers: [
+            StreamProvider<TodoData>.value(
+              value: DatabaseMethods(uid: user.uid).getUserTodoDataStream(),
+              catchError: (context, e) {return new TodoData();},
             ),
-          catchError: (context, e) {return new TodoData();},
-            ),
+            StreamProvider<User>.value(
+              value: DatabaseMethods(uid: user.uid).getUserStream2(),
+            )
+          ],
+          child: Scaffold(backgroundColor: Colors.deepOrangeAccent[100],
+              body: ToDoPage()
+          ),
+        ),
         //home
         Provider<User>.value(value: user,
             child: Scaffold(
@@ -103,11 +112,11 @@ class _HomeState extends State<Home> {
         //TimeTable.emptyTimeTable()))),
         Provider<User>.value(value: user, child: Messages()),
         MultiProvider(providers: [
-          StreamProvider<String>(
-            create: (_) => DatabaseMethods(uid: user.uid).getHandleStream(),
+          StreamProvider<String>.value(
+            value: DatabaseMethods(uid: user.uid).getHandleStream(),
             catchError: (context, e) { return "(no name yet)";}),
-          Provider<User>(create: (_) => user)
-          ], child: Profile()),
+          ],
+          child: Profile()),
       ];
       return MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -134,7 +143,7 @@ class _HomeState extends State<Home> {
                         return Dialog(
                           child: Provider<User>.value(value: user, child: WeeklyEventAdder()),
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(12))
+                              borderRadius: BorderRadius.all(Radius.circular(35))
                           )
                         );
                       }
@@ -209,16 +218,21 @@ class _HomeState extends State<Home> {
                   padding: const EdgeInsets.fromLTRB(8.0, 5.0, 8.0, 5.0),
                   child: InkWell(
                     splashColor: Colors.orange,
-                    onTap: () {
-                      showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Dialog(
-                                child: Provider<User>.value(value: user, child: MeetPage()),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(12))));
-                          });
+                    onTap: () async {
+                      QuerySnapshot _querySnapshot = Provider.of<QuerySnapshot>(context, listen: false);
+                      if (_querySnapshot != null) {
+                        showSearch(
+                            context: context,
+                            delegate: UserSearch(_querySnapshot, user)
+                        );
+                      } else {
+                        await Future.delayed(Duration(seconds: 1))
+                            .whenComplete(() => _querySnapshot = Provider.of<QuerySnapshot>(context, listen: false));
+                        showSearch(
+                            context: context,
+                            delegate: UserSearch(_querySnapshot, user)
+                        );
+                      }
                     },
                     child: Container(
                       height: 40,
@@ -246,9 +260,12 @@ class _HomeState extends State<Home> {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.all(Radius.circular(12))
                                   ),
-                                  child: Provider<User>.value(
-                                    value: user,
+                                  child: StreamProvider<User>.value(
+                                    value: DatabaseMethods(uid: user.uid).getUserStream2(),
                                     child: NotificationPage(),
+                                    catchError: (context, e) {
+                                      return user;
+                                    },
                                   ),
                                 );
                               });

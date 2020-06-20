@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:plannusandroidversion/models/schedule_time.dart';
+import 'package:plannusandroidversion/models/timetable/schedule_time.dart';
 
 part 'schedule_timing.g.dart';
 

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:plannusandroidversion/models/todo/todo_models/todo_data.dart';
 import 'package:plannusandroidversion/models/user.dart';
@@ -16,16 +17,19 @@ class Wrapper extends StatelessWidget {
       return Authenticate();
     } else {
       print("################## User id :" + user.uid);
-        return StreamProvider<User>.value(
-            value: DatabaseMethods(uid: user.uid).getUserStream2(),
-            child: StreamProvider<TodoData>.value(
-              value: DatabaseMethods(uid: user.uid).getUserTodoDataStream(),
-              child: Home(),
-              catchError: (context, e) => new TodoData(),
+        return MultiProvider(
+          providers: [
+            StreamProvider<QuerySnapshot>.value(
+                value: DatabaseMethods().userList, catchError: (context, e) => null
             ),
-            catchError: (context, e) {
-              return user;
-          },
+            StreamProvider<TodoData>.value
+              (value: DatabaseMethods(uid: user.uid).getUserTodoDataStream(), catchError: (context, e) => new TodoData(),
+            ),
+            StreamProvider<User>.value(
+              value: DatabaseMethods(uid: user.uid).getUserStream2(), catchError: (context, e) => new User(uid: user.uid, name: 'no name yet'),
+            ),
+          ],
+          child: Home(),
         );
     }
   }

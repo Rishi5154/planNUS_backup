@@ -3,14 +3,14 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:plannusandroidversion/models/timetable.dart';
+import 'package:plannusandroidversion/models/timetable/timetable.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:plannusandroidversion/services/auth.dart';
 import 'package:plannusandroidversion/shared/helperwidgets.dart';
 import 'package:provider/provider.dart';
 import 'chatscreen.dart';
 import 'constants.dart';
-import '../services/database.dart';
+import 'package:plannusandroidversion/services/database.dart';
 import 'helperfunctions.dart';
 
 class Chats extends StatefulWidget {

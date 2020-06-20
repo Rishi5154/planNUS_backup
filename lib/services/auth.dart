@@ -17,13 +17,17 @@ class AuthService {
   static FirebaseUser currentUser;
   // create user obj based on FireBase User
   User userFromFirebaseUser(FirebaseUser user) {
-    return user != null ? User(uid: user.uid) : null;
+    return user != null ? User(uid: user.uid, name: 'no name yet') : null;
   }
 
   // auth change user stream
   Stream<User> get user {
     return _auth.onAuthStateChanged.map(userFromFirebaseUser);
   }
+
+//  Stream<FirebaseUser> get user {
+//    return _auth.onAuthStateChanged;
+//  }
 
   Future login() async {
     String token = await fcm.getToken();
@@ -73,7 +77,7 @@ class AuthService {
       print(AuthService.googleUserId + " at exception");
       String handle = '';
       await DatabaseMethods(uid: AuthService.googleUserId).addUserData(
-          email, name, handle);
+          email, (name == null ? 'no name yet' : name), handle);
       await DatabaseMethods(uid: AuthService.googleUserId).updateNotificationToken(token, AuthService.googleUserId);
       HelperFunctions.saveUserEmailSharedPreferences(email);
       HelperFunctions.saveUsernameSharedPreferences(name);
@@ -102,13 +106,13 @@ class AuthService {
   }
 
   // register with email & password
-  Future registerWithEmailAndPassword(String email, String password, String handle) async{
+  Future registerWithEmailAndPassword(String name, String email, String password, String handle) async{
     try { // registration
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       String token = await fcm.getToken();
       FirebaseUser user = result.user;
       // create a new collection for the user with id on firebase database
-      await DatabaseMethods(uid: user.uid).addUserData(email, '', handle);
+      await DatabaseMethods(uid: user.uid).addUserData(email, name, handle);
       await DatabaseMethods(uid: user.uid).updateNotificationToken(token, user.uid);
       currentUser = user;
       print(currentUser.uid + ": id of current Firebase User with registered account");
