@@ -302,8 +302,8 @@ class _ChatsState extends State<Chats> {
                           HelperWidgets.TopFlushbar("You can't search for yourself!"
                               , Icons.info_outline)..show(context);
                         } else {
-                          await initiateSearch();
-                          print(otherUid+ " here again!!!");
+                          initiateSearch();
+                          print('${otherUid ?? 'null detected'}' + " here again!!!");
                         }
                       },
                     )

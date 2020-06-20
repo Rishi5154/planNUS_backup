@@ -30,7 +30,7 @@ class NotificationService {
       playSound: true,
       enableVibration: true,
       importance: Importance.Max,
-      priority: Priority.High,
+
     );
     var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
     var platformChannelSpecifics =
