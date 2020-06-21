@@ -22,8 +22,8 @@ User _$UserFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
-  'uid': instance.uid,
-  'name': instance.name,
-  'timetable': instance.timetable?.toJson(),
-  'requests': instance.requests?.map((e) => e?.toJson())?.toList(),
-};
+      'uid': instance.uid,
+      'name': instance.name,
+      'timetable': instance.timetable?.toJson(),
+      'requests': instance.requests?.map((e) => e?.toJson())?.toList(),
+    };

@@ -114,7 +114,8 @@ class _MessagesState extends State<Messages> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home : Scaffold(
-        backgroundColor: Colors.orange[300],
+        backgroundColor: Colors.orange[500],
+        //backgroundColor: Colors.orange[300],
         body: Center(
           child: Column(
             children: <Widget>[

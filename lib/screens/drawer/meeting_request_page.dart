@@ -116,7 +116,7 @@ class _MeetingRequestPageState extends State<MeetingRequestPage> {
                       child: Text('Request'),
                       onPressed: () async {
                         //meeting that is not important (test)
-                        String newMRID = Firestore.instance.collection('meeting').document().documentID;
+                        String newMRID = Firestore.instance.collection('meetings').document().documentID;
                         Meeting meeting = Meeting(
                             newMRID,
                             _tec.text,
