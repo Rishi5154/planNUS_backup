@@ -96,7 +96,7 @@ class UserSearch extends SearchDelegate<String> {
                                       child: Stack(
                                           children: [
                                             MeetingRequestPage(
-                                                meetingHandler
+                                                meetingHandler, false
                                             ),
                                             BackButton(
                                               onPressed: () async {
