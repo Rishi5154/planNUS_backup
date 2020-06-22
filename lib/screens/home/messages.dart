@@ -4,8 +4,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:plannusandroidversion/messages/chats.dart';
 import 'package:plannusandroidversion/messages/chatscreenredirect.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
+import 'package:plannusandroidversion/models/meeting/meeting_handler.dart';
+import 'package:plannusandroidversion/models/meeting/meeting_request.dart';
 import 'package:plannusandroidversion/models/timetable/timetable.dart';
 import 'package:plannusandroidversion/models/user.dart';
+import 'package:plannusandroidversion/screens/drawer/meeting_request_page.dart';
+import 'package:plannusandroidversion/screens/drawer/user_search.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +45,7 @@ class _MessagesState extends State<Messages> {
                       User user = Provider.of<User>(context);
                       return ChatRoomsTile(snapshot.data.documents[index].data['chatroomID']
                             .toString().replaceAll("_", "").replaceAll(Constants.myName, ""),
-                            snapshot.data.documents[index].data['chatroomID'], user);
+                            snapshot.data.documents[index].data['chatroomID'], user, this.user);
                     },
                   ),
 //                  Divider(
@@ -146,13 +150,27 @@ class _MessagesState extends State<Messages> {
             elevation: 4,
             hoverColor: Colors.green,
             splashColor: Colors.green,
-            onPressed: () {
+            onPressed: () async {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) =>
                     Chats(),
                 )
               );
+//              QuerySnapshot _querySnapshot = Provider.of<QuerySnapshot>(context, listen: false);
+//              if (_querySnapshot != null) {
+//                showSearch(
+//                    context: context,
+//                    delegate: UserSearch(_querySnapshot, user)
+//                );
+//              } else {
+//                await Future.delayed(Duration(seconds: 1))
+//                    .whenComplete(() => _querySnapshot = Provider.of<QuerySnapshot>(context, listen: false));
+//                showSearch(
+//                    context: context,
+//                    delegate: UserSearch(_querySnapshot, user)
+//                );
+//              }
             },
             label: new Icon(Icons.message, color: Colors.white)),
       ),
@@ -163,13 +181,15 @@ class ChatRoomsTile extends StatefulWidget {
   final String name;
   final String chatRoomID;
   final User user;
-  ChatRoomsTile(this.name, this.chatRoomID, this.user);
+  final User currUser;
+  ChatRoomsTile(this.name, this.chatRoomID, this.user, this.currUser);
 
   @override
   _ChatRoomsTileState createState() => _ChatRoomsTileState();
 }
 
 class _ChatRoomsTileState extends State<ChatRoomsTile> {
+  List<User> toChecks = new List<User>();
   setProfileDialog(BuildContext context) {
     return showDialog(context: context,
         barrierDismissible: false,
@@ -221,6 +241,7 @@ class _ChatRoomsTileState extends State<ChatRoomsTile> {
 
   @override
   Widget build(BuildContext context) {
+    User currUser = Provider.of<User>(context);
     return Container(
       height: 80,
       width: 500,
@@ -278,7 +299,38 @@ class _ChatRoomsTileState extends State<ChatRoomsTile> {
               elevation: 4,
               onSelected: (String choice) => {
                 if (choice == 'Meet') {
-                  setProfileDialog(context)
+                  //setProfileDialog(context),
+                  toChecks.add(widget.user),
+//                  print(widget.user.name),
+//                  print(currUser.name),
+////                  MeetingHandler handler = ,
+//                  MeetingRequestPage(new MeetingHandler(currUser, toChecks))
+                      showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (BuildContext cont) {
+                        return Dialog(
+                            child: Provider<User>.value(
+                                value: Provider.of<User>(context) ?? widget.currUser,
+                                child: Stack(
+                                    children: [
+                                      MeetingRequestPage(
+                                          new MeetingHandler(widget.currUser, toChecks), true
+                                      ),
+                                      BackButton(
+                                        onPressed: () async {
+                                          Navigator.pop(cont);
+                                        },
+                                      )
+                                    ]
+                                )
+                            ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(12))
+                            )
+                        );
+                      }
+                  )
                 } else if (choice == 'Timetable display') {
 //              Navigator.of(context).push(
 //              MaterialPageRoute(
