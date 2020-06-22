@@ -64,38 +64,30 @@ exports.chatUpdate = functions.firestore.document('ChatRoom/{user1user2}/chats/{
         });
         return null;
     })
-// exports.meetingsUpdate = functions.firestore.document('/meetings/{meetingsId}')
-//     .onWrite(async (snap,context) => {
-//         var data = snap.after.data()
-//         data = await data.meeting;
-//         const obj = await data.meeting;
-//         const uids = await obj.groupUID;
-//         const requestor = await obj.requesterName;
-//         const payload = {
-//             notification: {
-//                 title: 'Meeting request',
-//                 body: 'You have a meeting request from ' + requestor
-//             }
-//         }
-//         if (uids !== null) {
-//         for (uid in uids) {
-//             // eslint-disable-next-line no-await-in-loop
-//             const doc = await admin.firestore()
-//                         .collection('userNotificationTokens')
-//                         .doc(uid)
-//                         .get()
-//             // eslint-disable-next-line no-await-in-loop
-//             const token = await doc.data().token
-//             // eslint-disable-next-line no-await-in-loop
-//             const response = await admin.messaging()
-//                                 .sendToDevice(token, payload)
-//             // eslint-disable-next-line promise/always-return
-//             // eslint-disable-next-line no-loop-func
-//             // .then((res) => {
-//             //     console.log("Message sent successfully!", res.body) 
-//             // });
-//         }
-//         }
-//         return null;
+exports.meetingsUpdate = functions.firestore.document('/meetings/{meetingsId}')
+    .onWrite(async (snap,context) => {
+        var data = snap.after.data()
+        data = await data.meeting;
+        const obj = await data.meeting;
+        const uids = await obj.groupUID;
+        const slots = await obj.slot;
+        console.log(uids[0]);
+        var uid1 = uids[0];
+        //var uid2 = uids[1];
+        const requestor = await obj.requesterName;
+        const payload = {
+            notification: {
+                title: 'Meeting request',
+                body: 'You have a meeting request from ' + requestor + ' between ' + slots.start + ' - ' + slots.end
+            }
+        }
+        var doc = await admin.firestore()
+        .collection('userNotificationTokens')
+        .doc(uid1)
+        .get()
+        var token = doc.data().token
+        const response = await admin.messaging()
+        .sendToDevice(token, payload)
+        return null;
 
-//     })
+    })
