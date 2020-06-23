@@ -4,12 +4,15 @@ import 'package:plannusandroidversion/models/meeting/meeting_handler.dart';
 import 'package:plannusandroidversion/models/meeting/meeting_request.dart';
 import 'package:plannusandroidversion/models/timetable/schedule_timing.dart';
 import 'package:plannusandroidversion/models/meeting/meeting.dart';
+import 'package:plannusandroidversion/screens/home/home.dart';
+import 'package:plannusandroidversion/screens/home/messages.dart';
 import 'package:plannusandroidversion/services/database.dart';
 
 class MeetingRequestPage extends StatefulWidget {
   final MeetingHandler meetingHandler;
+  final bool atMessages;
 
-  MeetingRequestPage(this.meetingHandler);
+  MeetingRequestPage(this.meetingHandler, this.atMessages);
 
   @override
   _MeetingRequestPageState createState() => _MeetingRequestPageState();
@@ -138,9 +141,16 @@ class _MeetingRequestPageState extends State<MeetingRequestPage> {
 //                        .whenComplete(() => Navigator.pop(context))
 //                            .whenComplete(() => Navigator.pop(context))
 //                            .whenComplete(() => Navigator.pop(context));
-                          await Future.delayed(Duration(milliseconds: 10)).whenComplete(() => Navigator.pop(context))
-                            .whenComplete(() => Navigator.pop(context))
-                            .whenComplete(() => Navigator.pop(context));
+                        if (!widget.atMessages) {
+                          await Future.delayed(Duration(milliseconds: 10))
+                              .whenComplete(() => Navigator.pop(context))
+                              .whenComplete(() => Navigator.pop(context))
+                              .whenComplete(() => Navigator.pop(context));
+                        } else {
+                          await Future.delayed(Duration(milliseconds: 10))
+                              .whenComplete(() => Navigator.pop(context))
+                              .whenComplete(() => Navigator.pop(context));
+                        }
                       },
                     ),
                     SizedBox(width: 30.0),
