@@ -11,16 +11,14 @@ class UserSearch extends SearchDelegate<String> {
   User requester;
   QuerySnapshot _querySnapshot;
   List<String> added = [];
-  List<String> usersNames = [];
-  List<String> usersHandles = [];
+  Map<String, String> nameAndHandle = {};
   List<User> toChecks = new List<User>();
 
   UserSearch(this._querySnapshot, this.requester) {
     try {
       for (var doc in _querySnapshot.documents) {
         final ref = doc.data;
-        usersNames.add(ref['name']);
-        usersHandles.add(ref['handle']);
+        nameAndHandle[ref['name']] = ref['handle'];
       }
       init();
     } catch (e) {
@@ -30,9 +28,7 @@ class UserSearch extends SearchDelegate<String> {
 
   init() async {
     String requesterName = await DatabaseMethods().getNameByUID(requester.uid);
-    String requesterHandle = await DatabaseMethods().getHandleByUID(requester.uid);
-    usersNames.remove(requesterName);
-    usersHandles.remove(requesterHandle);
+    nameAndHandle.remove(requesterName);
   }
 
   @override
@@ -135,17 +131,18 @@ class UserSearch extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    final names = nameAndHandle.keys.toList();
     final suggestionList = query.isEmpty
         ? []
-        : usersNames.where((name) => name.startsWith(query)).toList();
-
+        : names.where((name) => name.startsWith(query)).toList();
+    
     return ListView.builder(
       itemBuilder: (context, index) => ListTile(
           onTap: () async {
-            final handle = suggestionList[index];
-            added.add(handle);
-            usersNames.removeWhere((name) => name == handle);
-            User toAdd = await DatabaseMethods().getUserByName(handle)
+            final selectedName = suggestionList[index];
+            added.add(selectedName);
+            nameAndHandle.removeWhere((name, handle) => name == selectedName);
+            User toAdd = await DatabaseMethods().getUserByName(selectedName)
                 .then((val) => val.documents[0].documentID)
                 .then((uid) async {
               return await DatabaseMethods(uid: uid).getUserByUID(uid);});
@@ -162,7 +159,7 @@ class UserSearch extends SearchDelegate<String> {
                   ),
                   children: [
                     TextSpan(
-                        text: suggestionList[index].substring(query.length),
+                        text: suggestionList[index].substring(query.length) + " : ${nameAndHandle[suggestionList[index]]}",
                         style: TextStyle(color: Colors.grey)
                     )
                   ]
