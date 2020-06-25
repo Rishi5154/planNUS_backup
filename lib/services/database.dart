@@ -191,6 +191,13 @@ class DatabaseMethods {
         .snapshots();
   }
 
+  Future<void> deleteChatroom(String chatroomId) async {
+    return await Firestore.instance
+        .collection("ChatRoom")
+        .document(chatroomId)
+        .delete();
+  }
+
   //##########################//
   Future<void> addMeetingRequest(MeetingRequest meetingRequest) async {
     User currUser = await userTimetables.document(uid).get().then((val) => User.fromJson(val['user']));
