@@ -79,7 +79,8 @@ class _HomeState extends State<Home> {
 
    getSystemTime() {
     //var now = new DateTime.now();
-    String now = new DateFormat("H:m").format(new DateTime.now());
+    String now = new DateFormat("HH:mm").format(new DateTime.now());
+    //String now = DateFormat("H:mm").format(new );
     return now;
   }
   @override
@@ -209,11 +210,13 @@ class _HomeState extends State<Home> {
                     gradient: LinearGradient(colors: [
                       Colors.deepOrange,
                       Colors.orangeAccent,
-                    ])
+                    ],
+                      begin: Alignment.topLeft,
+                      end: new Alignment(-1, -1),)
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: Image(image: AssetImage('assets/planNUS.png')),
+                    child: Image(image: AssetImage('assets/planNUS.png'),height: 80, width: 40, ),
                   )
                 ),
                 Padding(

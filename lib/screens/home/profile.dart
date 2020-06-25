@@ -111,7 +111,7 @@ class _ProfileState extends State<Profile> {
           appBar: AppBar(
             title: Center(
               child: Text("Welcome, " + handle,
-                  style: TextStyle(color: Colors.black)
+                  style: GoogleFonts.openSans(color: Colors.white,fontSize: 20)
               ),
             ),
             elevation: 0,
@@ -123,8 +123,8 @@ class _ProfileState extends State<Profile> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [Colors.purple[100], Colors.purpleAccent[700], Colors.purple[300]],
+                  end: new Alignment(-1, -1),
+                  colors: [Colors.deepPurple[800], Colors.purpleAccent[700], Colors.deepPurple[300]],
                 ),
               ),
               child: Form(
@@ -208,7 +208,10 @@ class _ProfileState extends State<Profile> {
                               ),
                               onPressed: () async {
                                 //print(handle);
-                                if (formKey.currentState.validate()) {
+                                if (newHandle == null|| name == null || name.isEmpty) {
+                                  print("are you here!");
+                                  HelperWidgets.TopFlushbar("You have missing fields", Icons.account_circle)..show(context);
+                                } else if (formKey.currentState.validate()) {
                                   await databaseMethods.updateSpecificUserData(
                                       user.uid, name, newHandle);
                                   if (name.isNotEmpty) {
