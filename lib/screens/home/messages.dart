@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plannusandroidversion/messages/chats.dart';
 import 'package:plannusandroidversion/messages/chatscreenredirect.dart';
@@ -12,6 +13,7 @@ import 'package:plannusandroidversion/screens/drawer/meeting_request_page.dart';
 import 'package:plannusandroidversion/screens/drawer/user_search.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
+import 'package:plannusandroidversion/services/notificationservice.dart';
 import 'package:provider/provider.dart';
 
 class Messages extends StatefulWidget {
@@ -59,6 +61,19 @@ class _MessagesState extends State<Messages> {
       },
     );
   }
+
+//  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+//  Future initialize() async {
+//    final NotificationService notificationService = new NotificationService();
+//    return await notificationService.initialise();
+//  }
+//  void configLocalNotification() {
+//    var initializationSettingsAndroid = new AndroidInitializationSettings('app_icon');
+//    var initializationSettingsIOS = new IOSInitializationSettings();
+//    var initializationSettings = new InitializationSettings(initializationSettingsAndroid, initializationSettingsIOS);
+//    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+//  }
+
   @override
   void initState() {
     getUserInfo();

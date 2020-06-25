@@ -30,6 +30,7 @@ class HelperWidgets {
 
   static Flushbar flushbar(String text, IconData icon) {
     return Flushbar(
+//      key: Key('flushbar'),
       flushbarStyle: FlushbarStyle.FLOATING,
       margin: EdgeInsets.all(16),
       borderRadius: 8,
@@ -43,7 +44,8 @@ class HelperWidgets {
       icon: Icon(
           icon,
           size: 28,
-          color: Colors.lightBlueAccent
+          color: Colors.lightBlueAccent,
+        key: Key('failed login'),
       ),
       duration: Duration(seconds: 3),
       leftBarIndicatorColor: Colors.lightBlueAccent,
