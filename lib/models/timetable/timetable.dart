@@ -171,6 +171,7 @@ class TimeTableWidgetState extends State<TimeTableWidget> {
           itemCount: 13,
         ),
         Container(
+          //height: 50,
           color: Colors.white,
           child: Row(
             children: <Widget>[
@@ -251,7 +252,7 @@ class DayTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.yellow,
+      color: Colors.yellowAccent,
       child: SizedBox(
         height: 20.0,
         width: 40,

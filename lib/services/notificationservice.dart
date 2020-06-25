@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'dart:io';
-
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 class NotificationService {
 
@@ -24,13 +22,13 @@ class NotificationService {
 
   void showNotification(message) async {
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
-      Platform.isAndroid ? 'com.dfa.plannusandroid' : 'com.duytq.flutterchatdemo',
-      '',
+      'com.dfa.plannusandroid', 'Timetable',
       'Your timetable has been updated',
       playSound: true,
       enableVibration: true,
       importance: Importance.Max,
-
+      priority: Priority.High,
+      ticker: 'ticker',
     );
     var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
     var platformChannelSpecifics =
@@ -76,7 +74,7 @@ class NotificationService {
       // Invoked when app has been closed & notification has been opened
       onLaunch: (Map<String, dynamic> message) async {
       print('onLaunch: $message');
-      print("this has reached! at onLanunch");
+      print("this has reached! at onLaunch");
       if (Platform.isAndroid) {
         showNotification(message['notification']);
       }

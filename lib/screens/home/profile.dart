@@ -45,15 +45,24 @@ class _ProfileState extends State<Profile> {
   StorageReference reference;
 
   getPhoto() async {
-    try {
-      url = await downloadImage();
+    if (Constants.myProfilePhoto == null) {
+      try {
+        url = await downloadImage();
+        print(url.toString() + " is null???");
+        setState(() {
+          img = Image.network(url);
+        });
+      } catch (e) {
+        print("here at img fail");
+        print(e.toString());
+        setState(() {
+          img = Image.asset(
+            'assets/profilepicture.png', height: 300, width: 300,);
+        });
+      }
+    } else {
       setState(() {
-        img = Image.network(url);
-      });
-    } catch (e) {
-      print("here at img fail");
-      setState(() {
-        img = Image.asset('assets/profilepicture.png', height: 300, width: 300,);
+        img = Constants.myProfilePhoto;
       });
     }
   }
@@ -76,8 +85,15 @@ class _ProfileState extends State<Profile> {
     return downloadUrl;
   }
 
+  getRef() async {
+//    setState(() async {
+      reference = FirebaseStorage.instance.ref().child('${AuthService.currentUser.uid}/profileimage.jpg');
+//    });
+  }
+
   @override
   void initState() {
+    getRef();
     getPhoto();
     print(TimeOfDay.now());
     super.initState();
@@ -86,8 +102,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     user = Provider.of<User>(context);
-    reference = FirebaseStorage.instance.ref()
-        .child('${user.uid}/profileimage.jpg');
+    reference = FirebaseStorage.instance.ref().child('${user.uid}/profileimage.jpg');
     handle = Provider.of<String>(context);
     return handle == null || img == null
       ? Loading()
@@ -125,7 +140,10 @@ class _ProfileState extends State<Profile> {
                           padding: const EdgeInsets.all(60),
                           child: CircleAvatar(backgroundImage:img.image, radius: 100),
                         )
-                            : img
+                            : Padding(
+                          padding: const EdgeInsets.all(60),
+                          child: CircleAvatar(backgroundImage:Constants.myProfilePhoto.image, radius: 100),
+                        )
                     ),
                     Container(
                       margin: EdgeInsets.only(right: 30),
@@ -232,8 +250,11 @@ class _ProfileState extends State<Profile> {
                               File image = File(img.path);
                               setState(() {
                                 _image = image;
+                                Constants.myProfilePhoto = Image.file(image);
                               });
                               await uploadImage(image);
+                              //Constants.myProfilePhoto = Image.file(image);
+                              print(user.uid + " is here after all time");
 
                             },
                             color: Colors.blueAccent,

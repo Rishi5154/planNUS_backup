@@ -39,12 +39,23 @@ exports.timetableUpdate = functions.firestore.document('/userTimetables/{documen
     });
 exports.chatUpdate = functions.firestore.document('ChatRoom/{user1user2}/chats/{id}')
     .onWrite(async (snap,context) => {
+        const chatroom = context.params.user1user2
         const data = snap.after.data()
         const sender = await data.sendBy
         const message = await data.message
+        var users = await admin.firestore().collection('ChatRoom').doc(chatroom).get()
+        users = users.data().users
+        var name = '';
+        if (users[0] === sender) {
+            name = users[1];
+            console.log(name);
+        } else {
+            name = users[0];
+            console.log(name);
+        }
         const ss = await admin.firestore()
         .collection('users')
-        .where('name', '==', sender)
+        .where('name', '==', name)
         .get()
         const uid = ss.docs[0].id;
         const doc = await admin.firestore()
