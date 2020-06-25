@@ -9,7 +9,7 @@ import 'package:plannusandroidversion/models/meeting/meeting_request.dart';
 import 'package:plannusandroidversion/models/timetable/timetable.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:plannusandroidversion/screens/drawer/meeting_request_page.dart';
-import 'package:plannusandroidversion/screens/drawer/user_search.dart';
+import 'file:///C:/src/planNUS_backup/lib/models/user_search.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
 import 'package:provider/provider.dart';

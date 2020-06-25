@@ -135,7 +135,7 @@ class UserSearch extends SearchDelegate<String> {
     final suggestionList = query.isEmpty
         ? []
         : names.where((name) => name.startsWith(query)).toList();
-    
+
     return ListView.builder(
       itemBuilder: (context, index) => ListTile(
           onTap: () async {
