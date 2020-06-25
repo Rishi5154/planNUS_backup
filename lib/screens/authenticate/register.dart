@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
 import 'package:plannusandroidversion/services/auth.dart';
@@ -159,9 +160,10 @@ class _RegisterState extends State<Register> {
                                           true);
                                       HelperFunctions.saveUserEmailSharedPreferences(
                                           email);
-                                      HelperFunctions.saveUsernameSharedPreferences('');
+                                      HelperFunctions.saveUsernameSharedPreferences(name);
                                       HelperFunctions.saveUserHandleSharedPreferences(
                                           handle);
+                                      Constants.setAll();
                                     }
                                   }
                                 },
