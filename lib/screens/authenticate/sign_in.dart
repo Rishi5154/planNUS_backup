@@ -36,6 +36,7 @@ class _SignInState extends State<SignIn> {
     return loading
         ? Loading()
         : Scaffold(
+            key: Key('sign in page'),
             backgroundColor: Colors.deepPurpleAccent[700],
             //extendBodyBehindAppBar: true,
 //            appBar: AppBar(
@@ -89,6 +90,7 @@ class _SignInState extends State<SignIn> {
                               alignment: Alignment.centerLeft,
                               margin: EdgeInsets.only(right: 30),
                               child: TextFormField(
+                                key: Key('Email-form key'),
                                 decoration: textInputDecorationProfile.copyWith(
                                     hintText: 'Email'),
                                 validator: (val) =>
@@ -102,6 +104,7 @@ class _SignInState extends State<SignIn> {
                             Container(
                               margin: EdgeInsets.only(right: 30),
                               child: TextFormField(
+                                key: Key('Password-form key'),
                                 decoration: textInputDecorationPassword.copyWith(
                                     hintText: 'Password'),
                                 obscureText: true,
@@ -182,10 +185,11 @@ class _SignInState extends State<SignIn> {
                                         print("here at signin");
                                         HelperFunctions
                                             .saveUserLoggedInSharedPreferences(true);
-                                        Constants.myName = await HelperFunctions
-                                            .getUsernameSharedPreferences();
-                                        Constants.myHandle = await HelperFunctions
-                                            .getUserHandleSharedPreferences();
+                                        await Constants.setAll();
+//                                        Constants.myName = await HelperFunctions
+//                                            .getUsernameSharedPreferences();
+//                                        Constants.myHandle = await HelperFunctions
+//                                            .getUserHandleSharedPreferences();
                                         //Constants.myProfilePhoto = await ImageSelector.downloadImage() ?? '';
                                         print(Constants.myName + " has logged in");
                                         print(Constants.myHandle + " has logged in");
@@ -232,10 +236,11 @@ class _SignInState extends State<SignIn> {
                                           ..show(context);
                                       } else {
                                         auth.createProfileForGoogleAccounts();
-                                        Constants.myName = await HelperFunctions
-                                            .getUsernameSharedPreferences();
-                                        Constants.myHandle = await HelperFunctions
-                                            .getUserHandleSharedPreferences();
+                                        await Constants.setAll();
+//                                        Constants.myName = await HelperFunctions
+//                                            .getUsernameSharedPreferences();
+//                                        Constants.myHandle = await HelperFunctions
+//                                            .getUserHandleSharedPreferences();
                                       }
                                     },
                                     AssetImage(

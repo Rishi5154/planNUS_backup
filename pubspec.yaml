@@ -31,7 +31,7 @@ dependencies:
   google_sign_in: ^4.4.6
   bottom_navy_bar: ^5.4.0
   shared_preferences: ^0.5.7+2
-  intl: ^0.15.8
+  intl: ^0.16.1
   moor_flutter: ^1.6.0
   shimmer: ^1.1.1
   google_fonts: ^1.1.0
@@ -51,6 +51,11 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_driver:
+    sdk: flutter
+  test: any
+  mockito: ^4.1.1
+  rxdart:
   moor_generator: ^1.4.0
   build_runner:
   json_serializable:

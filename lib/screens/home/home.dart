@@ -90,6 +90,7 @@ class _HomeState extends State<Home> {
     } else {
       tabs = [
         MultiProvider(
+          key: Key('Home'),
           providers: [
             StreamProvider<TodoData>.value(
               value: DatabaseMethods(uid: user.uid).getUserTodoDataStream(),
@@ -184,6 +185,7 @@ class _HomeState extends State<Home> {
                     Constants.myName = null;
                     Constants.myHandle = null;
                     Constants.myProfilePhoto = null;
+                    Constants.resetAll();
                     await auth.googleSignIn.isSignedIn().then((value) async {
                       if (value) {
                         AuthService.googleSignInAccount = null;
