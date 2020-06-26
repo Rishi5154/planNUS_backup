@@ -45,6 +45,7 @@ dependencies:
   flutter_local_notifications: ^1.4.4+1
   timetable: ^0.2.4
   time_machine: ^0.9.12
+  
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.3
@@ -80,6 +81,7 @@ flutter:
     - assets/plannusupgraded.png
     - packages/time_machine/data/cultures/cultures.bin
     - packages/time_machine/data/tzdb/tzdb.bin
+    
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

@@ -949,7 +949,7 @@ packages:
     source: hosted
     version: "1.3.0"
   time_machine:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: time_machine
       url: "https://pub.dartlang.org"
