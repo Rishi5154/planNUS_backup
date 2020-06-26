@@ -29,6 +29,8 @@ class _MessagesState extends State<Messages> {
   Stream chatRoomsStream;
   User user;
   QuerySnapshot ss;
+
+  // method to load the curr user's chat history
   Widget chatRoomList(){
     return StreamBuilder(
       stream: chatRoomsStream,
@@ -94,37 +96,6 @@ class _MessagesState extends State<Messages> {
     print("${Constants.myHandle}");
   }
 
-//  queryTimings() async {
-//    TimeTable currUserTimetable = await databaseMethods.getUserTimetable(AuthService.currentUser.uid);
-//    List<List<Pair>> list = new List<List<Pair>>(7);
-//    currUserTimetable.timetable.forEach((key, value) {
-//      int k = key as int;
-//      List<Pair> curr = list.removeAt(k);
-//      curr.add(new Pair('0800-0900', value['0800-0900']['isFinish']));
-//      curr.add(new Pair('0900-1000', value['0900-1000']['isFinish']));
-//      curr.add(new Pair('1000-1100', value['1000-1100']['isFinish']));
-//      curr.add(new Pair('1100-1200', value['1100-1200']['isFinish']));
-//      curr.add(new Pair('1200-1300', value['1200-1300']['isFinish']));
-//      curr.add(new Pair('1300-1400', value['1300-1400']['isFinish']));
-//      curr.add(new Pair('1400-1500', value['1400-1500']['isFinish']));
-//      curr.add(new Pair('1500-1600', value['1500-1600']['isFinish']));
-//      curr.add(new Pair('1600-1700', value['1600-1700']['isFinish']));
-//      curr.add(new Pair('1700-1800', value['1700-1800']['isFinish']));
-//      curr.add(new Pair('1800-1900', value['1800-1900']['isFinish']));
-//      curr.add(new Pair('1900-2000', value['1900-2000']['isFinish']));
-//      list.insert(k - 1, curr);
-//    });
-//    //print(list.)
-//  }
-
-//  syncTimetable(String handle) async {
-//    User user = await databaseMethods.getOtherUserViaHandle(handle);
-//    return Provider<User>.value(value: user,
-//        child: MaterialApp(
-//          home: Scaffold(
-//              backgroundColor: Colors.yellow, body: TimeTableWidget()),
-//        ));
-//  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,6 +106,13 @@ class _MessagesState extends State<Messages> {
       home : Scaffold(
         backgroundColor: Colors.orange[500],
         //backgroundColor: Colors.orange[300],
+//        decoration: BoxDecoration(
+//          gradient: LinearGradient(
+//            begin: Alignment.topLeft,
+//            end: new Alignment(-1, -1),
+//            colors: [Colors.deepPurple[800], Colors.purpleAccent[700], Colors.deepPurple[300]],
+//          ),
+//        ),
         body: Center(
           child: Column(
             children: <Widget>[
@@ -242,17 +220,19 @@ class _ChatRoomsTileState extends State<ChatRoomsTile> {
     });
   }
 
-  showContactTimetable(User user) {
-    return MaterialApp(
-      home: Scaffold(),
-    );
-  }
+//  showContactTimetable(User user) {
+//    return MaterialApp(
+//      home: Scaffold(),
+//    );
+//  }
 
   blockContact(){
     return MaterialApp(
       home: Scaffold(),
     );
   }
+
+  DatabaseMethods databaseMethods = new DatabaseMethods();
 
   @override
   Widget build(BuildContext context) {
@@ -307,12 +287,12 @@ class _ChatRoomsTileState extends State<ChatRoomsTile> {
             ),
             SizedBox(width: 1,),
             PopupMenuButton<String>(
-              color: Colors.deepPurpleAccent,
+              color: Colors.white54,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.5),
+                borderRadius: BorderRadius.circular(22.5),
               ),
               elevation: 4,
-              onSelected: (String choice) => {
+              onSelected: (String choice) async => {
                 if (choice == 'Meet') {
                   //setProfileDialog(context),
                   toChecks.add(widget.user),
@@ -346,7 +326,7 @@ class _ChatRoomsTileState extends State<ChatRoomsTile> {
                         );
                       }
                   )
-                } else if (choice == 'Timetable display') {
+                } else if (choice == Choices.timetable) {
 //              Navigator.of(context).push(
 //              MaterialPageRoute(
 //                builder: (context) =>
@@ -384,17 +364,61 @@ class _ChatRoomsTileState extends State<ChatRoomsTile> {
                   )
                   )
                 )
-                } else {
+                } else if (choice == 'Block'){
                   blockContact()
+                } else if (choice == 'Delete') {
+                  await databaseMethods.deleteChatroom(widget.chatRoomID)
                 }
               },
               itemBuilder: (BuildContext context)  {
-                return Choices.choices.map((String choice){
+                return <PopupMenuEntry<String>>[
+                   PopupMenuItem<String>(
+                    value: Choices.meet,
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.people, color: Colors.lightBlueAccent,),
+                          SizedBox(width: 15,),
+                          Text(Choices.meet, style: GoogleFonts.actor(color: Colors.black),)
+                        ],
+                      )
+                  ),
+                  PopupMenuItem<String>(
+                      value: Choices.timetable,
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.calendar_today,color: Colors.deepPurple,),
+                          SizedBox(width: 15,),
+                          Text(Choices.timetable, style: GoogleFonts.actor(color: Colors.black),)
+                        ],
+                      )
+                  ),
+                  PopupMenuItem<String>(
+                      value: Choices.block,
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.block, color: Colors.red,),
+                          SizedBox(width: 15,),
+                          Text(Choices.block, style: GoogleFonts.actor(color: Colors.black),)
+                        ],
+                      )
+                  ),
+                  PopupMenuItem<String>(
+                      value: Choices.delete,
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.delete, color: Colors.grey,),
+                          SizedBox(width: 15,),
+                          Text(Choices.delete, style: GoogleFonts.actor(color: Colors.black),)
+                        ],
+                      )
+                  ),
+                ];
+                /*return Choices.choices.map((String choice){
                   return PopupMenuItem<String> (
                     value: choice,
                     child: Text(choice, style: GoogleFonts.actor(color: Colors.white),),
                   );
-                }).toList();
+                }).toList();*/
               },
             )
           ],
@@ -405,9 +429,10 @@ class _ChatRoomsTileState extends State<ChatRoomsTile> {
 }
 class Choices {
   static const String meet = 'Meet';
-  static const String timetable = 'Timetable display';
+  static const String timetable = 'View';
   static const String block = 'Block';
-  static const List<String> choices = <String>[ meet, timetable, block ];
+  static const String delete = 'Delete';
+  static const List<String> choices = <String>[meet, timetable, block, delete];
 }
 class Pair {
   String timings;
