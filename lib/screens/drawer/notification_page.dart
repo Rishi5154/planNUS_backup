@@ -7,6 +7,8 @@ import 'package:plannusandroidversion/models/user.dart';
 import 'package:provider/provider.dart';
 
 class NotificationPage extends StatefulWidget {
+  User currUser;
+  NotificationPage({this.currUser});
   @override
   _NotificationPageState createState() => _NotificationPageState();
 }
@@ -15,10 +17,29 @@ class _NotificationPageState extends State<NotificationPage> {
   User _currUser;
   List<MeetingRequest> unreadNotifications;
 
+  setInitialNotifications() {
+    setState(() {
+      unreadNotifications = widget.currUser.requests;
+    });
+  }
+
+  setNotifications() async {
+    setState(() {
+      unreadNotifications = _currUser.requests;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setInitialNotifications();
+  }
+
   @override
   Widget build(BuildContext context) {
     _currUser = Provider.of<User>(context);
-    unreadNotifications = _currUser.requests;
+    //unreadNotifications = _currUser.requests;
     List<MeetingRequest> refUnread = unreadNotifications.reversed.toList();
     if (unreadNotifications.length > 0) {
       return Padding(
@@ -77,12 +98,15 @@ class _NotificationPageState extends State<NotificationPage> {
                                                     'meeting' : mr.toJson()
                                                   });
                                                   await _currUser.deleteMeetingRequest(mr);
+                                                  setNotifications();
+
                                                 },
                                               ),
                                               IconButton(
                                                 icon: Icon(Icons.clear),
                                                 onPressed: () async {
                                                   await _currUser.deleteMeetingRequest(req);
+                                                  setNotifications();
                                                 },
                                               ),
                                             ]
