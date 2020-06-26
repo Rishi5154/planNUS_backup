@@ -7,10 +7,17 @@ import 'package:plannusandroidversion/services/auth.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/services/notificationservice.dart';
 import 'package:provider/provider.dart';
-import 'models/user.dart';
+import 'package:plannusandroidversion/models/user.dart';
 
+import 'package:time_machine/time_machine.dart';
+import 'package:flutter/services.dart';
 
-void main() {
+void main() async {
+  //TEST-------------------------------------------
+  WidgetsFlutterBinding.ensureInitialized();
+  await TimeMachine.initialize({'rootBundle': rootBundle});
+  //------------------------------------------------
+
   runApp(MyApp());
 }
 
