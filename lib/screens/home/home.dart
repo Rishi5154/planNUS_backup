@@ -267,7 +267,7 @@ class _HomeState extends State<Home> {
                                   ),
                                   child: StreamProvider<User>.value(
                                     value: DatabaseMethods(uid: user.uid).getUserStream2(),
-                                    child: NotificationPage(),
+                                    child: NotificationPage(currUser: user,),
                                     catchError: (context, e) {
                                       return user;
                                     },
