@@ -33,9 +33,12 @@ class _TimetableExampleState extends State<TimetableExample> {
   List<WeeklyEvent> convert(TimeTable timetable) {
     final now = DateTime.now();
     final today = now.weekday;
+    final date = LocalDate.today();
+    final monday = date.dayOfWeek.value == 1 ? date : date.addDays(-date.dayOfWeek.value + 1);
     List<WeeklyEvent> result = new List<WeeklyEvent>();
     for (int i = 0; i < 7; i ++) {
       List<Activity> daySchedule = timetable.timetable[i].ds;
+      final dated = date.dayOfWeek.value > i ? date.addDays(-(date.dayOfWeek.value - i) + 1) : date.addDays(i - date.dayOfWeek.value + 1);
       for (int j = 0; j < 12; j++) {
         Activity a = daySchedule[j];
         if (a.name != 'No Activity') {
@@ -43,11 +46,10 @@ class _TimetableExampleState extends State<TimetableExample> {
               id: i.toString() + ',' + j.toString(),
               day: i+1,
               isImportant: a.isImportant,
-              start: LocalDateTime(
-                  now.year, now.month, now.day - (today - (i + 1)),
+              start: LocalDateTime(dated.year, dated.monthOfYear, dated.dayOfMonth,
                   Constants.allTimings[j] ~/ 100, 00, 00),
               end: LocalDateTime(
-                  now.year, now.month, now.day - (today - (i + 1)),
+                  dated.year, dated.monthOfYear, dated.dayOfMonth,
                   1 + (Constants.allTimings[j] ~/ 100), 00, 00)
           );
           result.add(we);
@@ -60,69 +62,6 @@ class _TimetableExampleState extends State<TimetableExample> {
   @override
   void initState() {
     super.initState();
-
-//    _controller = TimetableController(
-////       A basic EventProvider containing a single event:
-//       eventProvider: EventProvider.list([
-//         BasicEvent(
-//           id: 0,
-//           title: 'My Event',
-//           color: Colors.blue,
-//           start: LocalDate.today().at(LocalTime(13, 0, 0)),
-//           end: LocalDate.today().at(LocalTime(15, 0, 0)),
-//         ),
-//         BasicEvent(
-//             id: 1,
-//             title: 'Prev Event in next index',
-//             color: Colors.red,
-//             start: LocalDate.today().at(LocalTime(10,0,0)),
-//             end: LocalDate.today().at(LocalTime(11,0,0))
-//         ),
-//         BasicEvent(
-//             id: 2,
-//             title: 'Next Event in next index',
-//             color: Colors.red,
-//             start: LocalDate.today().at(LocalTime(17,0,0)),
-//             end: LocalDate.today().at(LocalTime(19,0,0))
-//         ),
-//         BasicEvent(
-//             id: 3,
-//             title: 'Test3',
-//             color: Colors.green,
-//             start: LocalDate.today().at(LocalTime(15,0,0)),
-//             end: LocalDate.today().at(LocalTime(16,0,0))
-//         ),
-//       ]),
-//
-//       Or even this short example using a Stream:
-//       eventProvider: EventProvider.stream(
-//         eventGetter: (range) => Stream.periodic(
-//           Duration(milliseconds: 16),
-//           (i) {
-//             final start =
-//                 LocalDate.today().atMidnight() + Period(minutes: i * 2);
-//             return [
-//               BasicEvent(
-//                 id: 0,
-//                 title: 'Event',
-//                 color: Colors.blue,
-//                 start: start,
-//                 end: start + Period(hours: 5),
-//               ),
-//             ];
-//           },
-//         ),
-//       ),
-//
-//       Other (optional) parameters:
-//      initialTimeRange: InitialTimeRange.range(
-//        startTime: LocalTime(8, 0, 0),
-//        endTime: LocalTime(20, 0, 0),
-//      ),
-//      initialDate: LocalDate.today(),
-//      visibleRange: VisibleRange.days(5),
-//      firstDayOfWeek: DayOfWeek.monday,
-//    );
   }
 
   @override
@@ -133,21 +72,22 @@ class _TimetableExampleState extends State<TimetableExample> {
 
   @override
   Widget build(BuildContext context) {
-
+    final today = LocalDate.today();
+    final monday = today.dayOfWeek.value == 1 ? today : today.addDays(-today.dayOfWeek.value + 1);
     _controller = TimetableController(
       eventProvider: EventProvider.list(convert(Provider.of<User>(context).timetable)),
       initialTimeRange: InitialTimeRange.range(
         startTime: LocalTime(8, 0, 0),
-        endTime: LocalTime(20, 0, 0),
+        endTime: LocalTime(18, 0, 0),
       ),
-      initialDate: LocalDate.today(),
-      visibleRange: VisibleRange.days(5),
+      initialDate: monday,
+      visibleRange: VisibleRange.days(7),
       firstDayOfWeek: DayOfWeek.monday,
     );
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Timetable example'),
+        title: Text(_controller.initialDate.monthOfYear.toString()),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.today),
