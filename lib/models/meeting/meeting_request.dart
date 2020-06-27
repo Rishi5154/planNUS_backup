@@ -15,12 +15,12 @@ class MeetingRequest {
 
   MeetingRequest(this.id, this.meeting) {
     this.counter = 0;
-    this.isAccepted = false;
+    this.isAccepted = null;
   }
 
   void accept() async {
     this.counter++;
-    isAccepted = (counter >= meeting.groupUID.length);
+    isAccepted = (counter >= meeting.groupUID.length) ? true : null;
     if (isAccepted) {
       meeting.groupUID.forEach((uid) async {
         User user = await DatabaseMethods(uid: uid).getUserByUID(uid);
@@ -34,6 +34,8 @@ class MeetingRequest {
   }
 
   void reject() {
+    isAccepted = false;
+    //Rishi you can do your listen
     meeting.groupUID.forEach((uid) async {
       User user = await DatabaseMethods(uid: uid).getUserByUID(uid);
       await user.deleteMeetingRequest(this);

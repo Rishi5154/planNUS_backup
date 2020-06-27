@@ -28,7 +28,7 @@ class MeetingHandler {
 
   Map<int, List<ScheduleTiming>> getFreeTiming() {
     Map<int, List<ScheduleTiming>> result = new Map<int, List<ScheduleTiming>>();
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 7; i++) {
       List<Activity> ref = requester.timetable.timetable[i].ds;
       print(requester);
       print(requester.name);

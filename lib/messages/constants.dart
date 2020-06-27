@@ -6,13 +6,16 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:plannusandroidversion/services/auth.dart';
 
 import 'helperfunctions.dart';
+
 class Constants {
   static String myName ="";
   static String myHandle ="";
   static Image myProfilePhoto;
   StorageReference reference;
 
-  static List<String> days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  static final List<int> allTimings = [0800, 0900, 1000, 1100, 1200, 1300,
+    1400, 1500, 1600, 1700, 1800, 1900];
+  static final List<String> days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   static String stringDay(int day) {
     return days[day - 1];
   }

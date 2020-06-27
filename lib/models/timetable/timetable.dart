@@ -21,8 +21,7 @@ class TimeTable {
   static List<String> days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   static List<int> weekdays = [1, 2, 3, 4, 5, 6, 7];
   //static List<List<int>> notifIds = [[1,2,3,4,5,6,7,8,9,10,11,12]]
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
-  NotificationService notificationService = new NotificationService();
+
 
   //propeties
   List<DaySchedule> timetable;
@@ -50,6 +49,7 @@ class TimeTable {
   }
 
   void alter(int day, String bName, ScheduleTime bStart, ScheduleTime bEnd, bool isImportant) {
+    NotificationService notificationService = new NotificationService();
     int s = bStart.time;
     int e = bEnd.time;
     int startTime = int.parse(s.toString().substring(0,s.toString().length - 2));
@@ -96,7 +96,7 @@ class TimeTable {
     int s = int.parse(startTime.toString().substring(0,startTime.toString().length - 2));
     print(day);
     print(notificationIdGenerator(s, day));
-    flutterLocalNotificationsPlugin.cancel(notificationIdGenerator(s, day));
+    FlutterLocalNotificationsPlugin().cancel(notificationIdGenerator(s, day));
     timetable[day-1].alter(startTime, Activity.noActivity());
   }
 
@@ -203,8 +203,8 @@ class TimeTableWidgetState extends State<TimeTableWidget> {
       onTapDown: _storePosition,
     );
   }
-
   var _tapPosition;
+
 
   _showPopupMenu(int _day, int _startTime) async {
     final RenderBox overlay = Overlay.of(context).context.findRenderObject();

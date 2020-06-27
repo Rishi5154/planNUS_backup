@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/models/timetable/timetable.dart';
+import 'package:plannusandroidversion/models/timetable2/test.dart';
 import 'package:plannusandroidversion/models/todo/todo_main.dart';
 import 'package:plannusandroidversion/models/todo/todo_models/todo_data.dart';
 import 'package:plannusandroidversion/models/user.dart';
@@ -108,7 +109,7 @@ class _HomeState extends State<Home> {
         //home
         Provider<User>.value(value: user,
             child: Scaffold(
-                backgroundColor: Colors.yellow, body: TimeTableWidget()
+                backgroundColor: Colors.yellow, body: TimetableExample()//TimeTableWidget()
             )
         ),
         //TimeTable.emptyTimeTable()))),
