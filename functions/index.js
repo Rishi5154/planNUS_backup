@@ -76,8 +76,9 @@ exports.chatUpdate = functions.firestore.document('ChatRoom/{user1user2}/chats/{
         return null;
     })
 exports.meetingsUpdate = functions.firestore.document('/meetings/{meetingsId}')
-    .onWrite(async (snap,context) => {
-        var data = snap.after.data()
+    .onCreate(async (snap,context) => {
+        var data = snap.data()
+        //var data = snap.after.data()
         data = await data.meeting;
         const obj = await data.meeting;
         const uids = await obj.groupUID;
@@ -102,3 +103,34 @@ exports.meetingsUpdate = functions.firestore.document('/meetings/{meetingsId}')
         return null;
 
     })
+
+exports.meetingsOutcome = functions.firestore.document('/meetings/{meetingsId}')
+.onUpdate(async (snap, context) => {
+    var data = snap.after.data();
+    data = await data.meeting
+    var decision = await data.isAccepted;
+    data = await data.meeting
+    const userUid = await data.userUID
+    const slots = await data.slot;
+    const memberName = await data.memberNames
+    //const name = memberName[0]
+    const payload = {
+        notification: {
+            title: 'Meeting with ' + memberName + ' between ' + slots.start + ' - ' + slots.end,
+            body: decision ? 'approved' : 'rejected' 
+        }
+    }
+    const token = await admin.firestore()
+    .collection('userNotificationTokens')
+    .doc(userUid)
+    .get().then(value => value.data().token)
+    await admin.messaging().sendToDevice(token, payload);
+    // if (decision) {
+    //     await admin.messaging().sendToDevice(token, payload);
+    // } else {
+    //     decision = "rejected!"
+    //     await admin.messaging().sendToDevice(token, payload);
+    // }
+    return null;
+
+})
