@@ -31,10 +31,7 @@ class _TimetableExampleState extends State<TimetableExample> {
   TimetableController<WeeklyEvent> _controller;
 
   List<WeeklyEvent> convert(TimeTable timetable) {
-    final now = DateTime.now();
-    final today = now.weekday;
     final date = LocalDate.today();
-    final monday = date.dayOfWeek.value == 1 ? date : date.addDays(-date.dayOfWeek.value + 1);
     List<WeeklyEvent> result = new List<WeeklyEvent>();
     for (int i = 0; i < 7; i ++) {
       List<Activity> daySchedule = timetable.timetable[i].ds;
