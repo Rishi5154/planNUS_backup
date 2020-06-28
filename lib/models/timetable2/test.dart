@@ -66,6 +66,7 @@ class _TimetableExampleState extends State<TimetableExample> {
     _controller.dispose();
     super.dispose();
   }
+  String _dateVisible;
 
   @override
   Widget build(BuildContext context) {
@@ -81,10 +82,11 @@ class _TimetableExampleState extends State<TimetableExample> {
       visibleRange: VisibleRange.days(7),
       firstDayOfWeek: DayOfWeek.monday,
     );
+    _dateVisible = _controller.scrollControllers.page.toString();
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(_controller.initialDate.monthOfYear.toString()),
+        title: Text(_dateVisible),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.today),
