@@ -182,7 +182,7 @@ class _RegisterState extends State<Register> {
                                   ),
                               )
                           ),
-                          SizedBox(height: 24.0)
+                          SizedBox(height: MediaQuery.of(context).size.height - 670)
                         ],
                       ),
                     ),

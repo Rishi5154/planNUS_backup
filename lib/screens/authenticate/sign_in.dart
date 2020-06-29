@@ -250,7 +250,7 @@ class _SignInState extends State<SignIn> {
                                 ],
                               ),
                             ),
-                            SizedBox(height: 26,)
+                            SizedBox(height: MediaQuery.of(context).size.height - 655,)
                           ],
                         ),
                       ),

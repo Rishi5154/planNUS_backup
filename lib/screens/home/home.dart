@@ -10,7 +10,7 @@ import 'package:plannusandroidversion/models/todo/todo_models/todo_data.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:plannusandroidversion/models/timetable/weekly_event_adder.dart';
 import 'package:plannusandroidversion/screens/drawer/notification_page.dart';
-import 'file:///C:/src/planNUS_backup/lib/models/user_search.dart';
+import 'package:plannusandroidversion/models/user_search.dart';
 import 'package:plannusandroidversion/screens/home/messages.dart';
 import 'package:plannusandroidversion/screens/home/profile.dart';
 import 'package:plannusandroidversion/services/auth.dart';
