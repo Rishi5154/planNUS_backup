@@ -281,7 +281,8 @@ class _ProfileState extends State<Profile> {
                     Text(
                       error,
                       style: TextStyle(color: Colors.black, fontSize: 16),
-                    )
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height > 707 ? MediaQuery.of(context).size.height - 707 : 707 - MediaQuery.of(context).size.height),
                   ],
                 ),
               ),
