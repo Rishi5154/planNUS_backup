@@ -1,4 +1,5 @@
 import 'package:plannusandroidversion/models/timetable/activity.dart';
+import 'package:plannusandroidversion/models/timetable/day_schedule.dart';
 import 'package:plannusandroidversion/models/timetable/schedule_timing.dart';
 import 'package:plannusandroidversion/models/timetable/timetable_event.dart';
 import 'package:plannusandroidversion/models/user.dart';
@@ -31,17 +32,22 @@ class MeetingHandler {
     Map<DateTime, List<ScheduleTiming>> result = new Map<DateTime, List<ScheduleTiming>>();
     DateTime refDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
     for (int i = 0; i < 15; i ++) {
-      List<TimeTableEvent> ref = requester.timetable.timetable[refDate].ds;
-      print(requester);
-      print(requester.name);
+      List<TimeTableEvent> ref = requester.timetable.timetable[refDate] == null
+          ? DaySchedule.noSchedule.ds
+          : requester.timetable.timetable[refDate].ds;
+//      print(requester);
+//      print(requester.name);
       List<ScheduleTiming> addable = new List<ScheduleTiming>();
       for (int j = 0; j < 12; j++) {
         TimeTableEvent ref2 = ref[j];
-        if (ref2 != null) { //user is free
+        if (ref2 == null) { //user is free
           print("check user is free on ${i.toString()} ${j.toString()}");
           bool track = true;
           for (User u in toCheck) {
-            if (u.timetable.timetable[i].ds[j] == null) {
+            List<TimeTableEvent> uRef = u.timetable.timetable[refDate] == null
+                ? DaySchedule.noSchedule.ds
+                : u.timetable.timetable[refDate].ds;
+            if (uRef[j] != null) {
               track = false;
             }
           }

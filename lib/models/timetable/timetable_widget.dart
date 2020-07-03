@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:plannusandroidversion/models/timetable/activity.dart';
 import 'package:plannusandroidversion/models/timetable/day_schedule.dart';
 import 'package:plannusandroidversion/models/timetable/timetable.dart';
@@ -79,11 +80,11 @@ class _TimeTableWidgetState extends State<TimeTableWidget> {
     _controller.dispose();
     super.dispose();
   }
-
+  String _viewingMonth = DateFormat.MMMM('en_US').format(DateTime.now());
   @override
   Widget build(BuildContext context) {
     final today = LocalDate.today();
-    final monday = today.dayOfWeek.value == 1 ? today : today.addDays(-today.dayOfWeek.value + 1);
+    LocalDate monday = today.dayOfWeek.value == 1 ? today : today.addDays(-today.dayOfWeek.value + 1);
     _controller = TimetableController(
       eventProvider: EventProvider.list(convert(Provider.of<User>(context).timetable)),
       initialTimeRange: InitialTimeRange.range(
@@ -93,12 +94,16 @@ class _TimeTableWidgetState extends State<TimeTableWidget> {
       initialDate: monday,
       visibleRange: VisibleRange.days(7),
       firstDayOfWeek: DayOfWeek.monday,
-
     );
+    _controller.dateListenable.addListener(() {
+      setState(() {
+        _viewingMonth = _controller.dateListenable.value.toString();
+      });
+    });
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(_controller.initialDate.monthOfYear.toString()),
+        title: Text(_viewingMonth),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.today),
@@ -110,7 +115,9 @@ class _TimeTableWidgetState extends State<TimeTableWidget> {
       body: Timetable<BasicEvent>(
         controller: _controller,
         onEventBackgroundTap: (start, isAllDay) {
-//          _showSnackBar('Background tapped $start is all day event $isAllDay');
+//          setState(() {
+//            _viewingMonth = _controller.scrollControllers.addPageChangedListener(() { });
+//          });
         },
         eventBuilder: (event) {
           return TimeTableEventWidget(
