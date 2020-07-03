@@ -20,14 +20,7 @@ class TimeTableWidget extends StatefulWidget {
 class _TimeTableWidgetState extends State<TimeTableWidget> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   TimetableController<BasicEvent> _controller;
-//  const BasicEvent({
-//    @required Object id,
-//    @required this.title,
-//    @required this.color,
-//    @required LocalDateTime start,
-//    @required LocalDateTime end,
-//  })  : assert(title != null),
-//        super(id: id, start: start, end: end);
+
   Map<String, dynamic> myHashMap = {};
 
   List<BasicEvent> convert(TimeTable timetable) {
@@ -95,15 +88,14 @@ class _TimeTableWidgetState extends State<TimeTableWidget> {
       visibleRange: VisibleRange.days(7),
       firstDayOfWeek: DayOfWeek.monday,
     );
-    _controller.dateListenable.addListener(() {
-      setState(() {
-        _viewingMonth = _controller.dateListenable.value.toString();
-      });
-    });
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(_viewingMonth),
+        title: ValueListenableBuilder<LocalDate>(
+          valueListenable: _controller.dateListenable,
+          builder: (context, date, _) =>
+              Text(DateFormat.MMMM('en_US').format(date.toDateTimeUnspecified())),
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.today),
@@ -114,15 +106,19 @@ class _TimeTableWidgetState extends State<TimeTableWidget> {
       ),
       body: Timetable<BasicEvent>(
         controller: _controller,
+        theme: TimetableThemeData(
+          primaryColor: Colors.deepPurpleAccent,
+          partDayEventMinimumDuration: Period(minutes: 60),
+        ),
         onEventBackgroundTap: (start, isAllDay) {
-//          setState(() {
-//            _viewingMonth = _controller.scrollControllers.addPageChangedListener(() { });
-//          });
+          setState(() {
+            _viewingMonth = _controller.scrollControllers.addAndGet().position.toString();
+          });
         },
         eventBuilder: (event) {
           return TimeTableEventWidget(
             _scaffoldKey.currentContext,
-            myHashMap[event.id], //MIGHT BE WRONG
+            myHashMap[event.id],//MIGHT BE WRONG
           );
         },
 //        allDayEventBuilder: (context, event, info) => BasicAllDayEventWidget(

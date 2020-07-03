@@ -278,17 +278,24 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
                     onPressed: () async {
                       if (_selectedImportance == null || _selectedEndTime == null ||
                           _selectedStartTime == null || _selectedName.text == null ||
+                          _selectedName.text == '' ||
                           (isWeeklyEvent && _selectedDay == null)) {
                         setState(() {
                           addable = 'Please fill in all fields!';
                         });
-                      } else {
+                      } else if (isWeeklyEvent
+                          && _selectedStartDate.year == _selectedEndDate.year
+                          && _selectedStartDate.month == _selectedEndDate.month
+                          && _selectedStartDate.day == _selectedEndDate.day
+                      ) {
+                        setState(() {
+                          addable = 'Invalid End Date';
+                        });
+                      }
+                      else {
                         if (isWeeklyEvent) {
                           print(_selectedStartDate.weekday.toString() + "////////" + _selectedDay.toString());
                           if (_selectedStartDate.weekday > _selectedDay) {
-//                            DateTime refDate = startDate.weekday > event.day
-//                                ? startDate.add(Duration(days: 7 - (startDate.weekday - event.day)))
-//                                : startDate.add(Duration(days: event.day - startDate.weekday));
                             _selectedStartDate = _selectedStartDate.add(Duration(days: 7 - (_selectedStartDate.weekday - _selectedDay)));
                           } else if (_selectedStartDate.weekday < _selectedDay) {
                             _selectedStartDate = _selectedStartDate.add(Duration(days: _selectedDay - _selectedStartDate.weekday));
