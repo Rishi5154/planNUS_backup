@@ -170,4 +170,3 @@ class UserSearch extends SearchDelegate<String> {
     );
   }
 }
-

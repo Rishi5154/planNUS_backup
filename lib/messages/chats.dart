@@ -1,9 +1,8 @@
 import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:plannusandroidversion/models/timetable/timetable.dart';
+import 'package:plannusandroidversion/models/timetable/timetable_widget.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:plannusandroidversion/services/auth.dart';
 import 'package:plannusandroidversion/shared/helperwidgets.dart';
@@ -31,8 +30,6 @@ class _ChatsState extends State<Chats> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    //getUserInfo();
     super.initState();
   }
 

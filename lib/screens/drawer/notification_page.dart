@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/models/meeting/meeting.dart';
 import 'package:plannusandroidversion/models/meeting/meeting_request.dart';
@@ -7,7 +8,7 @@ import 'package:plannusandroidversion/models/user.dart';
 import 'package:provider/provider.dart';
 
 class NotificationPage extends StatefulWidget {
-  User currUser;
+  final User currUser;
   NotificationPage({this.currUser});
   @override
   _NotificationPageState createState() => _NotificationPageState();
@@ -57,7 +58,7 @@ class _NotificationPageState extends State<NotificationPage> {
                           String name = reqMeeting.name;
                           String requesterName = reqMeeting.requesterName;
                           String memberNames = reqMeeting.memberNames;
-                          String stringDay = Constants.stringDay(reqMeeting.day);
+                          String stringDay = Constants.stringDay(reqMeeting.date.weekday) + " " + DateFormat.yMMMMd('en_US').format(reqMeeting.date);
                           String stringSlot = reqMeeting.slot.toString();
                           return Container(
                             height: 80,

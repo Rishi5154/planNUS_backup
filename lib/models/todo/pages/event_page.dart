@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:plannusandroidversion/models/timetable/activity.dart';
+import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/models/timetable/day_schedule.dart';
 import 'package:plannusandroidversion/models/timetable/schedule_timing.dart';
+import 'package:plannusandroidversion/models/timetable/timetable_event.dart';
 import 'package:plannusandroidversion/models/todo/widgets/custom_icon_decoration.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:provider/provider.dart';
@@ -11,14 +12,14 @@ class EventPage extends StatefulWidget {
   _EventPageState createState() => _EventPageState();
 }
 
-class Event {
+class DayEvent {
   final String time;
   final String task;
   String desc;
   bool isFinish;
   bool isImportant;
 
-  Event(this.time, this.task, this.desc, this.isFinish, this.isImportant);
+  DayEvent(this.time, this.task, this.desc, this.isFinish, this.isImportant);
 }
 
 //final List<Event> _eventList = [
@@ -31,21 +32,28 @@ class Event {
 //];
 
 class _EventPageState extends State<EventPage> {
-  static List<int> _orderedTime = DaySchedule.allTimings;
+  static List<ScheduleTiming> _orderedTime = Constants.visibleTiming;
+  static List<int> indexes = [0,1,2,3,4,5,6,7,8,9,10,11];
   @override
   Widget build(BuildContext context) {
     double iconSize = 20;
-    DaySchedule ds = Provider.of<User>(context).timetable.timetable[DateTime.now().weekday - 1];
-    List<Event> _eventList = _orderedTime.map((val) {
-      String m = ScheduleTiming(val).toString();
-      Activity act = ds.getActivity(val);
-      String time = m.substring(0,2) + ":" + m.substring(2,4);
-      String task = act.name;
-      String desc = "";
-      bool isFinish = act.isFinish;
-      bool isImportant = act.isImportant;
-      return new Event(time, task, desc, isFinish, isImportant);
+    DateTime now = DateTime.now();
+    DaySchedule ds = Provider.of<User>(context).timetable.timetable[DateTime(now.year, now.month, now.day)] ?? DaySchedule.noSchedule;
+    List<DayEvent> _eventList = indexes.map((val) {
+      String m = _orderedTime[val].toString();
+      TimeTableEvent act = ds.ds[val];
+      if (act == null) {
+        return null;
+      } else {
+        String time = m.substring(0, 2) + ":" + m.substring(2, 4);
+        String task = act.name;
+        String desc = "";
+        bool isFinish = now.hour >= act.timing.end;
+        bool isImportant = act.isImportant;
+        return new DayEvent(time, task, desc, isFinish, isImportant);
+      }
     }).toList();
+    _eventList.removeWhere((val) => val == null);
     return ListView.builder(
       itemCount: _eventList.length,
       padding: const EdgeInsets.all(0),
@@ -65,7 +73,7 @@ class _EventPageState extends State<EventPage> {
     );
   }
 
-  Widget _displayContent(Event event) {
+  Widget _displayContent(DayEvent event) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),

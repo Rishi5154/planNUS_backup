@@ -9,7 +9,8 @@ part of 'schedule_timing.dart';
 ScheduleTiming _$ScheduleTimingFromJson(Map<String, dynamic> json) {
   return ScheduleTiming(
     json['start'] as int,
-  )..end = json['end'] as int;
+    json['end'] as int,
+  );
 }
 
 Map<String, dynamic> _$ScheduleTimingToJson(ScheduleTiming instance) =>

@@ -8,16 +8,15 @@ part of 'day_schedule.dart';
 
 DaySchedule _$DayScheduleFromJson(Map<String, dynamic> json) {
   return DaySchedule(
-    json['day'] as int,
     (json['ds'] as List)
-        ?.map((e) =>
-            e == null ? null : Activity.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => e == null
+            ? null
+            : TimeTableEvent.fromJson(e as Map<String, dynamic>))
         ?.toList(),
   );
 }
 
 Map<String, dynamic> _$DayScheduleToJson(DaySchedule instance) =>
     <String, dynamic>{
-      'day': instance.day,
       'ds': instance.ds?.map((e) => e?.toJson())?.toList(),
     };

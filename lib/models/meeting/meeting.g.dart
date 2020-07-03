@@ -18,7 +18,8 @@ Meeting _$MeetingFromJson(Map<String, dynamic> json) {
     ..slot = json['slot'] == null
         ? null
         : ScheduleTiming.fromJson(json['slot'] as Map<String, dynamic>)
-    ..day = json['day'] as int
+    ..date =
+        json['date'] == null ? null : DateTime.parse(json['date'] as String)
     ..isImportant = json['isImportant'] as bool;
 }
 
@@ -28,7 +29,7 @@ Map<String, dynamic> _$MeetingToJson(Meeting instance) => <String, dynamic>{
       'userUID': instance.userUID,
       'groupUID': instance.groupUID,
       'slot': instance.slot?.toJson(),
-      'day': instance.day,
+      'date': instance.date?.toIso8601String(),
       'isImportant': instance.isImportant,
       'requesterName': instance.requesterName,
       'memberNames': instance.memberNames,

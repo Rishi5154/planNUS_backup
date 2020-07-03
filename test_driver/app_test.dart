@@ -10,7 +10,7 @@ void main() {
       final passwordField = find.byValueKey('Password-form key');
       final signInButton = find.text('Login');
       final homePage = find.byValueKey('Home');
-      final flushBar = find.byValueKey('flushbar');
+//      final flushBar = find.byValueKey('flushbar');
 
       FlutterDriver driver;
 

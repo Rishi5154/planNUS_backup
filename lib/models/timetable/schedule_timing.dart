@@ -1,27 +1,52 @@
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:plannusandroidversion/models/timetable/schedule_time.dart';
 
 part 'schedule_timing.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class ScheduleTiming {
-  int start;
+  //Properties
+  int start; //hours
   int end;
-  ScheduleTiming(int start) {
-    this.start = start;
-    this.end = start + 100;
-  }
 
-  static List<ScheduleTiming> allSlots = ScheduleTime.startTimeList
-      .map((startTime) => ScheduleTiming(startTime.time)).toList();
+  //Constructor
+  ScheduleTiming(this.start, this.end);
 
   @override
   String toString() {
-    String s = start < 1000 ? "0${start.toString()}" : start.toString();
-    String e = end < 1000 ? "0${end.toString()}" : end.toString();
+    String s = start < 10
+        ? "0${start.toString()}00"
+        : '${start.toString()}00' ;
+    String e = end < 10
+        ? "0${end.toString()}00"
+        : '${end.toString()}00' ;
     return s + '-' + e;
   }
 
+  bool coincide(ScheduleTiming other) {
+    int thisStart = this.start;
+    int thisEnd = this.end;
+    int otherStart = other.start;
+    int otherEnd = other.end;
+    if (otherEnd >= thisStart && otherEnd <= thisEnd) {
+      return true;
+    } else if (otherStart >= thisStart && otherStart <= thisEnd) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  @override
+  bool operator ==(dynamic other) =>
+      super == other
+          && start == other.start
+          && end == other.end;
+
+  @override
+  int get hashCode => hashList([super.hashCode, start, end]);
+
+  //JsonSerializable methods
   factory ScheduleTiming.fromJson(Map<String, dynamic> data) => _$ScheduleTimingFromJson(data);
 
   Map<String, dynamic> toJson() => _$ScheduleTimingToJson(this);

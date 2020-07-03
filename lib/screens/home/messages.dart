@@ -1,19 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plannusandroidversion/messages/chats.dart';
 import 'package:plannusandroidversion/messages/chatscreenredirect.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/models/meeting/meeting_handler.dart';
-import 'package:plannusandroidversion/models/meeting/meeting_request.dart';
-import 'package:plannusandroidversion/models/timetable/timetable.dart';
+import 'package:plannusandroidversion/models/timetable/timetable_widget.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:plannusandroidversion/screens/drawer/meeting_request_page.dart';
-import 'file:///C:/src/planNUS_backup/lib/models/user_search.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
-import 'package:plannusandroidversion/services/notificationservice.dart';
 import 'package:provider/provider.dart';
 
 class Messages extends StatefulWidget {
@@ -236,7 +232,7 @@ class _ChatRoomsTileState extends State<ChatRoomsTile> {
 
   @override
   Widget build(BuildContext context) {
-    User currUser = Provider.of<User>(context);
+//    User currUser = Provider.of<User>(context);
     return Container(
       height: 80,
       width: 500,

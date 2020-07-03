@@ -10,7 +10,7 @@ class Meeting {
   String userUID;
   List<String> groupUID;
   ScheduleTiming slot;
-  int day;
+  DateTime date;
   bool isImportant;
 
   String requesterName;
@@ -18,7 +18,7 @@ class Meeting {
 
   Meeting(this.uid, this.name, this.userUID, this.groupUID, this.requesterName, this.memberNames);
 
-  void setDay(int day) { this.day = day; }
+  void setDate(DateTime date) { this.date = date; }
 
   void setSlot(ScheduleTiming slot) { this.slot = slot; }
 

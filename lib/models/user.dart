@@ -1,8 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:plannusandroidversion/models/meeting/meeting_request.dart';
 import 'package:plannusandroidversion/models/timetable/activity.dart';
-import 'package:plannusandroidversion/models/timetable/schedule_time.dart';
-import 'package:plannusandroidversion/models/timetable/schedule_timing.dart';
+import 'package:plannusandroidversion/models/timetable/day_schedule.dart';
+import 'package:plannusandroidversion/models/timetable/weekly_event.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/models/timetable/timetable.dart';
 
@@ -45,8 +45,16 @@ class User {
     return DatabaseMethods(uid: this.uid).updateUserData2(this);
   }
 
-  Future<void> addEvent(int day, Activity activity, ScheduleTiming slot) {
-    this.timetable.alter(day, activity.name, ScheduleTime(time: slot.start), ScheduleTime(time: slot.end), activity.isImportant);
+  Future<void> addWeeklyEvent(WeeklyEvent activity) {
+    this.timetable.addWeekly(activity);
+    return this.update();
+  }
+
+  Future<void> addActivity(Activity activity) {
+    DateTime refDate = DateTime(activity.startDate.year, activity.startDate.month, activity.startDate.day);
+    DaySchedule ref = this.timetable.timetable[refDate] ?? DaySchedule.noSchedule;
+    ref.addEvent(activity);
+    this.timetable.timetable[refDate] = ref;
     return this.update();
   }
 }

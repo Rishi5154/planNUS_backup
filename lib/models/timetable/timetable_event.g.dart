@@ -1,30 +1,29 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'activity.dart';
+part of 'timetable_event.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Activity _$ActivityFromJson(Map<String, dynamic> json) {
-  return Activity(
-    json['startDate'] == null
-        ? null
-        : DateTime.parse(json['startDate'] as String),
+TimeTableEvent _$TimeTableEventFromJson(Map<String, dynamic> json) {
+  return TimeTableEvent(
     json['timing'] == null
         ? null
         : ScheduleTiming.fromJson(json['timing'] as Map<String, dynamic>),
     json['id'] as String,
     json['name'] as String,
     json['isImportant'] as bool,
-  )
-    ..endDate = json['endDate'] == null
+    json['startDate'] == null
         ? null
-        : DateTime.parse(json['endDate'] as String)
-    ..isWeekly = json['isWeekly'] as bool;
+        : DateTime.parse(json['startDate'] as String),
+    json['endDate'] == null ? null : DateTime.parse(json['endDate'] as String),
+    json['isWeekly'] as bool,
+  );
 }
 
-Map<String, dynamic> _$ActivityToJson(Activity instance) => <String, dynamic>{
+Map<String, dynamic> _$TimeTableEventToJson(TimeTableEvent instance) =>
+    <String, dynamic>{
       'timing': instance.timing?.toJson(),
       'id': instance.id,
       'name': instance.name,

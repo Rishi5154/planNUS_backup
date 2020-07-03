@@ -17,7 +17,7 @@ class MeetingRequest {
     this.counter = 0;
     this.isAccepted = null;
   }
-
+//  Activity(this.date, ScheduleTiming timing, String id, String name, bool isImportant)
   void accept() async {
     this.counter++;
     isAccepted = (counter >= meeting.groupUID.length) ? true : null;
@@ -25,11 +25,12 @@ class MeetingRequest {
       meeting.groupUID.forEach((uid) async {
         User user = await DatabaseMethods(uid: uid).getUserByUID(uid);
         user.deleteMeetingRequest(this);
-        await user.addEvent(meeting.day, new Activity(meeting.name, true, false), meeting.slot);
+//        DateTime now = DateTime.now();
+        await user.addActivity(new Activity(meeting.date, meeting.slot, id, meeting.name, meeting.isImportant));
       });
       await DatabaseMethods(uid: meeting.userUID)
           .getUserByUID(meeting.userUID)
-          .then((user) => user.addEvent(meeting.day, new Activity(meeting.name, true, false), meeting.slot));
+          .then((user) => user.addActivity(new Activity(meeting.date, meeting.slot, id, meeting.name, meeting.isImportant)));
     }
   }
 

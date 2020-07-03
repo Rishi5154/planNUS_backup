@@ -1,5 +1,6 @@
 import 'package:plannusandroidversion/models/timetable/activity.dart';
 import 'package:plannusandroidversion/models/timetable/schedule_timing.dart';
+import 'package:plannusandroidversion/models/timetable/timetable_event.dart';
 import 'package:plannusandroidversion/models/user.dart';
 
 class MeetingHandler {
@@ -10,36 +11,37 @@ class MeetingHandler {
 
   ScheduleTiming _convertIntToST(int i) {
     switch(i) {
-      case(0): return ScheduleTiming(800); break;
-      case(1): return ScheduleTiming(900); break;
-      case(2): return ScheduleTiming(1000); break;
-      case(3): return ScheduleTiming(1100); break;
-      case(4): return ScheduleTiming(1200); break;
-      case(5): return ScheduleTiming(1300); break;
-      case(6): return ScheduleTiming(1400); break;
-      case(7): return ScheduleTiming(1500); break;
-      case(8): return ScheduleTiming(1600); break;
-      case(9): return ScheduleTiming(1700); break;
-      case(10): return ScheduleTiming(1800); break;
-      case(11): return ScheduleTiming(1900); break;
+      case(0): return ScheduleTiming(8,9); break;
+      case(1): return ScheduleTiming(9,10); break;
+      case(2): return ScheduleTiming(10,11); break;
+      case(3): return ScheduleTiming(11,12); break;
+      case(4): return ScheduleTiming(12,13); break;
+      case(5): return ScheduleTiming(13,14); break;
+      case(6): return ScheduleTiming(14,15); break;
+      case(7): return ScheduleTiming(15,16); break;
+      case(8): return ScheduleTiming(16,17); break;
+      case(9): return ScheduleTiming(17,18); break;
+      case(10): return ScheduleTiming(18,19); break;
+      case(11): return ScheduleTiming(19,20); break;
       default: return null; break;
     }
   }
-
-  Map<int, List<ScheduleTiming>> getFreeTiming() {
-    Map<int, List<ScheduleTiming>> result = new Map<int, List<ScheduleTiming>>();
-    for (int i = 0; i < 7; i++) {
-      List<Activity> ref = requester.timetable.timetable[i].ds;
+  //Two weeks ahead
+  Map<DateTime, List<ScheduleTiming>> getFreeTiming() {
+    Map<DateTime, List<ScheduleTiming>> result = new Map<DateTime, List<ScheduleTiming>>();
+    DateTime refDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+    for (int i = 0; i < 15; i ++) {
+      List<TimeTableEvent> ref = requester.timetable.timetable[refDate].ds;
       print(requester);
       print(requester.name);
       List<ScheduleTiming> addable = new List<ScheduleTiming>();
       for (int j = 0; j < 12; j++) {
-        Activity ref2 = ref[j];
-        if (ref2.name == Activity.nil) { //user is free
+        TimeTableEvent ref2 = ref[j];
+        if (ref2 != null) { //user is free
           print("check user is free on ${i.toString()} ${j.toString()}");
           bool track = true;
           for (User u in toCheck) {
-            if (u.timetable.timetable[i].ds[j].name != Activity.nil) {
+            if (u.timetable.timetable[i].ds[j] == null) {
               track = false;
             }
           }
@@ -49,8 +51,9 @@ class MeetingHandler {
         }
       }
       if (addable.isNotEmpty) {
-        result[i + 1] = addable;
+        result[refDate] = addable;
       }
+      refDate = refDate.add(Duration(days: 1));
     }
     return result;
   }

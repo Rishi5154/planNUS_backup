@@ -13,23 +13,23 @@ class _AddEventPageState extends State<AddEventPage> {
   String _selectedTime = 'Pick time';
 
   Future _pickDate() async {
-    DateTime datepick = await showDatePicker(
+    DateTime datePicked = await showDatePicker(
         context: context,
         initialDate: new DateTime.now(),
         firstDate: new DateTime.now().add(Duration(days: -365)),
         lastDate: new DateTime.now().add(Duration(days: 365)));
-    if (datepick != null)
+    if (datePicked != null)
       setState(() {
-        _selectedDate = datepick.toString();
+        _selectedDate = datePicked.toString();
       });
   }
 
   Future _pickTime() async {
-    TimeOfDay timepick = await showTimePicker(
+    TimeOfDay timePicked = await showTimePicker(
         context: context, initialTime: new TimeOfDay.now());
-    if (timepick != null) {
+    if (timePicked != null) {
       setState(() {
-        _selectedTime = timepick.toString();
+        _selectedTime = timePicked.toString();
       });
     }
   }
