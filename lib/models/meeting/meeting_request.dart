@@ -28,9 +28,8 @@ class MeetingRequest {
 //        DateTime now = DateTime.now();
         await user.addActivity(new Activity(meeting.date, meeting.slot, id, meeting.name, meeting.isImportant));
       });
-      await DatabaseMethods(uid: meeting.userUID)
-          .getUserByUID(meeting.userUID)
-          .then((user) => user.addActivity(new Activity(meeting.date, meeting.slot, id, meeting.name, meeting.isImportant)));
+      User requester = await DatabaseMethods(uid: meeting.userUID).getUserByUID(meeting.userUID);
+      await requester.addActivity(new Activity(meeting.date, meeting.slot, id, meeting.name, meeting.isImportant));
     }
   }
 

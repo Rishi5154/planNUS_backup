@@ -16,7 +16,6 @@ part 'timetable.g.dart';
 class TimeTable {
   //static List<List<int>> notifIds = [[1,2,3,4,5,6,7,8,9,10,11,12]]
 
-
   //propeties
   Map<DateTime, DaySchedule> timetable = {};
   //Constructor
@@ -146,7 +145,6 @@ class TimeTable {
         }
       }
     }
-
   }
 
   void delete(DateTime date, int startHour, int endHour) {

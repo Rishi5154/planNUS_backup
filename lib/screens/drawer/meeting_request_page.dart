@@ -130,7 +130,7 @@ class _MeetingRequestPageState extends State<MeetingRequestPage> {
                             meetingHandler.memberNames);
                         meeting.setDate(date);
                         meeting.setSlot(slot);
-                        meeting.setIsImportant(false); //TESTING ** SET ALL IMPORTANCE TO FALSE **
+                        meeting.setIsImportant(true); //TESTING ** SET ALL IMPORTANCE TO FALSE **
                         MeetingRequest mr = new MeetingRequest(newMRID, meeting);
                         Firestore.instance.collection('meetings').document(newMRID).setData({
                           'meeting': mr.toJson(),
