@@ -19,6 +19,7 @@ WeeklyEvent _$WeeklyEventFromJson(Map<String, dynamic> json) {
         ? null
         : DateTime.parse(json['startDate'] as String),
     json['endDate'] == null ? null : DateTime.parse(json['endDate'] as String),
+    json['location'] == null ? null : json['location'] as String
   )..isWeekly = json['isWeekly'] as bool;
 }
 
@@ -32,4 +33,5 @@ Map<String, dynamic> _$WeeklyEventToJson(WeeklyEvent instance) =>
       'endDate': instance.endDate?.toIso8601String(),
       'isWeekly': instance.isWeekly,
       'day': instance.day,
+      'location' : instance.location
     };

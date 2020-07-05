@@ -18,8 +18,9 @@ class Activity extends TimeTableEvent {
 //    @required LocalDateTime end,
 //  })
   //Constructor
-  Activity(DateTime startDate, ScheduleTiming timing, String id, String name, bool isImportant)
-      : super(timing, id, name, isImportant, startDate, startDate, false);
+  Activity(DateTime startDate, ScheduleTiming timing, String id, String name, bool isImportant, String location)
+      : super(timing, id, name, isImportant, startDate, startDate, false, location);
+
 
   ///startDate == endDate
 
@@ -30,7 +31,7 @@ class Activity extends TimeTableEvent {
         title: name,
         color: isImportant ? Colors.redAccent : Colors.lightGreenAccent,
         start: LocalDateTime(startDate.year, startDate.month, startDate.day, timing.start, timing.start, 0),
-        end: LocalDateTime(startDate.year, startDate.month, startDate.day, timing.end, timing.end, 0)
+        end: LocalDateTime(startDate.year, startDate.month, startDate.day, timing.end, timing.end, 0),
       )
     ];
   }
