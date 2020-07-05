@@ -20,9 +20,10 @@ class TimeTableEvent {
   DateTime startDate;
   DateTime endDate;
   bool isWeekly;
+  String location;
 
   //Constructor
-  TimeTableEvent(this.timing, this.id, this.name, this.isImportant, this.startDate, this.endDate, this.isWeekly);
+  TimeTableEvent(this.timing, this.id, this.name, this.isImportant, this.startDate, this.endDate, this.isWeekly, this.location);
 
   //JsonSerializable methods
   factory TimeTableEvent.fromJson(Map<String, dynamic> data) => _$TimeTableEventFromJson(data);

@@ -15,8 +15,8 @@ class WeeklyEvent extends TimeTableEvent {
   //Constructor
   WeeklyEvent(this.day,
       ScheduleTiming timing, String id, String name, bool isImportant,
-      DateTime startDate, DateTime endDate)
-      : super(timing, id, name, isImportant, startDate, endDate, true);
+      DateTime startDate, DateTime endDate, String location)
+      : super(timing, id, name, isImportant, startDate, endDate, true, location);
 
   List<BasicEvent> get toBasicEvents {
     DateTime ref = startDate;
@@ -30,7 +30,7 @@ class WeeklyEvent extends TimeTableEvent {
         title: name,
         color: isImportant ? Colors.redAccent : Colors.lightGreenAccent,
         start: LocalDateTime(ref.year, ref.month, ref.day, timing.start, 0, 0),
-        end: LocalDateTime(ref.year, ref.month, ref.day, timing.end, 0, 0)
+        end: LocalDateTime(ref.year, ref.month, ref.day, timing.end, 0, 0),
       ));
       ref = ref.add(Duration(days: 7));
     }

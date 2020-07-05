@@ -7,10 +7,14 @@
          FlutterApplication and put your custom class here. -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="plannusandroidversion"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDhDmoEW_1RaKO-9mT3b9fkGSFwBJ7b73g"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

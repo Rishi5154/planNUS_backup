@@ -60,32 +60,35 @@ class TimeTable {
     if (event.isImportant) {
       DateTime curr = DateTime.now();
       int startTime = event.timing.start;
-      if (event.startDate.weekday > curr.weekday) {
-        DateTime future = curr.add(new Duration(days: event.startDate.weekday - curr.weekday)); // with days added to account for changes in month
-        print(future.weekday.toString() + " at day > curr.weekday");
-        print(future.day.toString() + " at day > curr.weekday");
-        print(future.month.toString() + " at day > curr.weekday");
-//          print(s);
-        notificationService.scheduleAtTime(DateTime(future.year, future.month, future.day, startTime - 1, 45),
-            notificationIdGenerator(startTime, event.startDate.weekday), "Important Event", "${event.name} is coming up soon!");
-      } else if (curr.weekday == event.startDate.weekday) {
-        DateTime future = curr.add(new Duration(days: 7)); // with days added to account for changes in month
-        print(future.weekday.toString() + " at curr.weekday == day");
-        print(future.day.toString() + " at curr.weekday == day");
-        print(future.month.toString() + " at curr.weekday == day");
-//          print(s);
-        curr.hour > startTime ? notificationService.scheduleAtTime(DateTime(future.year, future.month,
-            future.day, startTime - 1, 45), notificationIdGenerator(startTime, event.startDate.weekday), "Important Event", "${event.name} is coming up soon!")
-            :  notificationService.scheduleAtTime(DateTime(curr.year, curr.month,
-            curr.day, startTime - 1, 45), notificationIdGenerator(startTime, event.startDate.weekday), "Important Event", "${event.name} is coming up soon!");
-      } else {
-        DateTime future = curr.add(new Duration(days: event.startDate.weekday + 7 - curr.weekday)); // with days added to account for changes in month
-        print(future.weekday.toString() + " at curr.weekday < day");
-        print(future.day.toString() + " at curr.weekday < day");
-        print(future.month.toString() + " at curr.weekday < day");
-        notificationService.scheduleAtTime(DateTime(future.year, future.month, future.day, startTime - 1, 45),
-            notificationIdGenerator(startTime, event.startDate.weekday), "Important Event", "${event.name} is coming up soon!");
-      }
+      DateTime startDay = event.startDate;
+      notificationService.scheduleAtTime(DateTime(startDay.year, startDay.month, startDay.day, startTime - 1, 45), notificationIdGenerator(startTime, startDay.weekday), "Important Event",
+          "${event.name} is coming up soon!");
+//      if (event.startDate.weekday > curr.weekday) {
+//        DateTime future = curr.add(new Duration(days: event.startDate.weekday - curr.weekday)); // with days added to account for changes in month
+//        print(future.weekday.toString() + " at day > curr.weekday");
+//        print(future.day.toString() + " at day > curr.weekday");
+//        print(future.month.toString() + " at day > curr.weekday");
+////          print(s);
+//        notificationService.scheduleAtTime(DateTime(future.year, future.month, future.day, startTime - 1, 45),
+//            notificationIdGenerator(startTime, event.startDate.weekday), "Important Event", "${event.name} is coming up soon!");
+//      } else if (curr.weekday == event.startDate.weekday) {
+//        DateTime future = curr.add(new Duration(days: 7)); // with days added to account for changes in month
+//        print(future.weekday.toString() + " at curr.weekday == day");
+//        print(future.day.toString() + " at curr.weekday == day");
+//        print(future.month.toString() + " at curr.weekday == day");
+////          print(s);
+//        curr.hour > startTime ? notificationService.scheduleAtTime(DateTime(future.year, future.month,
+//            future.day, startTime - 1, 45), notificationIdGenerator(startTime, event.startDate.weekday), "Important Event", "${event.name} is coming up soon!")
+//            :  notificationService.scheduleAtTime(DateTime(curr.year, curr.month,
+//            curr.day, startTime - 1, 45), notificationIdGenerator(startTime, event.startDate.weekday), "Important Event", "${event.name} is coming up soon!");
+//      } else {
+//        DateTime future = curr.add(new Duration(days: event.startDate.weekday + 7 - curr.weekday)); // with days added to account for changes in month
+//        print(future.weekday.toString() + " at curr.weekday < day");
+//        print(future.day.toString() + " at curr.weekday < day");
+//        print(future.month.toString() + " at curr.weekday < day");
+//        notificationService.scheduleAtTime(DateTime(future.year, future.month, future.day, startTime - 1, 45),
+//            notificationIdGenerator(startTime, event.startDate.weekday), "Important Event", "${event.name} is coming up soon!");
+//      }
     }
   }
 
@@ -112,37 +115,40 @@ class TimeTable {
       }
       int startTime = event.timing.start;//int.parse(event.timing.start.toString().substring(0, s.toString().length - 2));
       print(event.timing.start.toString() + " starting time of the activity");
+      DateTime startDay = event.startDate;
       print(Timestamp.now().toDate().weekday/*toLocal().toString()*/);
       //flutterLocalNotificationsPlugin.
 
       if (event.isImportant) {
-        DateTime curr = DateTime.now();
-        if (event.day > curr.weekday) {
-          DateTime future = curr.add(new Duration(days: event.day - curr.weekday)); // with days added to account for changes in month
-          print(future.weekday.toString() + " at day > curr.weekday");
-          print(future.day.toString() + " at day > curr.weekday");
-          print(future.month.toString() + " at day > curr.weekday");
-//          print(s);
-          notificationService.scheduleAtTime(DateTime(future.year, future.month, future.day, startTime - 1, 45),
-              notificationIdGenerator(startTime, event.day), "Important Event", "${event.name} is coming up soon!");
-        } else if (curr.weekday == event.day) {
-          DateTime future = curr.add(new Duration(days: 7)); // with days added to account for changes in month
-          print(future.weekday.toString() + " at curr.weekday == day");
-          print(future.day.toString() + " at curr.weekday == day");
-          print(future.month.toString() + " at curr.weekday == day");
-//          print(s);
-          curr.hour > startTime ? notificationService.scheduleAtTime(DateTime(future.year, future.month,
-              future.day, startTime - 1, 45), notificationIdGenerator(startTime, event.day), "Important Event", "${event.name} is coming up soon!")
-              :  notificationService.scheduleAtTime(DateTime(curr.year, curr.month,
-              curr.day, startTime - 1, 45), notificationIdGenerator(startTime, event.day), "Important Event", "${event.name} is coming up soon!");
-        } else {
-          DateTime future = curr.add(new Duration(days: event.day + 7 - curr.weekday)); // with days added to account for changes in month
-          print(future.weekday.toString() + " at curr.weekday < day");
-          print(future.day.toString() + " at curr.weekday < day");
-          print(future.month.toString() + " at curr.weekday < day");
-          notificationService.scheduleAtTime(DateTime(future.year, future.month, future.day, startTime - 1, 45),
-              notificationIdGenerator(startTime, event.day), "Important Event", "${event.name} is coming up soon!");
-        }
+        notificationService.scheduleAtTime(DateTime(startDay.year, startDay.month, startDay.day, startTime - 1, 45), notificationIdGenerator(startTime, startDay.weekday), "Important Event",
+            "${event.name} is coming up soon!");
+//        DateTime curr = DateTime.now();
+//        if (event.day > curr.weekday) {
+//          DateTime future = curr.add(new Duration(days: event.day - curr.weekday)); // with days added to account for changes in month
+//          print(future.weekday.toString() + " at day > curr.weekday");
+//          print(future.day.toString() + " at day > curr.weekday");
+//          print(future.month.toString() + " at day > curr.weekday");
+////          print(s);
+//          notificationService.scheduleAtTime(DateTime(future.year, future.month, future.day, startTime - 1, 45),
+//              notificationIdGenerator(startTime, event.day), "Important Event", "${event.name} is coming up soon!");
+//        } else if (curr.weekday == event.day) {
+//          DateTime future = curr.add(new Duration(days: 7)); // with days added to account for changes in month
+//          print(future.weekday.toString() + " at curr.weekday == day");
+//          print(future.day.toString() + " at curr.weekday == day");
+//          print(future.month.toString() + " at curr.weekday == day");
+////          print(s);
+//          curr.hour > startTime ? notificationService.scheduleAtTime(DateTime(future.year, future.month,
+//              future.day, startTime - 1, 45), notificationIdGenerator(startTime, event.day), "Important Event", "${event.name} is coming up soon!")
+//              :  notificationService.scheduleAtTime(DateTime(curr.year, curr.month,
+//              curr.day, startTime - 1, 45), notificationIdGenerator(startTime, event.day), "Important Event", "${event.name} is coming up soon!");
+//        } else {
+//          DateTime future = curr.add(new Duration(days: event.day + 7 - curr.weekday)); // with days added to account for changes in month
+//          print(future.weekday.toString() + " at curr.weekday < day");
+//          print(future.day.toString() + " at curr.weekday < day");
+//          print(future.month.toString() + " at curr.weekday < day");
+//          notificationService.scheduleAtTime(DateTime(future.year, future.month, future.day, startTime - 1, 45),
+//              notificationIdGenerator(startTime, event.day), "Important Event", "${event.name} is coming up soon!");
+//        }
       }
     }
   }
@@ -156,14 +162,16 @@ class TimeTable {
         delete(date.add(Duration(days: 7)), startHour, endHour);
       }
     }
+    //FlutterLocalNotificationsPlugin().cancelAll();
   }
 
   Future<void> deleteWeeklyEvent(TimeTableEvent event) async {
     int s = event.timing.start;
 //    print(day);
 //    print(notificationIdGenerator(s, day));
-    FlutterLocalNotificationsPlugin().cancel(
-        notificationIdGenerator(s, event.startDate.weekday));
+    FlutterLocalNotificationsPlugin().cancelAll();
+//    FlutterLocalNotificationsPlugin().cancel(
+//        notificationIdGenerator(s, event.startDate.weekday));
     DateTime refDate = DateTime(event.startDate.year, event.startDate.month, event.startDate.day);
     while (refDate.isBefore(event.endDate)) {
       DaySchedule ref = timetable[refDate];
@@ -182,8 +190,9 @@ class TimeTable {
   }
 
   Future<void> deleteEvent(TimeTableEvent event) async {
-    FlutterLocalNotificationsPlugin().cancel(
-        notificationIdGenerator(event.timing.start, event.startDate.weekday));
+    FlutterLocalNotificationsPlugin().cancelAll();
+//    FlutterLocalNotificationsPlugin().cancel(
+//        notificationIdGenerator(event.timing.start, event.startDate.weekday));
     DateTime index = DateTime(event.startDate.year, event.startDate.month, event.startDate.day);
     DaySchedule ref = timetable[index];
     ref.deleteEvent(event.timing.start, event.timing.end);
