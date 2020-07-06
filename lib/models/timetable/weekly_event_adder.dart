@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:geocoder/model.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:plannusandroidversion/models/timetable/activity.dart';
 import 'package:plannusandroidversion/models/timetable/schedule_timing.dart';
@@ -6,9 +8,13 @@ import 'package:plannusandroidversion/models/timetable/weekly_event.dart';
 import 'package:plannusandroidversion/models/todo/widgets/custom_date_time_picker.dart';
 import 'package:plannusandroidversion/models/todo/widgets/custom_textfield.dart';
 import 'package:plannusandroidversion/models/user.dart';
+import 'package:plannusandroidversion/services/locationservice.dart';
 import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class WeeklyEventAdder extends StatefulWidget {
+  final String location;
+  WeeklyEventAdder({this.location});
   @override
   _WeeklyEventAdderState createState() => _WeeklyEventAdderState();
 }
@@ -77,6 +83,7 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
   TextEditingController _selectedName = new TextEditingController();
   TimeOfDay _selectedStartTime;
   TimeOfDay _selectedEndTime;
+  TextEditingController _selectedLocation = new TextEditingController();
   int _selectedDay;
   bool _selectedImportance = false;
   String error = '';
@@ -91,8 +98,23 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
     _selectedEndTime = null;
     _selectedImportance = null;
     _selectedDay = null;
+    _selectedLocation = null;
     error = '';
     addable = '';
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(widget.location ?? '' + " the location has been located!!!!!");
+    print(_selectedLocation.text);
+    //_selectedLocation.value
+    setState(() {
+      print(widget.location ?? '' + " the location has been located!!!!!");
+      _selectedLocation.text = widget.location == null || widget.location.isEmpty ? '' : widget
+          .location;
+    });
   }
 
   int day(String selected) {
@@ -162,6 +184,7 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
                   setState(() {
                     _selectedStartTime = val;
                   });
+                  print(_selectedStartTime.hour);
                 },
               ),
             ),
@@ -270,6 +293,55 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
                 ),
               ],
             ) : Container(),
+            SizedBox(width: 20.0,height: 20,),
+            Padding(
+                padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
+                child: CustomTextField(labelText: "Location", controller: _selectedLocation,)
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                RaisedButton(
+                  child: Text(
+                    "Get current location",
+                    style: GoogleFonts.openSans(fontSize: 12, fontWeight: FontWeight.w500),
+                  ),
+                  color: Colors.lightBlueAccent,
+                  onPressed: () async {
+                    Position pos = await LocationService.getCurrentLocation();
+                    print(pos);
+                    Placemark placemark = await LocationService.getCurrentAddress(pos);
+                    Address adrs = await LocationService.getAddress(pos);
+                    print(adrs.addressLine);
+                    print(adrs.locality);
+                    setState(() {
+                      _selectedLocation.text = adrs.addressLine;
+                    });
+                  },
+                ),
+                SizedBox(width: 20,),
+                RaisedButton(
+                  child: Text(
+                    "Set location",
+                    style: GoogleFonts.openSans(fontSize: 14),
+                  ),
+                  color: Colors.lightBlueAccent,
+                  onPressed: () async {
+                    final res = await Navigator.push(context,
+                        MaterialPageRoute(
+                          builder: (context) => Location(),
+                        )
+                    );
+                    print(res == null ? '' : res  + " has been taken!!!");
+                    if (res != null) {
+                      setState(() {
+                        _selectedLocation.text = res;
+                      });
+                    }
+                  },
+                )
+              ],
+            ),
             Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -309,6 +381,7 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
                               _selectedImportance,
                             _selectedStartDate,
                             _selectedEndDate,
+                            _selectedLocation.text
                           ));
                         } else {
                           user.timetable.addActivity(Activity(
@@ -316,7 +389,8 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
                             ScheduleTiming(_selectedStartTime.hour, _selectedEndTime.hour),
                             _selectedName.text + _selectedStartDate.toIso8601String(),
                             _selectedName.text,
-                            _selectedImportance
+                            _selectedImportance,
+                            _selectedLocation.text
                           ));
                         }
                         await user.update()

@@ -18,8 +18,9 @@ class DayEvent {
   String desc;
   bool isFinish;
   bool isImportant;
+  String location;
 
-  DayEvent(this.time, this.task, this.desc, this.isFinish, this.isImportant);
+  DayEvent(this.time, this.task, this.desc, this.isFinish, this.isImportant, {this.location});
 }
 
 //final List<Event> _eventList = [
@@ -50,10 +51,15 @@ class _EventPageState extends State<EventPage> {
         String desc = "";
         bool isFinish = now.hour >= act.timing.end;
         bool isImportant = act.isImportant;
-        return new DayEvent(time, task, desc, isFinish, isImportant);
+        String location = act.location;
+        return act.location == null ? new DayEvent(time, task, desc, isFinish, isImportant)
+            : new DayEvent(time, task, desc, isFinish, isImportant, location: location);
+        return new DayEvent(time, task, desc, isFinish, isImportant, location: location);
       }
     }).toList();
+
     _eventList.removeWhere((val) => val == null);
+
     return ListView.builder(
       itemCount: _eventList.length,
       padding: const EdgeInsets.all(0),
@@ -95,7 +101,7 @@ class _EventPageState extends State<EventPage> {
               SizedBox(
                 height: 12,
               ),
-              Text(event.desc)
+              Text(event.location != null ? event.location : event.desc),
             ],
           ),
         ),
