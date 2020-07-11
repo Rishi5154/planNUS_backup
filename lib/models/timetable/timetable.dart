@@ -26,8 +26,16 @@ class TimeTable {
   }
 
   // to generate notification id for easy identification of notifications
-  int notificationIdGenerator(int time, int day) {
-      return day == 1 ? (time == 0 ? 12 * (day - 1) : time - 7) : 12 * (day - 1) + (time - 7);
+  int notificationIdGenerator(Activity activity) {
+    DateTime threshold = new DateTime(2020, 7, 1, 0, 0);
+    Duration diff = threshold.difference(activity.startDate);
+    return diff.inHours;
+  }
+
+  int notificationIdGeneratorWeekly(WeeklyEvent event) {
+    DateTime threshold = new DateTime(2020, 7, 1, 0, 0);
+    Duration diff = threshold.difference(event.startDate);
+    return 100000 + diff.inHours;
   }
 
   bool addable(WeeklyEvent event) {
@@ -61,7 +69,7 @@ class TimeTable {
       DateTime curr = DateTime.now();
       int startTime = event.timing.start;
       DateTime startDay = event.startDate;
-      notificationService.scheduleAtTime(DateTime(startDay.year, startDay.month, startDay.day, startTime - 1, 45), notificationIdGenerator(startTime, startDay.weekday), "Important Event",
+      notificationService.scheduleAtTime(DateTime(startDay.year, startDay.month, startDay.day, startTime - 1, 45), notificationIdGenerator(event), "Important Event",
           "${event.name} is coming up soon!");
 //      if (event.startDate.weekday > curr.weekday) {
 //        DateTime future = curr.add(new Duration(days: event.startDate.weekday - curr.weekday)); // with days added to account for changes in month
@@ -114,13 +122,12 @@ class TimeTable {
         refDate = refDate.add(Duration(days: 7));
       }
       int startTime = event.timing.start;//int.parse(event.timing.start.toString().substring(0, s.toString().length - 2));
-      print(event.timing.start.toString() + " starting time of the activity");
       DateTime startDay = event.startDate;
+      print(event.timing.start.toString() + " starting time of the activity");
       print(Timestamp.now().toDate().weekday/*toLocal().toString()*/);
-      //flutterLocalNotificationsPlugin.
 
       if (event.isImportant) {
-        notificationService.scheduleAtTime(DateTime(startDay.year, startDay.month, startDay.day, startTime - 1, 45), notificationIdGenerator(startTime, startDay.weekday), "Important Event",
+        notificationService.scheduleAtTime(DateTime(startDay.year, startDay.month, startDay.day, startTime - 1, 45), notificationIdGeneratorWeekly(event), "Important Event",
             "${event.name} is coming up soon!");
 //        DateTime curr = DateTime.now();
 //        if (event.day > curr.weekday) {
@@ -169,7 +176,8 @@ class TimeTable {
     int s = event.timing.start;
 //    print(day);
 //    print(notificationIdGenerator(s, day));
-    FlutterLocalNotificationsPlugin().cancelAll();
+    FlutterLocalNotificationsPlugin().cancel(
+        notificationIdGeneratorWeekly(event));
 //    FlutterLocalNotificationsPlugin().cancel(
 //        notificationIdGenerator(s, event.startDate.weekday));
     DateTime refDate = DateTime(event.startDate.year, event.startDate.month, event.startDate.day);
@@ -190,9 +198,8 @@ class TimeTable {
   }
 
   Future<void> deleteEvent(TimeTableEvent event) async {
-    FlutterLocalNotificationsPlugin().cancelAll();
-//    FlutterLocalNotificationsPlugin().cancel(
-//        notificationIdGenerator(event.timing.start, event.startDate.weekday));
+    FlutterLocalNotificationsPlugin().cancel(
+        notificationIdGenerator(event));
     DateTime index = DateTime(event.startDate.year, event.startDate.month, event.startDate.day);
     DaySchedule ref = timetable[index];
     ref.deleteEvent(event.timing.start, event.timing.end);

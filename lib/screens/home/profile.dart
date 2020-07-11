@@ -208,10 +208,10 @@ class _ProfileState extends State<Profile> {
                               ),
                               onPressed: () async {
                                 //print(handle);
-                                if (newHandle == null|| name == null || name.isEmpty) {
+                                /*if (newHandle == null|| name == null || name.isEmpty) {
                                   print("are you here!");
                                   HelperWidgets.TopFlushbar("You have missing fields", Icons.account_circle)..show(context);
-                                } else if (formKey.currentState.validate()) {
+                                } else */if (formKey.currentState.validate()) {
                                   await databaseMethods.updateSpecificUserData(
                                       user.uid, name, newHandle);
                                   if (name.isNotEmpty) {
