@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'dart:io';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart';
 class NotificationService {
 
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
@@ -57,6 +58,27 @@ class NotificationService {
       platformChannelSpecifics,
     );
   }
+
+//  Future<void> scheduleWeekly(DateTime time, int id, String title, String description) async {
+//    final androidPlatformChannelSpecifics = AndroidNotificationDetails(
+//      'show weekly channel id',
+//      'show weekly channel name',
+//      'show weekly description',
+//    );
+//    final iOSPlatformChannelSpecifics = IOSNotificationDetails();
+//    final platformChannelSpecifics = NotificationDetails(
+//      androidPlatformChannelSpecifics,
+//      iOSPlatformChannelSpecifics,
+//    );
+//    await flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
+//      id,
+//      title,
+//      description,
+//      /*DateFormat('EEEE').format(time)*/,
+//      Time(time.hour),
+//      platformChannelSpecifics,
+//    );
+//  }
 
   Future initialise() async {
     if (Platform.isIOS) {

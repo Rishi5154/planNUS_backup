@@ -61,7 +61,7 @@ class AuthService {
     HelperFunctions.saveUserLoggedInSharedPreferences(true);
     try {
       QuerySnapshot snapshot = await DatabaseMethods().getUserByUserEmail(email);
-      HelperFunctions.saveUserEmailSharedPreferences(email);
+      //HelperFunctions.saveUserEmailSharedPreferences(email);
       DatabaseMethods().getUserByUserEmail(email).then((value) {
         snapshot = value;
         HelperFunctions
@@ -77,7 +77,7 @@ class AuthService {
       print(AuthService.googleUserId + " at exception");
       String handle = '';
       await DatabaseMethods(uid: AuthService.googleUserId).addUserData(
-          email, (name == null ? 'no name yet' : name), handle);
+          email, name, handle);
       await DatabaseMethods(uid: AuthService.googleUserId).updateNotificationToken(token, AuthService.googleUserId);
       HelperFunctions.saveUserEmailSharedPreferences(email);
       HelperFunctions.saveUsernameSharedPreferences(name);
