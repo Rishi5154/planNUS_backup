@@ -41,22 +41,27 @@ class _ChatsState extends State<Chats> {
   }
 
    initiateSearch() async {
-     await databaseMethods
-        .getUserByHandle(searchTextEditingController.text)
-        .then((value) {
-      setState(() {
-        searchSnapshot = value;
-        otherUid = value.documents[0].documentID;
+    try {
+      await databaseMethods
+          .getUserByHandle(searchTextEditingController.text)
+          .then((value) {
+        setState(() {
+          searchSnapshot = value;
+          otherUid = value.documents[0].documentID;
+        });
       });
-    });
-     await databaseMethods.userTimetables
-         .document(otherUid)
-         .get()
-     .then((value){
-       setState(() {
-         user = User.fromJson(value.data['user']);
-       });
-     });
+      await databaseMethods.userTimetables
+          .document(otherUid)
+          .get()
+          .then((value) {
+        setState(() {
+          user = User.fromJson(value.data['user']);
+        });
+      });
+    } catch (e) {
+      print("User not found!");
+      HelperWidgets.flushbar("User not found!", Icons.warning)..show(context);
+    }
   }
 
   getChatRoomId(String a, String b) {
@@ -104,15 +109,6 @@ class _ChatsState extends State<Chats> {
             })
         : Container();
   }
-
-//  syncTimetable(String handle) async {
-//    User user = await databaseMethods.getOtherUserViaHandle(handle);
-//    return Provider<User>.value(value: user,
-//        child: MaterialApp(
-//          home: Scaffold(
-//              backgroundColor: Colors.yellow, body: TimeTableWidget()),
-//        ));
-//  }
 
   Widget searchTile({String name, String handle,/*String otherUid,*/ User user}) {
     print(name);
