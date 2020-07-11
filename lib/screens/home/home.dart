@@ -349,26 +349,26 @@ class _HomeState extends State<Home> {
             items: [
               BottomNavyBarItem(
                 icon: Icon(Icons.apps),
-                title: Text('Home'),
+                title: Text('Home', style: GoogleFonts.openSans(),),
                 activeColor: Colors.red,
                 textAlign: TextAlign.center,
               ),
               BottomNavyBarItem(
-                icon: Icon(Icons.calendar_today),
-                title: Text('Timetable'),
+                icon: Icon(Icons.calendar_today, ),
+                title: Text('Timetable', style: GoogleFonts.openSans() ),
                 activeColor: Colors.purpleAccent,
                 textAlign: TextAlign.center,
               ),
               BottomNavyBarItem(
                 icon: Icon(Icons.message),
-                title: Text('Messages',
+                title: Text('Messages', style: GoogleFonts.openSans()
                 ),
                 activeColor: Colors.pink,
                 textAlign: TextAlign.center,
               ),
               BottomNavyBarItem(
                 icon: Icon(Icons.perm_identity),
-                title: Text('Profile'),
+                title: Text('Profile', style: GoogleFonts.openSans()),
                 activeColor: Colors.blue,
                 textAlign: TextAlign.center,
               ),
