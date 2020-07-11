@@ -48,12 +48,14 @@ class _HomeState extends State<Home> {
         content: Container(
           child: Row(
             children: <Widget>[
-              Text(
-                Constants.myName == null || Constants.myName.isEmpty
-                    ? 'Please update your name at Profile.'
-                    : 'Please update your handle at Profile.',
-                style: GoogleFonts.biryani(
-                  fontSize: 16,
+              Expanded(
+                child: Text(
+                  Constants.myName == null || Constants.myName.isEmpty
+                      ? 'Please update your name at Profile.'
+                      : 'Please update your handle at Profile.',
+                  style: GoogleFonts.biryani(
+                    fontSize: 16,
+                  ),
                 ),
               )
             ],
@@ -153,28 +155,28 @@ class _HomeState extends State<Home> {
                   },
                 ),
               ),
-              TimerBuilder.periodic(
-                Duration(seconds: 1),
-                builder:(context) {
-                  return Center(
-                    child: Container(
-                      margin: EdgeInsets.only(top: 1.5),
-                      height: 35,
-                      width: 75,
-                      child: Row(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0, right: 8),
-                            child: Icon(Icons.access_time, size: 18,),
-                          ),
-                          Text("${getSystemTime()}",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                  ),
-                        ],
-                      ),
-                    ),
-                  );
-                }),
+//              TimerBuilder.periodic(
+//                Duration(seconds: 1),
+//                builder:(context) {
+//                  return Center(
+//                    child: Container(
+//                      margin: EdgeInsets.only(top: 1.5),
+//                      height: 35,
+//                      width: 75,
+//                      child: Row(
+//                        children: <Widget>[
+//                          Padding(
+//                            padding: const EdgeInsets.only(left: 8.0, right: 8),
+//                            child: Icon(Icons.access_time, size: 18,),
+//                          ),
+//                          Text("${getSystemTime()}",
+//                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+//                  ),
+//                        ],
+//                      ),
+//                    ),
+//                  );
+//                }),
               FlatButton.icon(
                   icon: Icon(Icons.person,
                     color: Colors.yellow,
