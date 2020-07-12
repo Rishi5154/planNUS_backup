@@ -39,7 +39,7 @@ class _RatingPageState extends State<RatingPage> {
             return ListTile(
               title: Text(rateable[index].event.name),
               trailing: SmoothStarRating(
-                
+
               )
             );
           },
