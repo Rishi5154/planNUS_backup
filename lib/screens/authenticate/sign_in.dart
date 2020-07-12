@@ -216,10 +216,6 @@ class _SignInState extends State<SignIn> {
                                       } else {
                                         auth.createProfileForGoogleAccounts();
                                         await Constants.setAll();
-//                                        Constants.myName = await HelperFunctions
-//                                            .getUsernameSharedPreferences();
-//                                        Constants.myHandle = await HelperFunctions
-//                                            .getUserHandleSharedPreferences();
                                       }
                                     },
                                     AssetImage(

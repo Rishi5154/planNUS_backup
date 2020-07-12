@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:plannusandroidversion/models/timetable/activity.dart';
 import 'package:plannusandroidversion/models/timetable/day_schedule.dart';
@@ -91,16 +92,18 @@ class _TimeTableWidgetState extends State<TimeTableWidget> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
+        backgroundColor: Colors.white70,
         title: ValueListenableBuilder<LocalDate>(
           valueListenable: _controller.dateListenable,
           builder: (context, date, _) =>
-              Text(DateFormat.MMMM('en_US').format(date.toDateTimeUnspecified())),
+              Text(DateFormat.MMMM('en_US').format(date.toDateTimeUnspecified()), style: GoogleFonts.openSans(color: Colors.black),),
         ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.today),
             onPressed: () => _controller.animateToToday(),
             tooltip: 'Jump to today',
+            color: Colors.black,
           ),
         ],
       ),
