@@ -58,6 +58,27 @@ class NotificationService {
     );
   }
 
+  //  Future<void> scheduleWeekly(DateTime time, int id, String title, String description) async {
+//    final androidPlatformChannelSpecifics = AndroidNotificationDetails(
+//      'show weekly channel id',
+//      'show weekly channel name',
+//      'show weekly description',
+//    );
+//    final iOSPlatformChannelSpecifics = IOSNotificationDetails();
+//    final platformChannelSpecifics = NotificationDetails(
+//      androidPlatformChannelSpecifics,
+//      iOSPlatformChannelSpecifics,
+//    );
+//    await flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
+//      id,
+//      title,
+//      description,
+//      /*DateFormat('EEEE').format(time)*/,
+//      Time(time.hour),
+//      platformChannelSpecifics,
+//    );
+//  }
+
   Future initialise() async {
     if (Platform.isIOS) {
       fcm.requestNotificationPermissions(IosNotificationSettings());
