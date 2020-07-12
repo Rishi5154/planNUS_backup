@@ -104,6 +104,76 @@ class _TimeTableEventWidgetState extends State<TimeTableEventWidget> {
             elevation: 8.0,
           );
         },
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              List<String> loc = event.location.split(' ');
+              List<String> separated = List<String>();
+              separated.add(loc[0]);
+              int index = 0;
+              for (int i = 1; i < loc.length; i++) {
+                String token = loc[i];
+                if ((separated[index] + ' $token').length < 30) {
+                  separated[index] += ' $token';
+                } else {
+                  index ++;
+                  separated.add(token);
+                }
+              }
+              return SimpleDialog(
+                title: Center(child:
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: 10.0,
+                      ),
+                      Text(event.name),
+                      IconButton(
+                        icon: Icon(Icons.close),
+                        iconSize: 15.0,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ]
+                )
+                ),
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width - 10,
+                    child: Column(
+                        children: [
+                          Row(
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(Icons.location_on),
+                                onPressed: () {
+
+                                },
+                              ),
+                              Text(separated[0]),
+                            ],
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: separated.length > 1
+                                ? Column(
+                                children: separated.getRange(1, separated.length).map((str) =>
+                                    Row(children: [SizedBox(width: 47.0), Text(str)])
+                                ).toList()
+                            )
+                                : Container(),
+                          )
+                        ]
+                    ),
+                  )
+                ],
+              );
+            }
+        );
+      },
         child: Padding(
           padding: EdgeInsets.fromLTRB(4, 2, 4, 0),
           child: DefaultTextStyle(
