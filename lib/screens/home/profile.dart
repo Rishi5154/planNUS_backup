@@ -208,7 +208,7 @@ class _ProfileState extends State<Profile> {
                               ),
                               onPressed: () async {
                                 //print(handle);
-                                if (newHandle == null|| name == null || name.isEmpty) {
+                                if (newHandle == null|| name == null) {
                                   print("are you here!");
                                   HelperWidgets.TopFlushbar("You have missing fields", Icons.account_circle)..show(context);
                                 } else if (formKey.currentState.validate()) {
@@ -219,21 +219,8 @@ class _ProfileState extends State<Profile> {
                                     await user.changeName(name);
                                     Constants.myName = name;
                                   }
-    //                              print(AuthService.googleUserId);
-    //                              bool check = await auth.googleSignIn.isSignedIn();
-    //                              if (check) {
-    //                                await databaseMethods.updateSpecificUserData(
-    //                                    user.uid, name, newHandle);
-    //                                await user.changeName(name);
-    //                              } else {
-    //                                await databaseMethods.updateSpecificUserData(
-    //                                    user.uid, name, newHandle);
-    //                                await user.changeName(name);
-    //                              }
-    //                              HelperFunctions.saveUsernameSharedPreferences(name);
                                   HelperFunctions.saveUserHandleSharedPreferences(
                                       handle);
-    //                              Constants.myName = name;
                                   Constants.myHandle = handle;
                                   print(Constants.myName);
                                   print(Constants.myHandle);

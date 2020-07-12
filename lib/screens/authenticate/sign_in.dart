@@ -38,27 +38,6 @@ class _SignInState extends State<SignIn> {
         : Scaffold(
             key: Key('sign in page'),
             backgroundColor: Colors.deepPurpleAccent[700],
-            //extendBodyBehindAppBar: true,
-//            appBar: AppBar(
-//              backgroundColor: Colors.transparent,
-//              elevation: 0.0,
-//              actions: <Widget>[
-//                FlatButton.icon(
-//                  icon: Icon(Icons.person, color: Colors.white),
-//                  label: Text(
-//                    'Register',
-//                    softWrap: true,
-//                    style: GoogleFonts.biryani(
-//                      color: Colors.white,
-//                      fontSize: 12,
-//                    ),
-//                  ),
-//                  onPressed: () {
-//                    widget.toggleView();
-//                  },
-//                )
-//              ],
-//            ),
             body: Stack(
               children: [
                 Center(
