@@ -119,7 +119,8 @@ class _AddRatingsPageState extends State<AddRatingsPage> {
                     ),
                   )
                 ),
-                FlatButton(
+                RaisedButton(
+                  color: Colors.grey[100],
                   child: Text('Submit'),
                   onPressed: () async {
                     if (r == _dummyEvent) {
