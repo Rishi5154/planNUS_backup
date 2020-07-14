@@ -1,17 +1,23 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:plannusandroidversion/models/timetable/timetable_event.dart';
 
+part 'rateable.g.dart';
+
+@JsonSerializable(explicitToJson: true)
 class Rateable {
-  final String id;
   final TimeTableEvent event;
-  double rating;
+  double currRating;
   int votes;
-  Rateable(this.id, this.event) {
-    this.rating = 0;
-    this.votes = 0;
+  Map<String, String> reviews;
+
+  Rateable(this.event, this.currRating, this.votes, this.reviews);
+
+  void rate(double rating) {
+    this.currRating = ((this.currRating * votes.toDouble()) + rating) / (votes + 1);
+    this.votes = votes + 1;
   }
 
-  set rate(int rating) {
-    this.votes++;
-    this.rating = (this.rating + rating) / votes;
-  }
+  factory Rateable.fromJson(Map<String, dynamic> data) => _$RateableFromJson(data);
+
+  Map<String, dynamic> toJson() => _$RateableToJson(this);
 }

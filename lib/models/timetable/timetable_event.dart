@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
-import 'package:plannusandroidversion/models/timetable/activity.dart';
 import 'package:plannusandroidversion/models/timetable/schedule_timing.dart';
-import 'package:plannusandroidversion/models/timetable/weekly_event.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:provider/provider.dart';
 

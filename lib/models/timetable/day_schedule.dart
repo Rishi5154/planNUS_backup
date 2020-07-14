@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:plannusandroidversion/models/timetable/activity.dart';
 import 'package:plannusandroidversion/models/timetable/timetable_event.dart';
 import 'package:plannusandroidversion/models/timetable/weekly_event.dart';
 
