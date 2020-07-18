@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
@@ -71,28 +70,8 @@ class _ProfileState extends State<Profile> {
   Future getImage() async {
     ImagePicker imagePicker = new ImagePicker();
     PickedFile img = await imagePicker.getImage(source: ImageSource.gallery);
-    if (img != null) {
-      File image =
-      await ImageCropper.cropImage(sourcePath: img.path,
-          aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
-          compressQuality: 100,
-          maxWidth: 700,
-          maxHeight: 700,
-          compressFormat: ImageCompressFormat.jpg,
-          androidUiSettings: AndroidUiSettings(
-              toolbarColor: Colors.deepPurpleAccent,
-              toolbarTitle: "Image cropper",
-              statusBarColor: Colors.deepPurple.shade500,
-              backgroundColor: Colors.white
-          ));
-      //File image = File(img.path);
-      await uploadImage(image);
-      setState(() {
-        _image = image;
-        Constants.myProfilePhoto = Image.file(image);
-      });
-      return image;
-    }
+    File image = File(img.path);
+    await uploadImage(image);
   }
 
   Future uploadImage(File image) async {
@@ -229,10 +208,10 @@ class _ProfileState extends State<Profile> {
                               ),
                               onPressed: () async {
                                 //print(handle);
-                                /*if (newHandle == null|| name == null || name.isEmpty) {
+                                if (newHandle == null|| name == null) {
                                   print("are you here!");
                                   HelperWidgets.TopFlushbar("You have missing fields", Icons.account_circle)..show(context);
-                                } else */if (formKey.currentState.validate()) {
+                                } else if (formKey.currentState.validate()) {
                                   await databaseMethods.updateSpecificUserData(
                                       user.uid, name, newHandle);
                                   if (name.isNotEmpty) {
@@ -240,21 +219,8 @@ class _ProfileState extends State<Profile> {
                                     await user.changeName(name);
                                     Constants.myName = name;
                                   }
-    //                              print(AuthService.googleUserId);
-    //                              bool check = await auth.googleSignIn.isSignedIn();
-    //                              if (check) {
-    //                                await databaseMethods.updateSpecificUserData(
-    //                                    user.uid, name, newHandle);
-    //                                await user.changeName(name);
-    //                              } else {
-    //                                await databaseMethods.updateSpecificUserData(
-    //                                    user.uid, name, newHandle);
-    //                                await user.changeName(name);
-    //                              }
-    //                              HelperFunctions.saveUsernameSharedPreferences(name);
                                   HelperFunctions.saveUserHandleSharedPreferences(
                                       handle);
-    //                              Constants.myName = name;
                                   Constants.myHandle = handle;
                                   print(Constants.myName);
                                   print(Constants.myHandle);
@@ -269,8 +235,17 @@ class _ProfileState extends State<Profile> {
                           margin: EdgeInsets.only(left: 3, right:0, top: 0, bottom: 0),
                           child: RaisedButton(
                             onPressed: () async {
-                              File curr = await getImage();
+                              ImagePicker imagePicker = new ImagePicker();
+                              PickedFile img = await imagePicker.getImage(source: ImageSource.gallery);
+                              File image = File(img.path);
+                              setState(() {
+                                _image = image;
+                                Constants.myProfilePhoto = Image.file(image);
+                              });
+                              await uploadImage(image);
+                              //Constants.myProfilePhoto = Image.file(image);
                               print(user.uid + " is here after all time");
+
                             },
                             color: Colors.blueAccent,
                             child: Shimmer.fromColors(

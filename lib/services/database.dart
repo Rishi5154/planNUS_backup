@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:plannusandroidversion/models/meeting/meeting_request.dart';
+import 'package:plannusandroidversion/models/rating/rateable.dart';
 import 'package:plannusandroidversion/models/timetable/timetable.dart';
+import 'package:plannusandroidversion/models/timetable/timetable_event.dart';
 import 'package:plannusandroidversion/models/todo/todo_models/todo_data.dart';
 import 'package:plannusandroidversion/models/user.dart';
 
@@ -12,6 +14,7 @@ class DatabaseMethods {
   final CollectionReference tokens = Firestore.instance.collection("userNotificationTokens");
   final CollectionReference userTimetables = Firestore.instance.collection("userTimetables");
   final CollectionReference meetingRequests = Firestore.instance.collection("meetings");
+  final CollectionReference ratings = Firestore.instance.collection("ratings");
 
   Stream<String> getHandleStream() {
     return users.document(uid).snapshots().map((ss) => ss.data['handle']);
@@ -223,4 +226,38 @@ class DatabaseMethods {
     return users.document(uid).get().then((val) => val.data['name']);
   }
 
+  Future<void> addRatedEvent(TimeTableEvent event, double rating, String review, String voterName) async {
+    DocumentSnapshot qs = await ratings.document(event.id).get();
+//    bool check = false;
+//    if (qs != null) {
+//      TimeTableEvent e = TimeTableEvent.fromJson(qs.documents[0].data['event']);
+//      if (e.startDate.isAtSameMomentAs(event.startDate) && e.endDate.isAtSameMomentAs(event.endDate)) {
+//        check = true;
+//      }
+//    }
+    if (qs.data != null) {
+      print('that is done =========================================');
+      Rateable currRating = Rateable.fromJson(qs.data['rating']);
+      if (currRating.reviews.containsKey(voterName)) {
+        throw AssertionError("You have already reviewed this event");
+      } else {
+        currRating.rate(rating);
+        currRating.reviews[voterName] = review;
+        ratings.document(event.id).updateData({
+          'rating': currRating.toJson()
+        });
+      }
+    } else {
+      print('this is done ========================================');
+      Map<String, String> reviews = {voterName: review};
+      Rateable currRating = Rateable(event, rating, 1, reviews);
+      ratings.document(event.id).setData({
+        'rating': currRating.toJson()
+      });
+    }
+  }
+
+  Stream<QuerySnapshot> getRateable() {
+    return ratings.snapshots();
+  }
 }

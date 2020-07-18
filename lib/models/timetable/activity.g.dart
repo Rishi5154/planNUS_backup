@@ -17,7 +17,7 @@ Activity _$ActivityFromJson(Map<String, dynamic> json) {
     json['id'] as String,
     json['name'] as String,
     json['isImportant'] as bool,
-    json['location'] == null ? null : json['location']
+    json['location'] as String,
   )
     ..endDate = json['endDate'] == null
         ? null
@@ -33,5 +33,5 @@ Map<String, dynamic> _$ActivityToJson(Activity instance) => <String, dynamic>{
       'startDate': instance.startDate?.toIso8601String(),
       'endDate': instance.endDate?.toIso8601String(),
       'isWeekly': instance.isWeekly,
-      'location' : instance.location
+      'location': instance.location,
     };
