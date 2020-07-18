@@ -1,6 +1,12 @@
-# plannusandroidversion
+# PlanNUS
 
-A new Flutter application.
+A mobile application made available on Android devices whereby users can speed up/simplify the process of event-planning.
+
+Functioned with Firebase.
+Delivered with Flutter/Dart.
+Sprinkled with Nodejs/Google Maps API.
+
+Intended level of achievement: Apollo
 
 ## Getting Started
 
