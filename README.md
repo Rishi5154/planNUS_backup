@@ -4,20 +4,16 @@ A mobile application made available on Android devices whereby users can speed u
 
 Functioned with Firebase.
 Delivered with Flutter/Dart.
-Sprinkled with Nodejs/Google Maps API.
+Supported with Nodejs/Google Maps API.
+Controlled via Git/Github.
 
 Intended level of achievement: Apollo
 
-## Getting Started
+# Motivation
 
-This project is a starting point for a Flutter application.
+Given the age where we have a wide range of classes and events to attend, keeping track of events which we have to attend can be a burden on the memory. Sometimes, we also fail to prioritise our schedule properly. In addition, the hectic lifestyles make it difficult for us to find common free time together, whether it is for leisure activities or a formal meeting. It is also a hassle to manually look for free time with someone.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## And that's where planNUS steps in!
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# planNUS_backup
+We aim to make event planning easy for students and academic staff by giving them in-depth info about events relevant to them as well as proffering them suggestions on what they could do as well as expediting the process of organising mutual events among themselves. In addition, we aim to ease the process of finding mutually convenient time with any user of the application.
