@@ -17,7 +17,9 @@ class UserSearch extends SearchDelegate<String> {
   UserSearch(this._querySnapshot, this.requester) {
     try {
       for (var doc in _querySnapshot.documents) {
+        print(doc.documentID);
         final ref = doc.data;
+        print(ref['name']);
         nameAndHandle[ref['name']] = ref['handle'];
       }
       init();
@@ -145,7 +147,9 @@ class UserSearch extends SearchDelegate<String> {
             User toAdd = await DatabaseMethods().getUserByName(selectedName)
                 .then((val) => val.documents[0].documentID)
                 .then((uid) async {
-              return await DatabaseMethods(uid: uid).getUserByUID(uid);});
+                  return await DatabaseMethods(uid: uid).getUserByUID(uid);
+                });
+            print(toAdd.name);
             toChecks.add(toAdd);
             query = '';
             showResults(context);
