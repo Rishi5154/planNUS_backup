@@ -24,6 +24,14 @@ class LocationService{
    static Future<Address> getAddress(Position pos) async {
      return await Geocoder.local.findAddressesFromCoordinates(new Coordinates(pos.latitude, pos.longitude)).then((value) => value.first);
    }
+   static Future<Position> getCoordinatesFromLocation(String location) async {
+     //return Geocoder.local.findAddressesFromQuery(location).then((value) => value.first.coordinates);
+     print(location);
+     return await Geolocator().placemarkFromAddress(location).then((value) {
+       print(value.first.position);
+       return value.first.position;
+     });
+   }
 }
 class _LocationState extends State<Location> {
 
