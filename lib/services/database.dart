@@ -147,7 +147,7 @@ class DatabaseMethods {
     return users.snapshots();
   }
 
-  createChatRoom(String chatRoomId, chatRoomMap){
+  void createChatRoom(String chatRoomId, chatRoomMap){
     Firestore.instance
         .collection("ChatRoom")
         .document(chatRoomId)
@@ -157,7 +157,7 @@ class DatabaseMethods {
     });
   }
 
-  updateChatRoom(String chatRoomID, chatRoomMap) {
+  void updateChatRoom(String chatRoomID, chatRoomMap) {
     Firestore.instance
         .collection("ChatRoom")
         .document(chatRoomID)
@@ -167,7 +167,7 @@ class DatabaseMethods {
         });
   }
 
-  addConversationMessages(String chatRoomID, messageMap) {
+  void addConversationMessages(String chatRoomID, messageMap) {
     Firestore.instance
         .collection("ChatRoom")
         .document(chatRoomID)
@@ -234,6 +234,7 @@ class DatabaseMethods {
 //      if (e.startDate.isAtSameMomentAs(event.startDate) && e.endDate.isAtSameMomentAs(event.endDate)) {
 //        check = true;
 //      }
+//    }.
 //    }
     if (qs.data != null) {
       print('that is done =========================================');
@@ -252,9 +253,22 @@ class DatabaseMethods {
       Map<String, String> reviews = {voterName: review};
       Rateable currRating = Rateable(event, rating, 1, reviews);
       ratings.document(event.id).setData({
+        'rating': currRating.toJson(),
+        'eventTitle' : event.name
         'rating': currRating.toJson()
       });
     }
+  }
+
+  Future<Rateable> getEventByTitle(String title) async {
+    dynamic rate = await ratings.where('eventTitle', isEqualTo: title)
+        .getDocuments()
+        .then((value) => value.documents[0].data['rating']);
+    return Rateable.fromJson(rate);
+  }
+
+  Future<QuerySnapshot> getRateQuerySnapshots() async {
+    return await ratings.getDocuments();
   }
 
   Stream<QuerySnapshot> getRateable() {

@@ -5,6 +5,7 @@ import 'package:plannusandroidversion/models/rating/rating_page.dart';
 import 'package:collection/collection.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:plannusandroidversion/models/user_search.dart';
+import 'package:plannusandroidversion/screens/drawer/event_search.dart';
 import 'package:plannusandroidversion/screens/drawer/notification_page.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'package:provider/provider.dart';
@@ -141,12 +142,32 @@ class _MyDrawerState extends State<MyDrawer> {
               padding: pad,
               child: InkWell(
                   splashColor: Colors.orange,
+                  onTap: () async {
+                    QuerySnapshot ss = await DatabaseMethods().getRateQuerySnapshots();
+                    QuerySnapshot _querySnapshot = Provider.of<QuerySnapshot>(context, listen: false);
+                    if (ss != null) {
+                      showSearch(
+                          context: context,
+                          delegate: EventSearch(ss, user)
+                      );
+                    } else {
+                      await Future.delayed(Duration(seconds: 1))
+                          .whenComplete(() => ss = Provider.of<QuerySnapshot>(context, listen: false));
+                      showSearch(
+                          context: context,
+                          delegate: EventSearch(ss, user)
+                      );
+                    }
+                  },
                   onTap: () {},
                   child: Container(
                       height: 40,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
+                          Icon(Icons.event,size: 25,),
+                          SizedBox(width: 20),
+                          Text('Events', style: TextStyle(fontSize: 20.0),)
                           Icon(Icons.settings),
                           SizedBox(width: 20),
                           Text('Settings', style: TextStyle(fontSize: 20.0),)

@@ -235,6 +235,14 @@ class _ProfileState extends State<Profile> {
                           margin: EdgeInsets.only(left: 3, right:0, top: 0, bottom: 0),
                           child: RaisedButton(
                             onPressed: () async {
+//                              ImagePicker imagePicker = new ImagePicker();
+//                              PickedFile img = await imagePicker.getImage(source: ImageSource.gallery);
+//                              File image = File(img.path);
+                              setState(() async {
+                                File curr = await getImage();
+//                                _image = image;
+//                                Constants.myProfilePhoto = Image.file(image);
+                              });
                               ImagePicker imagePicker = new ImagePicker();
                               PickedFile img = await imagePicker.getImage(source: ImageSource.gallery);
                               File image = File(img.path);
@@ -245,7 +253,6 @@ class _ProfileState extends State<Profile> {
                               await uploadImage(image);
                               //Constants.myProfilePhoto = Image.file(image);
                               print(user.uid + " is here after all time");
-
                             },
                             color: Colors.blueAccent,
                             child: Shimmer.fromColors(

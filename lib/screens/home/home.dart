@@ -185,9 +185,6 @@ class _HomeState extends State<Home> {
                       style: TextStyle(color: Colors.yellow)
                   ),
                   onPressed: () async {
-                    Constants.myName = null;
-                    Constants.myHandle = null;
-                    Constants.myProfilePhoto = null;
                     Constants.resetAll();
                     await auth.googleSignIn.isSignedIn().then((value) async {
                       if (value) {
