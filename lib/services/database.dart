@@ -235,6 +235,7 @@ class DatabaseMethods {
 //        check = true;
 //      }
 //    }.
+//    }
     if (qs.data != null) {
       print('that is done =========================================');
       Rateable currRating = Rateable.fromJson(qs.data['rating']);
@@ -254,6 +255,7 @@ class DatabaseMethods {
       ratings.document(event.id).setData({
         'rating': currRating.toJson(),
         'eventTitle' : event.name
+        'rating': currRating.toJson()
       });
     }
   }

@@ -159,6 +159,7 @@ class _MyDrawerState extends State<MyDrawer> {
                       );
                     }
                   },
+                  onTap: () {},
                   child: Container(
                       height: 40,
                       child: Row(
@@ -167,6 +168,9 @@ class _MyDrawerState extends State<MyDrawer> {
                           Icon(Icons.event,size: 25,),
                           SizedBox(width: 20),
                           Text('Events', style: TextStyle(fontSize: 20.0),)
+                          Icon(Icons.settings),
+                          SizedBox(width: 20),
+                          Text('Settings', style: TextStyle(fontSize: 20.0),)
                         ],
                       )
                   )
