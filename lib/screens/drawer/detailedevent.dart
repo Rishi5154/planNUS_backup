@@ -22,7 +22,6 @@ class _DetailedEventState extends State<DetailedEvent> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _markers.add(
         Marker(
