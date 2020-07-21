@@ -23,16 +23,20 @@ class _DetailedEventState extends State<DetailedEvent> {
   @override
   void initState() {
     super.initState();
-    _markers.add(
-        Marker(
-          markerId: MarkerId('Main'),
-          position: LatLng(widget.latitude, widget.longitude),
-          infoWindow: InfoWindow(
-              title: '' + widget.eventTitle,
-              snippet: widget.event.event.location
-          ),
-        )
-    );
+    try {
+      _markers.add(
+          Marker(
+            markerId: MarkerId('Main'),
+            position: LatLng(widget.latitude, widget.longitude),
+            infoWindow: InfoWindow(
+                title: '' + widget.eventTitle,
+                snippet: widget.event.event.location
+            ),
+          )
+      );
+    } catch (e) {
+
+    }
     voters = widget.event.reviews.keys.toList();
     feedback = widget.event.reviews.values.toList();
     //convertFromLocation(widget.location);
@@ -49,7 +53,7 @@ class _DetailedEventState extends State<DetailedEvent> {
             IconButton(icon: Icon(Icons.arrow_back),
               onPressed: () {
                 Navigator.pop(context);
-                Navigator.pop(context);
+//                Navigator.pop(context);
               },
             ),
           title: Center(
@@ -62,19 +66,30 @@ class _DetailedEventState extends State<DetailedEvent> {
         body: Container(
           child: Column(
             children: <Widget>[
-              Container(
-                height: 200, //MediaQuery.of(context).size.height/3,
-                width: 300, //MediaQuery.of(context).size.width,
-                child: GoogleMap(
-                  initialCameraPosition:
-                  CameraPosition(
-                      target:LatLng(widget.latitude, widget.longitude),
-                      zoom: 18
+              widget.latitude == null && widget.longitude == null
+              ? Container(child: Padding(
+                padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                child: Text('No location available',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 28, color: Colors.red,
+                      fontFamily: 'FONTERROR'
                   ),
-                  zoomControlsEnabled: true,
-                  mapType: MapType.normal,
-                  markers: Set<Marker>.of(_markers),
                 ),
+              ))
+              : Container(
+                  height: 200, //MediaQuery.of(context).size.height/3,
+                  width: 300, //MediaQuery.of(context).size.width,
+                  child: GoogleMap(
+                    initialCameraPosition:
+                    CameraPosition(
+                        target:LatLng(widget.latitude, widget.longitude),
+                        zoom: 18
+                    ),
+                    zoomControlsEnabled: true,
+                    mapType: MapType.normal,
+                    markers: Set<Marker>.of(_markers),
+                  ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -117,21 +132,39 @@ class _DetailedEventState extends State<DetailedEvent> {
                     style: GoogleFonts.lato(fontSize: 24),
                   )
               ),
-              Container(
-//                child: ListView.builder(
-//                  shrinkWrap: true,
-//                  itemCount: voters.length,
-//                  itemBuilder: (BuildContext context, int index) => ListView(
-//                    children: <Widget>[
-//                      Column(
-//                        children: <Widget>[
-//                        Text(voters[index]),
-//                        Text(feedback[index])
-//                        ],
-//                      ),
-//                    ],
-//                  ),
-//                ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: voters.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                      Card(
+                        color: Colors.grey[100],
+                        child: Column(
+                          children: <Widget>[
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Row(
+                              children: <Widget>[
+                                SizedBox(width: 10),
+                                Text('${voters[index]}:', style: TextStyle(color: Colors.blue[800], fontSize: 17),),
+                              ],
+                            )
+                          ),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Row(
+                              children: <Widget>[
+                                SizedBox(width: 10),
+                                Text(feedback[index], style: TextStyle(fontStyle: FontStyle.italic, fontSize: 15),),
+                              ],
+                            )
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),

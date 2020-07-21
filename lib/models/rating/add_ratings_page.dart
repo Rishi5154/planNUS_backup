@@ -7,9 +7,9 @@ import 'package:plannusandroidversion/models/user.dart';
 import 'package:plannusandroidversion/services/database.dart';
 
 class AddRatingsPage extends StatefulWidget {
-  final TimeTable tt;
   final User voter;
-  AddRatingsPage(this.tt, this.voter);
+  final TimeTableEvent defaultSelection;
+  AddRatingsPage({@required this.voter, this.defaultSelection});
 
   @override
   _AddRatingsPageState createState() => _AddRatingsPageState();
@@ -22,7 +22,8 @@ class _AddRatingsPageState extends State<AddRatingsPage> {
   TimeTable tt;
   User voter;
 
-  TimeTableEvent r = _dummyEvent;
+
+  TimeTableEvent r;
   double rating;
   String review = '';
   String error = '';
@@ -56,8 +57,9 @@ class _AddRatingsPageState extends State<AddRatingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    this.tt = widget.tt;
     this.voter = widget.voter;
+    this.tt = voter.timetable;
+    this.r = widget.defaultSelection ?? _dummyEvent;
     return Dialog(
       child: SingleChildScrollView(
         child: Padding(

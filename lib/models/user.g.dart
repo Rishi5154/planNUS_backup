@@ -17,7 +17,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
     ..requests = (json['requests'] as List)
         ?.map((e) => e == null
             ? null
-            : MeetingRequest.fromJson(e as Map<String, dynamic>))
+            : CustomNotification.fromJson(e as Map<String, dynamic>))
         ?.toList();
 }
 
