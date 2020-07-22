@@ -136,7 +136,7 @@ class UserSearch extends SearchDelegate<String> {
     final names = nameAndHandle.keys.toList();
     final suggestionList = query.isEmpty
         ? []
-        : names.where((name) => name.startsWith(query)).toList();
+        : names.where((name) => name.toLowerCase().startsWith(query.toLowerCase())).toList();
 
     return ListView.builder(
       itemBuilder: (context, index) => ListTile(

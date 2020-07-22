@@ -33,7 +33,6 @@ class EventSearch extends SearchDelegate<String> {
 
   @override
   List<Widget> buildActions(BuildContext context) {
-    // TODO: implement buildActions
     return [
       IconButton(
         icon: Icon(Icons.clear),
@@ -46,7 +45,6 @@ class EventSearch extends SearchDelegate<String> {
 
   @override
   Widget buildLeading(BuildContext context) {
-    // TODO: implement buildLeading
     return IconButton(
       icon: AnimatedIcon(
         icon: AnimatedIcons.menu_arrow,
@@ -60,7 +58,6 @@ class EventSearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    // TODO: implement buildResults
     return Material(
       child: Scaffold(
         appBar: AppBar(
@@ -79,7 +76,6 @@ class EventSearch extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    // TODO: implement buildSuggestions
     final _events = events;
     final suggestionList = query.isEmpty
         ? [] : _events.where((str) => str.toLowerCase().startsWith(query.toLowerCase())).toList();
@@ -109,6 +105,11 @@ class EventSearch extends SearchDelegate<String> {
               print(e.toString());
               HelperWidgets.flushbar("Event location unavailable!", Icons.place)..show(context);
               events.add(toAdd.event.name);
+              return Navigator.push(context,
+                  MaterialPageRoute(builder: (context) =>
+                    DetailedEvent(eve.name, toAdd, null, null),
+                  )
+              );
             }
             //showResults(context);
           },
