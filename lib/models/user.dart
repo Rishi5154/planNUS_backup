@@ -94,7 +94,9 @@ class User {
       }
     }
     for (TimeTableEvent e in overdue) {
-      requests.add(CustomNotification.reviewNotification(e));
+      if (!requests.any((req) => req.rateable != null && req.rateable.id == e.id)) {
+        requests.add(CustomNotification.reviewNotification(e));
+      }
     }
     return overdue.isNotEmpty ? this.update() : null;
   }
