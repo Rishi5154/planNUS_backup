@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
@@ -70,8 +71,28 @@ class _ProfileState extends State<Profile> {
   Future getImage() async {
     ImagePicker imagePicker = new ImagePicker();
     PickedFile img = await imagePicker.getImage(source: ImageSource.gallery);
-    File image = File(img.path);
-    await uploadImage(image);
+    if (img != null) {
+      File image =
+      await ImageCropper.cropImage(sourcePath: img.path,
+          aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+          compressQuality: 100,
+          maxWidth: 700,
+          maxHeight: 700,
+          compressFormat: ImageCompressFormat.jpg,
+          androidUiSettings: AndroidUiSettings(
+              toolbarColor: Colors.deepPurpleAccent,
+              toolbarTitle: "Image cropper",
+              statusBarColor: Colors.deepPurple.shade500,
+              backgroundColor: Colors.white
+          ));
+      //File image = File(img.path);
+      await uploadImage(image);
+      setState(() {
+        _image = image;
+        Constants.myProfilePhoto = Image.file(image);
+      });
+      return image;
+    }
   }
 
   Future uploadImage(File image) async {
@@ -243,16 +264,6 @@ class _ProfileState extends State<Profile> {
 //                                _image = image;
 //                                Constants.myProfilePhoto = Image.file(image);
                               });
-                              ImagePicker imagePicker = new ImagePicker();
-                              PickedFile img = await imagePicker.getImage(source: ImageSource.gallery);
-                              File image = File(img.path);
-                              setState(() {
-                                _image = image;
-                                Constants.myProfilePhoto = Image.file(image);
-                              });
-                              await uploadImage(image);
-                              //Constants.myProfilePhoto = Image.file(image);
-                              print(user.uid + " is here after all time");
                             },
                             color: Colors.blueAccent,
                             child: Shimmer.fromColors(

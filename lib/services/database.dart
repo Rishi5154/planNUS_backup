@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:plannusandroidversion/models/meeting/meeting_request.dart';
-import 'package:plannusandroidversion/models/notifications/custom_notification.dart';
 import 'package:plannusandroidversion/models/rating/rateable.dart';
 import 'package:plannusandroidversion/models/timetable/timetable.dart';
 import 'package:plannusandroidversion/models/timetable/timetable_event.dart';
@@ -205,7 +204,7 @@ class DatabaseMethods {
   //##########################//
   Future<void> addMeetingRequest(MeetingRequest meetingRequest) async {
     User currUser = await userTimetables.document(uid).get().then((val) => User.fromJson(val['user']));
-    currUser.requests.add(CustomNotification.mrNotification(meetingRequest));
+    currUser.requests.add(meetingRequest);
     return userTimetables.document(uid).updateData({
       'user' : currUser.toJson()
     });
@@ -236,7 +235,6 @@ class DatabaseMethods {
 //        check = true;
 //      }
 //    }.
-//    }
     if (qs.data != null) {
       print('that is done =========================================');
       Rateable currRating = Rateable.fromJson(qs.data['rating']);
@@ -255,7 +253,7 @@ class DatabaseMethods {
       Rateable currRating = Rateable(event, rating, 1, reviews);
       ratings.document(event.id).setData({
         'rating': currRating.toJson(),
-        'eventTitle' : event.name,
+        'eventTitle' : event.name
       });
     }
   }
@@ -273,26 +271,5 @@ class DatabaseMethods {
 
   Stream<QuerySnapshot> getRateable() {
     return ratings.snapshots();
-  }
-
-  Future<bool> checkRated(String voterName, String title) async {
-    try {
-      bool ans = await ratings.where('eventTitle', isEqualTo: title)
-          .getDocuments()
-          .then((val) => Rateable.fromJson(val.documents[0].data['rating']))
-          .then((rateable) => rateable.reviews.containsKey(voterName));
-      return ans;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  Future<List<Rateable>> getRateableList() async {
-    List<Rateable> result = new List<Rateable>();
-    QuerySnapshot qs = await ratings.getDocuments();
-    for (var doc in qs.documents) {
-      result.add(Rateable.fromJson(doc.data['rating']));
-    }
-    return result;
   }
 }

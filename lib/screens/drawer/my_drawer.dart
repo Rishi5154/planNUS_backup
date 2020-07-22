@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:plannusandroidversion/models/rating/add_ratings_page.dart';
+import 'package:plannusandroidversion/models/rating/rateable.dart';
+import 'package:plannusandroidversion/models/rating/rating_page.dart';
+import 'package:collection/collection.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:plannusandroidversion/models/user_search.dart';
 import 'package:plannusandroidversion/screens/drawer/event_search.dart';
@@ -113,12 +115,15 @@ class _MyDrawerState extends State<MyDrawer> {
             child: InkWell(
               splashColor: Colors.orange,
               onTap: () async {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AddRatingsPage(voter: user);
-                    }
-                );
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return StreamProvider<QuerySnapshot>.value(
+                      value: DatabaseMethods().getRateable(),
+                      child: RatingPage(),
+                      catchError: (context, e) => null,
+                    );
+                  }
+                ));
               },
               child: Container(
                 height: 40,
@@ -127,63 +132,46 @@ class _MyDrawerState extends State<MyDrawer> {
                   children: <Widget>[
                     Icon(Icons.rate_review),
                     SizedBox(width: 20),
-                    Text('Review', style: TextStyle(fontSize: 20.0))
+                    Text('Reviews', style: TextStyle(fontSize: 20.0))
                   ],
                 )
               )
             ),
           ),
           Padding(
-            padding: pad,
-            child: InkWell(
-              splashColor: Colors.orange,
-              onTap: () async {
-                QuerySnapshot ss = await DatabaseMethods().getRateQuerySnapshots();
-                QuerySnapshot _querySnapshot = Provider.of<QuerySnapshot>(context, listen: false);
-                if (ss != null) {
-                  showSearch(
-                      context: context,
-                      delegate: EventSearch(ss, user)
-                  );
-                } else {
-                  await Future.delayed(Duration(seconds: 1))
-                      .whenComplete(() => ss = Provider.of<QuerySnapshot>(context, listen: false));
-                  showSearch(
-                      context: context,
-                      delegate: EventSearch(ss, user)
-                  );
-                }
-              },
-              child: Container(
-                  height: 40,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Icon(Icons.event,size: 25,),
-                      SizedBox(width: 20),
-                      Text('Events', style: TextStyle(fontSize: 20.0),),
-                    ],
+              padding: pad,
+              child: InkWell(
+                  splashColor: Colors.orange,
+                  onTap: () async {
+                    QuerySnapshot ss = await DatabaseMethods().getRateQuerySnapshots();
+                    QuerySnapshot _querySnapshot = Provider.of<QuerySnapshot>(context, listen: false);
+                    if (ss != null) {
+                      showSearch(
+                          context: context,
+                          delegate: EventSearch(ss, user)
+                      );
+                    } else {
+                      await Future.delayed(Duration(seconds: 1))
+                          .whenComplete(() => ss = Provider.of<QuerySnapshot>(context, listen: false));
+                      showSearch(
+                          context: context,
+                          delegate: EventSearch(ss, user)
+                      );
+                    }
+                  },
+                  child: Container(
+                      height: 40,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Icon(Icons.event,size: 25,),
+                          SizedBox(width: 20),
+                          Text('Events', style: TextStyle(fontSize: 20.0),)
+                        ],
+                      )
                   )
               )
-            )
           ),
-          Padding(
-            padding: pad,
-            child: InkWell(
-              onTap: () {},
-              child: Container(
-                height: 40,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Icon(Icons.settings),
-                      SizedBox(width: 20),
-                      Text('Settings', style: TextStyle(fontSize: 20.0),)
-                    ],
-                )
-              )
-            ),
-          )
         ],
       ),
     );

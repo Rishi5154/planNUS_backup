@@ -1,10 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:plannusandroidversion/models/meeting/meeting_request.dart';
-import 'package:plannusandroidversion/models/notifications/custom_notification.dart';
-import 'package:plannusandroidversion/models/rating/rateable.dart';
 import 'package:plannusandroidversion/models/timetable/activity.dart';
 import 'package:plannusandroidversion/models/timetable/day_schedule.dart';
-import 'package:plannusandroidversion/models/timetable/timetable_event.dart';
 import 'package:plannusandroidversion/models/timetable/weekly_event.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/models/timetable/timetable.dart';
@@ -18,11 +15,11 @@ class User {
   //User properties
   String name;
   TimeTable timetable;
-  List<CustomNotification> requests;
+  List<MeetingRequest> requests;
 
   User({this.uid, this.name}) {
     timetable = TimeTable.emptyTimeTable();
-    requests = new List<CustomNotification>();
+    requests = new List<MeetingRequest>();
   }
 
   factory User.fromJson(Map<String, dynamic> data) => _$UserFromJson(data);
@@ -35,17 +32,12 @@ class User {
   }
 
   Future<void> addMeetingRequest(MeetingRequest mr) {
-    this.requests.add(CustomNotification.mrNotification(mr));
+    this.requests.add(mr);
     return this.update();
   }
 
   Future<void> deleteMeetingRequest(MeetingRequest mr) {
-    this.requests.removeWhere((req) => req.meetingRequest != null && req.meetingRequest.meeting.uid == mr.meeting.uid);
-    return this.update();
-  }
-
-  Future<void> deleteReviewNotification(TimeTableEvent event) {
-    this.requests.removeWhere((req) => req.rateable != null && req.rateable.id == event.id);
+    this.requests.removeWhere((req) => req.meeting.uid == mr.meeting.uid);
     return this.update();
   }
 
@@ -64,40 +56,5 @@ class User {
     ref.addEvent(activity);
     this.timetable.timetable[refDate] = ref;
     return this.update();
-  }
-
-  Future<void> getReviewNotice() async {
-    DateTime now = DateTime.now();
-    List<Rateable> rateableList = await DatabaseMethods().getRateableList();
-    DateTime refDate = DateTime(now.year, now.month, now.day);
-    refDate = refDate.add(Duration(days: -7));
-    List<TimeTableEvent> overdue = new List<TimeTableEvent>();
-    while (refDate.isBefore(now)) {
-      DaySchedule ref = this.timetable.timetable[refDate];
-      if (ref != null) {
-        for (TimeTableEvent event in ref.ds) {
-          if (event != null && event.endDate.isBefore(now)) {
-            if (overdue.every((e) => e.name != event.name)) {
-              bool hasRated = await DatabaseMethods().checkRated(name, event.name);
-              if (!hasRated) {overdue.add(event);}
-            }
-          }
-        }
-      }
-      refDate = refDate.add(Duration(days: 1));
-    }
-    for (TimeTableEvent e in overdue) {
-      if (rateableList.any((r) => r.event.id == e.id)) {
-        if (rateableList.where((r) => r.event.id == e.id).first.reviews.containsKey(this.name)) {
-          overdue.remove(e);
-        }
-      }
-    }
-    for (TimeTableEvent e in overdue) {
-      if (!requests.any((req) => req.rateable != null && req.rateable.id == e.id)) {
-        requests.add(CustomNotification.reviewNotification(e));
-      }
-    }
-    return overdue.isNotEmpty ? this.update() : null;
   }
 }
