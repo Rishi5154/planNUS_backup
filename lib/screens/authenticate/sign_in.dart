@@ -149,6 +149,7 @@ class _SignInState extends State<SignIn> {
                                                 userInfoSnapshot
                                                     .documents[0].data["handle"]);
                                       });
+                                      setState(() => loading = true);
                                       //NEWLY ADDED 22 July 2020 12:44//
                                       await DatabaseMethods()
                                           .getUserByUserEmail(email)
@@ -156,7 +157,6 @@ class _SignInState extends State<SignIn> {
                                           DatabaseMethods().getUserByUID(value.documents[0].documentID))
                                           .then((user) => user.getReviewNotice());
                                       //^^^^^^^^^^ To add notifications of to-review events that has been completed :)
-                                      setState(() => loading = true);
                                       dynamic result =
                                           await auth.signInWithEmailAndPassword(
                                               email, password);

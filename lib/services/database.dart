@@ -276,11 +276,15 @@ class DatabaseMethods {
   }
 
   Future<bool> checkRated(String voterName, String title) async {
-    bool ans = await ratings.where('eventTitle', isEqualTo: title)
-        .getDocuments()
-        .then((val) => Rateable.fromJson(val.documents[0].data['rating']))
-        .then((rateable) => rateable.reviews.containsKey(voterName));
-    return ans;
+    try {
+      bool ans = await ratings.where('eventTitle', isEqualTo: title)
+          .getDocuments()
+          .then((val) => Rateable.fromJson(val.documents[0].data['rating']))
+          .then((rateable) => rateable.reviews.containsKey(voterName));
+      return ans;
+    } catch (e) {
+      return false;
+    }
   }
 
   Future<List<Rateable>> getRateableList() async {

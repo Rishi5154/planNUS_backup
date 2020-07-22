@@ -40,7 +40,12 @@ class User {
   }
 
   Future<void> deleteMeetingRequest(MeetingRequest mr) {
-    this.requests.removeWhere((req) => req != null && req.meetingRequest.meeting.uid == mr.meeting.uid);
+    this.requests.removeWhere((req) => req.meetingRequest != null && req.meetingRequest.meeting.uid == mr.meeting.uid);
+    return this.update();
+  }
+
+  Future<void> deleteReviewNotification(TimeTableEvent event) {
+    this.requests.removeWhere((req) => req.rateable != null && req.rateable.id == event.id);
     return this.update();
   }
 
@@ -71,7 +76,7 @@ class User {
       DaySchedule ref = this.timetable.timetable[refDate];
       if (ref != null) {
         for (TimeTableEvent event in ref.ds) {
-          if (event.endDate.isBefore(now)) {
+          if (event != null && event.endDate.isBefore(now)) {
             if (overdue.every((e) => e.name != event.name)) {
               bool hasRated = await DatabaseMethods().checkRated(name, event.name);
               if (!hasRated) {overdue.add(event);}

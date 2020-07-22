@@ -31,7 +31,7 @@ class CustomNotification {
     if (meetingRequest != null && rateable == null) {
       return _meetingRequestNotificationWidget(user, func);
     } else if (meetingRequest == null && rateable != null){
-      return _reviewNotificationWidget(user, con);
+      return _reviewNotificationWidget(user, con, func);
     } else { //Error widget
       return Container(
         child: Text('Error, this is not mrNotification nor reviewNotification', style: TextStyle(color: Colors.red, fontSize: 20),)
@@ -76,7 +76,7 @@ class CustomNotification {
                         child: Row(
                             children: [
                               IconButton(
-                                icon: Icon(Icons.check),
+                                icon: Icon(Icons.check, color: Colors.green),
                                 onPressed: () async {
                                   MeetingRequest mr = await Firestore.instance.collection("meetings")
                                       .document(meetingRequest.id).get().then((val) => MeetingRequest.fromJson(val.data['meeting']));
@@ -90,7 +90,7 @@ class CustomNotification {
                                 },
                               ),
                               IconButton(
-                                icon: Icon(Icons.clear),
+                                icon: Icon(Icons.clear, color: Colors.red),
                                 onPressed: () async {
                                   await user.deleteMeetingRequest(meetingRequest);
                                   func(user);
@@ -106,35 +106,43 @@ class CustomNotification {
     );
   }
 
-  Widget _reviewNotificationWidget(User voter, BuildContext context) {
+  Widget _reviewNotificationWidget(User voter, BuildContext context, Function(User) func) {
     return Container(
       height: 80.0,
       child: Row(
           children: [
             Expanded(
               flex: 2,
-              child: Text('Review ${rateable.name}',
-                  style: TextStyle(fontSize: 20.0)
+              child: Row(
+                children: <Widget>[
+                  Text('Review ',
+                    style: TextStyle(fontSize: 18.0)
+                  ),
+                  Text(rateable.name,
+                    style: TextStyle(fontSize: 18.0, color: Colors.blue[800]),
+                  )
+                ],
               ),
             ),
             Expanded(
                 child: Row(
                     children: [
                       IconButton(
-                        icon: Icon(Icons.check),
-                        onPressed: () {
+                        icon: Icon(Icons.check, color: Colors.green),
+                        onPressed: () async {
                           showDialog(
                               context: context,
                               builder: (context) {
                                 return AddRatingsPage(voter: voter, defaultSelection: rateable);
                               }
                           );
+                          await voter.deleteReviewNotification(rateable).whenComplete(() => func(voter));
                         },
                       ),
                       IconButton(
-                        icon: Icon(Icons.clear),
+                        icon: Icon(Icons.clear, color: Colors.red),
                         onPressed: () async {
-
+                          await voter.deleteReviewNotification(rateable).whenComplete(() => func(voter));
                         },
                       ),
                     ]
