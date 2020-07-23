@@ -19,9 +19,10 @@ class TimeTableEvent {
   DateTime endDate;
   bool isWeekly;
   String location;
+  bool isPrivate;
 
   //Constructor
-  TimeTableEvent(this.timing, this.id, this.name, this.isImportant, this.startDate, this.endDate, this.isWeekly, this.location);
+  TimeTableEvent(this.timing, this.id, this.name, this.isImportant, this.startDate, this.endDate, this.isWeekly, this.location, this.isPrivate);
 
   //JsonSerializable methods
   factory TimeTableEvent.fromJson(Map<String, dynamic> data) => _$TimeTableEventFromJson(data);
@@ -30,10 +31,12 @@ class TimeTableEvent {
 }
 
 class TimeTableEventWidget extends StatefulWidget {
-  const TimeTableEventWidget(this.con, this.event, {Key key,})
+  const TimeTableEventWidget(this.con, this.event, this.isPrivate, {Key key,})
       : assert(event != null), super(key: key);
   final TimeTableEvent event;
   final BuildContext con;
+  final bool isPrivate;
+
   @override
   _TimeTableEventWidgetState createState() => _TimeTableEventWidgetState();
 }
@@ -41,6 +44,7 @@ class TimeTableEventWidget extends StatefulWidget {
 class _TimeTableEventWidgetState extends State<TimeTableEventWidget> {
 
   TimeTableEvent event;
+  bool isPrivate;
   var _tapPosition;
 
   void _storePosition(TapDownDetails details) {
@@ -52,6 +56,7 @@ class _TimeTableEventWidgetState extends State<TimeTableEventWidget> {
   Widget build(BuildContext context) {
     User user = Provider.of<User>(context);
     event = widget.event;
+    isPrivate = widget.isPrivate;
     final RenderBox overlay = Overlay.of(context).context.findRenderObject();
     return Material(
       shape: RoundedRectangleBorder(
@@ -178,7 +183,7 @@ class _TimeTableEventWidgetState extends State<TimeTableEventWidget> {
               fontSize: 12,
               color: Colors.black,
             ),
-            child: Text(event.name),
+            child: Text((isPrivate && event.isPrivate)? 'Private Event' : event.name),
           ),
         ),
       ),
