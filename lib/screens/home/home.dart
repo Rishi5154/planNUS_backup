@@ -137,7 +137,7 @@ class _HomeState extends State<Home> {
               Container(
                 margin: EdgeInsets.only(top: 1.5),
                 child: IconButton(
-                  icon: Icon(Icons.add, color: Colors.white),
+                  icon: Icon(Icons.add, color: Colors.white, key: Key('Add timetable'),),
                   tooltip: 'Add',
                   onPressed: () {
                     showDialog(
@@ -245,7 +245,7 @@ class _HomeState extends State<Home> {
                 textAlign: TextAlign.center,
               ),
               BottomNavyBarItem(
-                icon: Icon(Icons.calendar_today, ),
+                icon: Icon(Icons.calendar_today, key: Key('Timetable-form'),),
                 title: Text('Timetable', style: GoogleFonts.openSans() ),
                 activeColor: Colors.purpleAccent,
                 textAlign: TextAlign.center,

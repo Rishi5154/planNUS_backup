@@ -26,13 +26,13 @@ class TimeTable {
   }
 
   // to generate notification id for easy identification of notifications
-  int notificationIdGenerator(Activity activity) {
+  int notificationIdGenerator(TimeTableEvent activity) {
     DateTime threshold = new DateTime(2020, 7, 1, 0, 0);
     Duration diff = threshold.difference(activity.startDate);
     return diff.inHours;
   }
 
-  int notificationIdGeneratorWeekly(WeeklyEvent event) {
+  int notificationIdGeneratorWeekly(TimeTableEvent event) {
     DateTime threshold = new DateTime(2020, 7, 1, 0, 0);
     Duration diff = threshold.difference(event.startDate);
     return 100000 + diff.inHours;

@@ -32,7 +32,7 @@ class TimeTableEvent {
 class TimeTableEventWidget extends StatefulWidget {
   const TimeTableEventWidget(this.con, this.event, {Key key,})
       : assert(event != null), super(key: key);
-  final event;
+  final TimeTableEvent event;
   final BuildContext con;
   @override
   _TimeTableEventWidgetState createState() => _TimeTableEventWidgetState();
@@ -40,7 +40,7 @@ class TimeTableEventWidget extends StatefulWidget {
 
 class _TimeTableEventWidgetState extends State<TimeTableEventWidget> {
 
-  var event;
+  TimeTableEvent event;
   var _tapPosition;
 
   void _storePosition(TapDownDetails details) {

@@ -165,7 +165,13 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
           children: <Widget>[
             Padding(
               padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
-              child: CustomTextField(labelText: "What activity is it?", controller: _selectedName,)
+              child: TextFormField(
+                key: Key("Activity"),
+                decoration: InputDecoration(
+                    hintText: 'What activity is it?'),
+//                : "What activity is it?",
+                controller: _selectedName,
+              )
             ),
             Text("Start"),
             SizedBox(height: 8.0),
@@ -178,6 +184,7 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
                 ),
               ),
               child: DropdownButton(
+                key: Key("Start"),
                 value: _selectedStartTime,
                 items: _dropdownStartTimes,
                 onChanged: (val) {
@@ -200,6 +207,7 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
                 ),
               ),
               child: DropdownButton(
+                key: Key("End"),
                 value: _selectedEndTime,
                 items: _dropdownEndTimes,
                 onChanged: (val) {
@@ -302,6 +310,7 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 RaisedButton(
+                  key: Key('Location'),
                   child: Text(
                     "Get current location",
                     style: GoogleFonts.openSans(fontSize: 12, fontWeight: FontWeight.w500),
