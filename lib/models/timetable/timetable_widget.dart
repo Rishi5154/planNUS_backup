@@ -14,6 +14,9 @@ import 'package:time_machine/time_machine.dart';
 import 'package:timetable/timetable.dart';
 
 class TimeTableWidget extends StatefulWidget {
+  final bool private;
+  TimeTableWidget({this.private});
+
   @override
   _TimeTableWidgetState createState() => _TimeTableWidgetState();
 }
@@ -22,6 +25,7 @@ class _TimeTableWidgetState extends State<TimeTableWidget> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   TimetableController<BasicEvent> _controller;
 
+  bool isPrivate;
   Map<String, dynamic> myHashMap = {};
 
   List<BasicEvent> convert(TimeTable timetable) {
@@ -44,16 +48,32 @@ class _TimeTableWidgetState extends State<TimeTableWidget> {
           } else {
             print(a.runtimeType);
           }
-          BasicEvent we = BasicEvent(
-              title: a.name,
-              id: a.name + a.timing.toString(),
-              color: a.isImportant ? Colors.redAccent : Colors.lightGreenAccent,
-              start: LocalDateTime(year, month, day,
-                  a.timing.start, 00, 00),
-              end: LocalDateTime(
-                  year, month, day,
-                  a.timing.end, 00, 00)
-          );
+          BasicEvent we;
+          if (isPrivate && a.isPrivate) {
+            we = BasicEvent(
+                title: 'Private Event',
+                id: a.name + a.timing.toString(),
+                color: a.isImportant ? Colors.redAccent : Colors
+                    .lightGreenAccent,
+                start: LocalDateTime(year, month, day,
+                    a.timing.start, 00, 00),
+                end: LocalDateTime(
+                    year, month, day,
+                    a.timing.end, 00, 00)
+            );
+          } else {
+            we = BasicEvent(
+                title: a.name,
+                id: a.name + a.timing.toString(),
+                color: a.isImportant ? Colors.redAccent : Colors
+                    .lightGreenAccent,
+                start: LocalDateTime(year, month, day,
+                    a.timing.start, 00, 00),
+                end: LocalDateTime(
+                    year, month, day,
+                    a.timing.end, 00, 00)
+            );
+          }
           result.add(we);
           myHashMap[we.id] = a;
           j += (a.timing.end - a.timing.start);
@@ -63,6 +83,7 @@ class _TimeTableWidgetState extends State<TimeTableWidget> {
     }
     return result;
   }
+
 
   @override
   void initState() {
@@ -74,9 +95,10 @@ class _TimeTableWidgetState extends State<TimeTableWidget> {
     _controller.dispose();
     super.dispose();
   }
-  String _viewingMonth = DateFormat.MMMM('en_US').format(DateTime.now());
+
   @override
   Widget build(BuildContext context) {
+    this.isPrivate = widget.private;
     final today = LocalDate.today();
     LocalDate monday = today.dayOfWeek.value == 1 ? today : today.addDays(-today.dayOfWeek.value + 1);
     _controller = TimetableController(
@@ -114,14 +136,15 @@ class _TimeTableWidgetState extends State<TimeTableWidget> {
           partDayEventMinimumDuration: Period(minutes: 60),
         ),
         onEventBackgroundTap: (start, isAllDay) {
-          setState(() {
-            _viewingMonth = _controller.scrollControllers.addAndGet().position.toString();
-          });
+//          setState(() {
+//            _viewingMonth = _controller.scrollControllers.addAndGet().position.toString();
+//          });
         },
         eventBuilder: (event) {
           return TimeTableEventWidget(
             _scaffoldKey.currentContext,
-            myHashMap[event.id],//MIGHT BE WRONG
+            myHashMap[event.id],
+            isPrivate//MIGHT BE WRONG
           );
         },
 //        allDayEventBuilder: (context, event, info) => BasicAllDayEventWidget(

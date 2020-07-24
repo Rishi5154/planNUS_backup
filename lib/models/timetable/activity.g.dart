@@ -18,6 +18,7 @@ Activity _$ActivityFromJson(Map<String, dynamic> json) {
     json['name'] as String,
     json['isImportant'] as bool,
     json['location'] as String,
+    json['isPrivate'] as bool,
   )
     ..endDate = json['endDate'] == null
         ? null
@@ -34,4 +35,5 @@ Map<String, dynamic> _$ActivityToJson(Activity instance) => <String, dynamic>{
       'endDate': instance.endDate?.toIso8601String(),
       'isWeekly': instance.isWeekly,
       'location': instance.location,
+      'isPrivate': instance.isPrivate,
     };

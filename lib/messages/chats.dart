@@ -196,7 +196,7 @@ class _ChatsState extends State<Chats> {
                                   ),
                                 ),
                                 backgroundColor: Colors.deepPurple,
-                                body: TimeTableWidget()),
+                                body: TimeTableWidget(private: true,)),
                           )
                       )
                       )

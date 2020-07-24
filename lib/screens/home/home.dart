@@ -5,13 +5,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/models/timetable/timetable_widget.dart';
-import 'package:plannusandroidversion/models/timetable/weekly_event_adder.dart';
+import 'package:plannusandroidversion/models/timetable/event_adder.dart';
 import 'package:plannusandroidversion/models/todo/todo_main.dart';
 import 'package:plannusandroidversion/models/todo/todo_models/todo_data.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:plannusandroidversion/screens/drawer/my_drawer.dart';
-import 'package:plannusandroidversion/screens/drawer/notification_page.dart';
-import 'package:plannusandroidversion/models/user_search.dart';
 import 'package:plannusandroidversion/screens/home/messages.dart';
 import 'package:plannusandroidversion/screens/home/profile.dart';
 import 'package:plannusandroidversion/services/auth.dart';
@@ -110,7 +108,7 @@ class _HomeState extends State<Home> {
         //home
         Provider<User>.value(value: user,
             child: Scaffold(
-                backgroundColor: Colors.yellow, body: TimeTableWidget()
+                backgroundColor: Colors.yellow, body: TimeTableWidget(private: false,)
             )
         ),
         //TimeTable.emptyTimeTable()))),
@@ -145,7 +143,7 @@ class _HomeState extends State<Home> {
                       context: context,
                       builder: (BuildContext context) {
                         return Dialog(
-                          child: Provider<User>.value(value: user, child: WeeklyEventAdder()),
+                          child: Provider<User>.value(value: user, child: EventAdder()),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(Radius.circular(35))
                           )

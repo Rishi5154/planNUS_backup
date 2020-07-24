@@ -18,8 +18,8 @@ class Activity extends TimeTableEvent {
 //    @required LocalDateTime end,
 //  })
   //Constructor
-  Activity(DateTime startDate, ScheduleTiming timing, String id, String name, bool isImportant, String location)
-      : super(timing, id, name, isImportant, startDate, startDate, false, location);
+  Activity(DateTime startDate, ScheduleTiming timing, String id, String name, bool isImportant, String location, bool isPrivate)
+      : super(timing, id, name, isImportant, startDate, startDate, false, location, isPrivate);
 
 
   ///startDate == endDate
