@@ -123,6 +123,9 @@ class _TimeTableEventWidgetState extends State<TimeTableEventWidget> {
                   separated.add(token);
                 }
               }
+              if (separated[0] == '' || separated[0] == ' ') {
+                separated[0] = 'No Location';
+              }
               return SimpleDialog(
                 title: Center(child:
                     Row(
@@ -131,7 +134,7 @@ class _TimeTableEventWidgetState extends State<TimeTableEventWidget> {
                         SizedBox(
                           width: 10.0,
                         ),
-                        Text(event.name),
+                        Text((isPrivate && event.isPrivate)? 'Private Event' : event.name),
                         IconButton(
                           icon: Icon(Icons.close),
                           iconSize: 15.0,

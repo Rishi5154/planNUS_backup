@@ -290,8 +290,10 @@ class DatabaseMethods {
   Future<List<Rateable>> getRateableList() async {
     List<Rateable> result = new List<Rateable>();
     QuerySnapshot qs = await ratings.getDocuments();
-    for (var doc in qs.documents) {
-      result.add(Rateable.fromJson(doc.data['rating']));
+    if (qs.documents.length != 0) {
+      for (var doc in qs.documents) {
+        result.add(Rateable.fromJson(doc.data['rating']));
+      }
     }
     return result;
   }
