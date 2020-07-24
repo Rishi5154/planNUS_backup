@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
 
@@ -29,38 +31,95 @@ void main() {
         }
       });
 
-      test("login failures", () async {
+//      test("login failures", () async {
+//        await driver.runUnsynchronized(() async {
+//          await driver.waitFor(find.byValueKey('sign in page'));
+//          await driver.tap(emailField);
+//          await driver.enterText("test@gmail.com");
+//          await driver.tap(passwordField);
+//          await driver.enterText('1111111');
+//          await driver.tap(signInButton);
+//          await Future.delayed(Duration(seconds: 3));
+////          await driver.runUnsynchronized(() async {
+////            await driver.waitFor(flushBar);
+////          });
+//          //await driver.waitFor(find.("FAILED TO SIGN IN!"));
+//          await driver.waitUntilNoTransientCallbacks();
+////          assert (flushBar != null);
+//          assert (homePage == null);
+//        });
+//      });
+//
+//      test("login successes", () async {
+//        await driver.runUnsynchronized(() async {
+//          await driver.waitFor(find.byValueKey('sign in page'));
+//          await driver.tap(emailField);
+//          await driver.enterText("test@gmail.com");
+//          await driver.tap(passwordField);
+//          await driver.enterText('123456');
+//          await driver.tap(signInButton);
+//          await driver.waitFor(homePage);
+//          assert(homePage != null);
+//          await driver.waitUntilNoTransientCallbacks();
+//        });
+//      });
+
+    test("timetable successes", () async {
+      await driver.runUnsynchronized(() async {
+        await driver.waitFor(find.byValueKey('sign in page'));
+        await driver.tap(emailField);
+        await driver.enterText("test@gmail.com");
+        await driver.tap(passwordField);
+        await driver.enterText('123456');
+        await driver.tap(signInButton);
+        await driver.waitFor(homePage);
+        assert(homePage != null);
+        await Future.delayed(Duration(seconds: 5));
+        await driver.tap(find.byValueKey('Timetable-form'));
+        await Future.delayed(Duration(seconds: 3));
+        await driver.tap(find.byValueKey("Add timetable"));
+        await Future.delayed(Duration(seconds: 1));
+        await driver.tap(find.text("Cancel"));
+        await Future.delayed(Duration(seconds: 1));
+      });
+    });
+
+      test("timetable assign", () async {
         await driver.runUnsynchronized(() async {
-          await driver.waitFor(find.byValueKey('sign in page'));
-          await driver.tap(emailField);
-          await driver.enterText("test@gmail.com");
-          await driver.tap(passwordField);
-          await driver.enterText('1111111');
-          await driver.tap(signInButton);
-         //await Future.delayed(Duration(seconds: 4));
-          await driver.waitFor(find.byValueKey('failed login'));
-//          await driver.runUnsynchronized(() async {
-//            await driver.waitFor(flushBar);
-//          });
-          //await driver.waitFor(find.("FAILED TO SIGN IN!"));
-          await driver.waitUntilNoTransientCallbacks();
-//          assert (flushBar != null);
-          assert (homePage == null);
+          await driver.tap(find.byValueKey('Timetable-form'));
+          await Future.delayed(Duration(seconds: 2));
+          await driver.tap(find.byValueKey("Add timetable"));
+          await Future.delayed(Duration(seconds: 2));
+          await driver.tap(find.byValueKey("Activity"));
+          await driver.enterText("Tests");
+          await driver.tap(find.byValueKey("Start"));
+          await driver.tap(find.text('08:00'));
+          await driver.tap(find.byValueKey("End"));
+          await driver.tap(find.text('09:00'));
+          await driver.tap(find.text("Add"));
         });
       });
 
-      test("login successes", () async {
+      test("timetable cancel", () async {
         await driver.runUnsynchronized(() async {
-          await driver.waitFor(find.byValueKey('sign in page'));
-          await driver.tap(emailField);
-          await driver.enterText("test@gmail.com");
-          await driver.tap(passwordField);
-          await driver.enterText('123456');
-          await driver.tap(signInButton);
-          await driver.waitFor(homePage);
-          assert(homePage != null);
-          await driver.waitUntilNoTransientCallbacks();
+          await driver.tap(find.byValueKey('Timetable-form'));
+          await Future.delayed(Duration(seconds: 3));
+          await driver.tap(find.byValueKey("Add timetable"));
+          await Future.delayed(Duration(seconds: 1));
+          await driver.tap(find.text("Cancel"));
+          await Future.delayed(Duration(seconds: 1));
+//          await driver.tap(find.text("logout"));
         });
       });
-    });
+
+      test("timetable delete", () async {
+        await driver.runUnsynchronized(() async {
+          await driver.scroll(find.text('Tests'),0,0, Duration(seconds: 2));
+          await Future.delayed(Duration(seconds: 2));
+          await driver.tap(find.text("Delete"));
+          await Future.delayed(Duration(seconds: 1));
+        });
+      });
+
+});
 }
