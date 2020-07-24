@@ -12,12 +12,16 @@ class AddRatingsPage extends StatefulWidget {
   AddRatingsPage({@required this.voter, this.defaultSelection});
 
   @override
-  _AddRatingsPageState createState() => _AddRatingsPageState();
+  _AddRatingsPageState createState() => _AddRatingsPageState(this.defaultSelection);
 }
 
 class _AddRatingsPageState extends State<AddRatingsPage> {
   static final TimeTableEvent _dummyEvent = TimeTableEvent(null, null, '----', false, null, null, null, null, null);
+  TimeTableEvent defaultSelection;
 
+  _AddRatingsPageState(this.defaultSelection) {
+    r = defaultSelection ?? _dummyEvent;
+  }
   //properties
   TimeTable tt;
   User voter;
@@ -29,6 +33,8 @@ class _AddRatingsPageState extends State<AddRatingsPage> {
   String error = '';
   TextEditingController tec = TextEditingController();
 
+
+  bool hasDefaultSelection = true;
   List<DropdownMenuItem<TimeTableEvent>> _buildRateableLists(TimeTable tt) {
     List<TimeTableEvent> currentEventList = new List<TimeTableEvent>();
     DateTime now = DateTime.now();
@@ -59,7 +65,6 @@ class _AddRatingsPageState extends State<AddRatingsPage> {
   Widget build(BuildContext context) {
     this.voter = widget.voter;
     this.tt = voter.timetable;
-    this.r = widget.defaultSelection ?? _dummyEvent;
     return Dialog(
       child: SingleChildScrollView(
         child: Padding(
@@ -77,7 +82,7 @@ class _AddRatingsPageState extends State<AddRatingsPage> {
                     items: _buildRateableLists(tt),
                     onChanged: (val) {
                       setState(() {
-                        r = val;
+                        this.r = val;
                       });
                     },
                     hint: Text('Select Event'),
@@ -95,7 +100,7 @@ class _AddRatingsPageState extends State<AddRatingsPage> {
                       color: Colors.yellowAccent[400]
                   ),
                   onRatingUpdate: (val) {
-                    setState((){
+                    setState(() {
                       rating = val;
                     });
                   },
