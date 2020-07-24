@@ -375,7 +375,7 @@ class _ChatRoomsTileState extends State<ChatRoomsTile> {
 //                          ),
 //                        ),
                           backgroundColor: Colors.white,
-                          body: TimeTableWidget(),
+                          body: TimeTableWidget(private: true),
                         floatingActionButton: FloatingActionButton.extended(
                             backgroundColor: Colors.transparent,
                             elevation: 5,

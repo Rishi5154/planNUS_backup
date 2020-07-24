@@ -12,14 +12,14 @@ import 'package:plannusandroidversion/services/locationservice.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class WeeklyEventAdder extends StatefulWidget {
+class EventAdder extends StatefulWidget {
   final String location;
-  WeeklyEventAdder({this.location});
+  EventAdder({this.location});
   @override
-  _WeeklyEventAdderState createState() => _WeeklyEventAdderState();
+  _EventAdderState createState() => _EventAdderState();
 }
 
-class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
+class _EventAdderState extends State<EventAdder> {
 
   static List<DropdownMenuItem<TimeOfDay>> buildDropDownMenuItems(List<TimeOfDay> times) {
     List<DropdownMenuItem<TimeOfDay>> items = List();
@@ -91,6 +91,7 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
   DateTime _selectedStartDate = DateTime.now();
   DateTime _selectedEndDate = DateTime.now();
   bool isWeeklyEvent = false;
+  bool isPrivate = false;
 
   void init() {
     _selectedName = null;
@@ -105,7 +106,6 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     print(widget.location ?? '' + " the location has been located!!!!!");
     print(_selectedLocation.text);
@@ -293,7 +293,23 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
                 ),
               ],
             ) : Container(),
-            SizedBox(width: 20.0,height: 20,),
+//            SizedBox(width: 20.0,height: 20,),
+            //NEW INSERTS 24 JUL 2020 1215
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text('Is it private?'),
+                Switch(
+                    value: isPrivate,
+                    onChanged: (bool e) {
+                      setState(() {
+                        this.isPrivate = e;
+                      });
+                    }
+                ),
+                Text(isPrivate ? 'Yes' : 'No')
+              ],
+            ),
             Padding(
                 padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
                 child: CustomTextField(labelText: "Location", controller: _selectedLocation,)
@@ -381,7 +397,8 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
                               _selectedImportance,
                             _selectedStartDate,
                             _selectedEndDate,
-                            _selectedLocation.text
+                            _selectedLocation.text,
+                            isPrivate
                           ));
                         } else {
                           user.timetable.addActivity(Activity(
@@ -390,7 +407,8 @@ class _WeeklyEventAdderState extends State<WeeklyEventAdder> {
                             _selectedName.text + _selectedStartDate.toIso8601String(),
                             _selectedName.text,
                             _selectedImportance,
-                            _selectedLocation.text
+                            _selectedLocation.text,
+                            isPrivate
                           ));
                         }
                         await user.update()

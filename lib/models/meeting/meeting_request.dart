@@ -26,10 +26,10 @@ class MeetingRequest {
         User user = await DatabaseMethods(uid: uid).getUserByUID(uid);
         user.deleteMeetingRequest(this);
 //        DateTime now = DateTime.now();
-        await user.addActivity(new Activity(meeting.date, meeting.slot, id, meeting.name, meeting.isImportant,null));
+        await user.addActivity(new Activity(meeting.date, meeting.slot, id, meeting.name, meeting.isImportant, null, true));
       });
       User requester = await DatabaseMethods(uid: meeting.userUID).getUserByUID(meeting.userUID);
-      await requester.addActivity(new Activity(meeting.date, meeting.slot, id, meeting.name, meeting.isImportant,null));
+      await requester.addActivity(new Activity(meeting.date, meeting.slot, id, meeting.name, meeting.isImportant,null, true));
     }
   }
 
