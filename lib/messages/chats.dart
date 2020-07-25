@@ -182,9 +182,7 @@ class _ChatsState extends State<Chats> {
                   print(name);
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Provider<User>.value(value: user,
-                          child: MaterialApp(
-                            debugShowCheckedModeBanner: false,
-                            home: Scaffold(
+                          child: Scaffold(
                                 appBar: AppBar(
                                   elevation: 0,
                                   backgroundColor: Colors.deepPurple,
@@ -198,7 +196,6 @@ class _ChatsState extends State<Chats> {
                                 backgroundColor: Colors.deepPurple,
                                 body: TimeTableWidget(private: true,)),
                           )
-                      )
                       )
                   );
                 },
@@ -237,9 +234,7 @@ class _ChatsState extends State<Chats> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return Scaffold(
         extendBodyBehindAppBar: false,
         backgroundColor: Colors.deepPurple,
         appBar: AppBar(
@@ -319,7 +314,6 @@ class _ChatsState extends State<Chats> {
             ],
           ),
         ),
-      ),
     );
   }
 }

@@ -10,8 +10,9 @@ import 'package:plannusandroidversion/services/database.dart';
 class MeetingRequestPage extends StatefulWidget {
   final MeetingHandler meetingHandler;
   final bool atMessages;
+  final BuildContext cont;
 
-  MeetingRequestPage(this.meetingHandler, this.atMessages);
+  MeetingRequestPage(this.meetingHandler, this.atMessages, this.cont);
 
   @override
   _MeetingRequestPageState createState() => _MeetingRequestPageState();
@@ -21,11 +22,13 @@ class _MeetingRequestPageState extends State<MeetingRequestPage> {
   MeetingHandler meetingHandler;
   Map<DateTime, List<ScheduleTiming>> freeTimings;
   static List<String> days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  BuildContext cont;
 
   @override
   Widget build(BuildContext context) {
     meetingHandler = widget.meetingHandler;
     freeTimings = meetingHandler.getFreeTiming();
+    cont = widget.cont;
     List<DateTime> oneMonthFromNow = [];
     DateTime refDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
     for (int i = 0; i < 32; i ++) {
@@ -141,8 +144,10 @@ class _MeetingRequestPageState extends State<MeetingRequestPage> {
                         if (!widget.atMessages) {
                           await Future.delayed(Duration(milliseconds: 10))
                               .whenComplete(() => Navigator.pop(context))
+                              .whenComplete(() => Navigator.pop(context, 'true'))
                               .whenComplete(() => Navigator.pop(context))
                               .whenComplete(() => Navigator.pop(context));
+
                         } else {
                           await Future.delayed(Duration(milliseconds: 10))
                               .whenComplete(() => Navigator.pop(context))
