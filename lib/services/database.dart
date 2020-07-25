@@ -254,7 +254,7 @@ class DatabaseMethods {
   }
 
   Future<Rateable> getEventByTitle(String title) async {
-    dynamic rate = await ratings.where('eventTitle', isEqualTo: title)
+    dynamic rate = await ratings.where('eventTitle', isEqualTo: title.toLowerCase())
         .getDocuments()
         .then((value) => value.documents[0].data['rating']);
     return Rateable.fromJson(rate);
