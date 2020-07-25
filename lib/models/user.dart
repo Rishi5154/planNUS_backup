@@ -79,7 +79,8 @@ class User {
           if (event != null && event.endDate.isBefore(now)) {
             if (overdue.every((e) => e.name != event.name)) {
               bool hasRated = await DatabaseMethods().checkRated(name, event.name);
-              if (!hasRated) {overdue.add(event);}
+              if (!hasRated) {overdue.add(event);
+              }
             }
           }
         }
