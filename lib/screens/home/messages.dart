@@ -50,6 +50,7 @@ class _MessagesState extends State<Messages> {
                             snapshot.data.documents[index].data['chatroomID'], user, this.user,
                         userUid: user.uid ?? null,) : Container();
                     },
+                    catchError: (context, e) => user,
                   ),
 //                  Divider(
 //                    color: Colors.grey[600],
@@ -289,7 +290,7 @@ class _ChatRoomsTileState extends State<ChatRoomsTile> {
                   )
               ),
             ),
-            SizedBox(width: 100),
+            Spacer(),
             IconButton(
               color: Colors.lightBlueAccent,
               icon: Icon(
@@ -355,7 +356,8 @@ class _ChatRoomsTileState extends State<ChatRoomsTile> {
 //          );
                 Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) =>
-                  Provider<User>.value(value: widget.user,
+                  Provider<User>.value(
+                    value: widget.user,
                     child: Scaffold(
 //                        appBar: AppBar(
 //                          elevation: 0,
