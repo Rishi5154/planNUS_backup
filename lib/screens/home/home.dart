@@ -254,7 +254,7 @@ class _HomeState extends State<Home> {
                 textAlign: TextAlign.center,
               ),
               BottomNavyBarItem(
-                icon: Icon(Icons.perm_identity),
+                icon: Icon(Icons.perm_identity, key: Key('Profile-form'),),
                 title: Text('Profile', style: GoogleFonts.openSans()),
                 activeColor: Colors.blue,
                 textAlign: TextAlign.center,

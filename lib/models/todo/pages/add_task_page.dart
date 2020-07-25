@@ -46,8 +46,20 @@ class _AddTaskPageState extends State<AddTaskPage> {
           SizedBox(
             height: 24,
           ),
-          CustomTextField(
-              labelText: 'Enter task name', controller: _textTaskController),
+          TextFormField(
+            key: Key('Task name'),
+              decoration: InputDecoration(
+              hintText: 'Enter task name',
+//              icon: Icon(Icons.assignment, color: Colors.blue),
+              fillColor: Colors.white,
+              filled: true,
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey[300], width: 2),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.deepPurpleAccent, width: 2),
+              )
+          ), controller: _textTaskController),
           SizedBox(height: 12),
           CustomDateTimePicker(
             icon: Icons.date_range,
