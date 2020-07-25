@@ -228,24 +228,17 @@ class DatabaseMethods {
   }
 
   Future<void> addRatedEvent(TimeTableEvent event, double rating, String review, String voterName) async {
-    DocumentSnapshot qs = await ratings.document(event.id).get();
-//    bool check = false;
-//    if (qs != null) {
-//      TimeTableEvent e = TimeTableEvent.fromJson(qs.documents[0].data['event']);
-//      if (e.startDate.isAtSameMomentAs(event.startDate) && e.endDate.isAtSameMomentAs(event.endDate)) {
-//        check = true;
-//      }
-//    }.
-//    }
-    if (qs.data != null) {
+    QuerySnapshot qs = await ratings.where('eventTitle', isEqualTo: event.name.toLowerCase()).getDocuments();
+
+    if (qs != null && qs.documents.length != 0) {
       print('that is done =========================================');
-      Rateable currRating = Rateable.fromJson(qs.data['rating']);
+      Rateable currRating = Rateable.fromJson(qs.documents[0].data['rating']);
       if (currRating.reviews.containsKey(voterName)) {
         throw AssertionError("You have already reviewed this event");
       } else {
         currRating.rate(rating);
         currRating.reviews[voterName] = review;
-        ratings.document(event.id).updateData({
+        ratings.document(qs.documents[0].documentID).updateData({
           'rating': currRating.toJson()
         });
       }
@@ -255,7 +248,7 @@ class DatabaseMethods {
       Rateable currRating = Rateable(event, rating, 1, reviews);
       ratings.document(event.id).setData({
         'rating': currRating.toJson(),
-        'eventTitle' : event.name,
+        'eventTitle' : event.name.toLowerCase(),
       });
     }
   }
@@ -277,7 +270,7 @@ class DatabaseMethods {
 
   Future<bool> checkRated(String voterName, String title) async {
     try {
-      bool ans = await ratings.where('eventTitle', isEqualTo: title)
+      bool ans = await ratings.where('eventTitle', isEqualTo: title.toLowerCase())
           .getDocuments()
           .then((val) => Rateable.fromJson(val.documents[0].data['rating']))
           .then((rateable) => rateable.reviews.containsKey(voterName));
