@@ -380,10 +380,11 @@ class _EventAdderState extends State<EventAdder> {
                         setState(() {
                           addable = 'Please fill in all fields!';
                         });
-                      } else if (isWeeklyEvent
+                      } else if ((isWeeklyEvent
                           && _selectedStartDate.year == _selectedEndDate.year
                           && _selectedStartDate.month == _selectedEndDate.month
-                          && _selectedStartDate.day == _selectedEndDate.day
+                          && _selectedStartDate.day == _selectedEndDate.day) ||
+                          (isWeeklyEvent && _selectedEndDate.isBefore(_selectedStartDate))
                       ) {
                         setState(() {
                           addable = 'Invalid End Date';
