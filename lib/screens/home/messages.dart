@@ -258,7 +258,7 @@ class _ChatRoomsTileState extends State<ChatRoomsTile> {
               useOldImageOnUrlChange: false,
               placeholder: (context, url) => CircularProgressIndicator(),
               imageBuilder: (context, imageprovider) => Padding(
-                padding: const EdgeInsets.only(left: 5, top: 0, right: 0, bottom: 0),
+                padding: const EdgeInsets.only(left: 6, top: 0, right: 0, bottom: 0),
                 child: CircleAvatar(backgroundImage: imageprovider, radius: 27.5,),
               ),
               errorWidget: (context, url, error) => Container(
