@@ -76,7 +76,7 @@ class _ToDoPageState extends State<ToDoPage> {
                           borderRadius: BorderRadius.all(Radius.circular(12))));
                 });
           },
-          child: Icon(Icons.add),
+          child: Icon(Icons.add, key: Key('Add task'),),
         ) : null,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
