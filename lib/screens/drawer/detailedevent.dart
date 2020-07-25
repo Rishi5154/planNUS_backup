@@ -45,9 +45,7 @@ class _DetailedEventState extends State<DetailedEvent> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           leading:
             IconButton(icon: Icon(Icons.arrow_back),
@@ -169,7 +167,6 @@ class _DetailedEventState extends State<DetailedEvent> {
             ],
           ),
         ),
-      ),
     );
   }
 }

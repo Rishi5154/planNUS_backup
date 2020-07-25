@@ -48,12 +48,14 @@ class _MyAppState extends State<MyApp> {
       MaterialPageRoute(builder: (context) => Home()),
     );
   }
+
   @override
   void initState() {
     configLocalNotification();
     initialize();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

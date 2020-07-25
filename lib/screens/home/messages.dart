@@ -89,9 +89,7 @@ class _MessagesState extends State<Messages> {
   Widget build(BuildContext context) {
     TextEditingController _titleController = new TextEditingController();
     user = Provider.of<User>(context);
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home : Scaffold(
+    return Scaffold(
         backgroundColor: Colors.orange[500],
         //backgroundColor: Colors.orange[300],
 //        decoration: BoxDecoration(
@@ -154,7 +152,6 @@ class _MessagesState extends State<Messages> {
 //              }
             },
             label: new Icon(Icons.message, color: Colors.white)),
-      ),
     );
   }
 }
@@ -210,9 +207,7 @@ class _ChatRoomsTileState extends State<ChatRoomsTile> {
   }
 
   blockContact(){
-    return MaterialApp(
-      home: Scaffold(),
-    );
+    return Scaffold();
   }
 
   DatabaseMethods databaseMethods = new DatabaseMethods();
@@ -335,7 +330,7 @@ class _ChatRoomsTileState extends State<ChatRoomsTile> {
                                 child: Stack(
                                     children: [
                                       MeetingRequestPage(
-                                          new MeetingHandler(widget.currUser, toChecks), true
+                                          new MeetingHandler(widget.currUser, toChecks), true, cont,
                                       ),
                                       BackButton(
                                         onPressed: () async {
@@ -361,9 +356,7 @@ class _ChatRoomsTileState extends State<ChatRoomsTile> {
                 Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) =>
                   Provider<User>.value(value: widget.user,
-                    child: MaterialApp(
-                      debugShowCheckedModeBanner: false,
-                      home: Scaffold(
+                    child: Scaffold(
 //                        appBar: AppBar(
 //                          elevation: 0,
 //                          backgroundColor: Colors.transparent,
@@ -386,7 +379,6 @@ class _ChatRoomsTileState extends State<ChatRoomsTile> {
                       )
                       ),
                     )
-                  )
                   )
                 )
                 } else if (choice == 'Block'){

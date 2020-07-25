@@ -120,9 +120,7 @@ class _HomeState extends State<Home> {
           ],
           child: Profile()),
       ];
-      return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
+      return Scaffold(
           backgroundColor: Colors.deepPurple,
           appBar: AppBar(
             title: Text(header,
@@ -263,8 +261,7 @@ class _HomeState extends State<Home> {
               ),
             ],
           ),
-        ),
-      );
+        );
     }
   }
 }
