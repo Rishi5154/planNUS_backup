@@ -88,8 +88,8 @@ class User {
       refDate = refDate.add(Duration(days: 1));
     }
     for (TimeTableEvent e in overdue) {
-      if (rateableList.any((r) => r.event.id == e.id)) {
-        if (rateableList.where((r) => r.event.id == e.id).first.reviews.containsKey(this.name)) {
+      if (rateableList.any((r) => r.event.name == e.name)) {
+        if (rateableList.where((r) => r.event.name == e.name).first.reviews.containsKey(this.name)) {
           overdue.remove(e);
         }
       }

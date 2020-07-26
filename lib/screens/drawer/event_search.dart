@@ -23,7 +23,8 @@ class EventSearch extends SearchDelegate<String> {
       for (var doc in ss.documents) {
         final ref = doc.data;
         print(ref['eventTitle']);
-        events.add(ref['eventTitle']);
+        Rateable _rateable = Rateable.fromJson(ref['rating']);
+        events.add(_rateable.event.name);
       }
     } catch (e) {
       print(e);
