@@ -51,7 +51,7 @@ class _DetailedEventState extends State<DetailedEvent> {
             IconButton(icon: Icon(Icons.arrow_back),
               onPressed: () {
                 Navigator.pop(context);
-//                Navigator.pop(context);
+                Navigator.pop(context);
               },
             ),
           title: Center(
@@ -76,8 +76,13 @@ class _DetailedEventState extends State<DetailedEvent> {
                 ),
               ))
               : Container(
-                  height: 200, //MediaQuery.of(context).size.height/3,
-                  width: 300, //MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(color: Colors.black12, width: 1.5)
+                      )
+                  ),
+                  height: MediaQuery.of(context).size.height/3,
+                  width: MediaQuery.of(context).size.width,
                   child: GoogleMap(
                     initialCameraPosition:
                     CameraPosition(
@@ -93,7 +98,7 @@ class _DetailedEventState extends State<DetailedEvent> {
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
                   alignment: Alignment.topLeft,
-                    child: Text('Rating', style: GoogleFonts.openSans(fontSize: 24),)
+                    child: Text('Rating', style: GoogleFonts.lato(fontSize: 24),)
                 ),
               ),
               Container(
@@ -109,7 +114,7 @@ class _DetailedEventState extends State<DetailedEvent> {
                       itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
                       itemBuilder: (context, _) => Icon(
                           Icons.star,
-                          color: Colors.yellow[400],
+                          color: Colors.amber,
                         size: 26,
                       ),
                       onRatingUpdate: (newRating) {},
@@ -137,7 +142,8 @@ class _DetailedEventState extends State<DetailedEvent> {
                     itemCount: voters.length,
                     itemBuilder: (BuildContext context, int index) =>
                       Card(
-                        color: Colors.grey[100],
+                        elevation: 0,
+                        color: Colors.white,
                         child: Column(
                           children: <Widget>[
                           Align(
@@ -145,16 +151,17 @@ class _DetailedEventState extends State<DetailedEvent> {
                             child: Row(
                               children: <Widget>[
                                 SizedBox(width: 10),
-                                Text('${voters[index]}:', style: TextStyle(color: Colors.blue[800], fontSize: 17),),
+                                Text('${voters[index]}:', style: TextStyle(color: Colors.blue[800], fontSize: 20),),
                               ],
                             )
                           ),
+                          SizedBox(height: 10),
                           Align(
                             alignment: Alignment.centerRight,
                             child: Row(
                               children: <Widget>[
                                 SizedBox(width: 10),
-                                Text(feedback[index], style: TextStyle(fontStyle: FontStyle.italic, fontSize: 15),),
+                                Expanded(child: Text(feedback[index], style: TextStyle(fontStyle: FontStyle.italic, fontSize: 16),)),
                               ],
                             )
                           )

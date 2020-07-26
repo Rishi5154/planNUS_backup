@@ -21,6 +21,10 @@ class DatabaseMethods {
     return users.document(uid).snapshots().map((ss) => ss.data['handle']);
   }
 
+  Future<QuerySnapshot> getUserInfo() async {
+    return await users.getDocuments();
+  }
+
   Stream<User> getUserStream2() {
     return userTimetables.document(uid).snapshots().map((ss) => User.fromJson(ss.data['user']));
     //return users.document(uid).snapshots().map((ss) => User.fromJson(ss.data['user']));
@@ -221,6 +225,14 @@ class DatabaseMethods {
 
   Future<String> getHandleByUID(String uid) async {
     return users.document(uid).get().then((val) => val.data['handle']);
+  }
+  
+  Future<User> getUserTimetableByHandle(String handle) async {
+    String userUid = await users.where("handle", isEqualTo: handle)
+        .getDocuments()
+        .then((value) => value.documents.first.documentID);
+    print(userUid);
+    return await retrieveTimetable(userUid);
   }
 
   Future<String> getNameByUID(String uid) async {

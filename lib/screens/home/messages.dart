@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plannusandroidversion/messages/chats.dart';
 import 'package:plannusandroidversion/messages/chatscreenredirect.dart';
+import 'package:plannusandroidversion/messages/chatsearch.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
 import 'package:plannusandroidversion/models/meeting/meeting_handler.dart';
 import 'package:plannusandroidversion/models/timetable/timetable_widget.dart';
@@ -131,26 +132,26 @@ class _MessagesState extends State<Messages> {
             hoverColor: Colors.green,
             splashColor: Colors.green,
             onPressed: () async {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) =>
-                    Chats(),
-                )
-              );
-//              QuerySnapshot _querySnapshot = Provider.of<QuerySnapshot>(context, listen: false);
-//              if (_querySnapshot != null) {
-//                showSearch(
-//                    context: context,
-//                    delegate: UserSearch(_querySnapshot, user)
-//                );
-//              } else {
-//                await Future.delayed(Duration(seconds: 1))
-//                    .whenComplete(() => _querySnapshot = Provider.of<QuerySnapshot>(context, listen: false));
-//                showSearch(
-//                    context: context,
-//                    delegate: UserSearch(_querySnapshot, user)
-//                );
-//              }
+//              Navigator.of(context).push(
+//                MaterialPageRoute(
+//                  builder: (context) =>
+//                    Chats(),
+//                )
+//              );
+              QuerySnapshot _querySnapshot = await databaseMethods.getUserInfo();
+              if (_querySnapshot != null) {
+                showSearch(
+                    context: context,
+                    delegate: ChatSearch(_querySnapshot)
+                );
+              } else {
+                await Future.delayed(Duration(seconds: 1))
+                    .whenComplete(() => _querySnapshot = Provider.of<QuerySnapshot>(context, listen: false));
+                showSearch(
+                    context: context,
+                    delegate: ChatSearch(_querySnapshot)
+                );
+              }
             },
             label: new Icon(Icons.message, color: Colors.white)),
     );
