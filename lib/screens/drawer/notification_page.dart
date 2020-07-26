@@ -44,7 +44,7 @@ class _NotificationPageState extends State<NotificationPage> {
             children: <Widget>[
               SingleChildScrollView(
                   child: SizedBox(
-                    height: 400.0,
+                    height: MediaQuery.of(context).size.height - 120,
                     child: ListView.builder(
                         itemCount: unreadNotifications.length,
                         itemBuilder: (context, index) {
