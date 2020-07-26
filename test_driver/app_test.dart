@@ -4,9 +4,6 @@ import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
 
 void main() {
-//  MockFireBaseAuth _auth = MockFireBaseAuth();
-//  BehaviorSubject<MockFireBaseUser> _user = BehaviorSubject<MockFireBaseUser>();
-//  AuthService authService =  AuthService.
     group('login test', (){
       SerializableFinder emailField = find.byValueKey('Email-form key');
       final passwordField = find.byValueKey('Password-form key');
@@ -92,15 +89,6 @@ void main() {
 
     test("timetable successes", () async {
       await driver.runUnsynchronized(() async {
-//        await driver.waitFor(find.byValueKey('sign in page'));
-//        await driver.tap(emailField);
-//        await driver.enterText("test@gmail.com");
-//        await driver.tap(passwordField);
-//        await driver.enterText('123456');
-//        await driver.tap(signInButton);
-//        await driver.waitFor(homePage);
-//        assert(homePage != null);
-//        await Future.delayed(Duration(seconds: 5));
         await driver.tap(find.byValueKey('Timetable-form'));
         await Future.delayed(Duration(seconds: 3));
         await driver.tap(find.byValueKey("Add timetable"));

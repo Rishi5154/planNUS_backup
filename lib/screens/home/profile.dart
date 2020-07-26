@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -154,7 +155,31 @@ class _ProfileState extends State<Profile> {
                 child : Column (
                   children: <Widget>[
                     Container(
-                        child: _image != null ? Padding(
+                        child:
+//                        CachedNetworkImage(
+//                          imageUrl: url ?? '',
+//                          placeholder: (context, url) => Padding(
+//                            padding: const EdgeInsets.all(60.0),
+//                            child: CircularProgressIndicator(),
+//                          ),
+//                          imageBuilder: (context, imageprovider) => Padding(
+//                            padding: const EdgeInsets.only(left: 6, top: 0, right: 0, bottom: 0),
+//                            child: CircleAvatar(backgroundImage: imageprovider, radius: 100,),
+//                          ),
+//                          errorWidget: (context, url, error) => Padding(
+//                            padding: const EdgeInsets.all(60),
+//                            child: Container(
+//                              decoration: BoxDecoration(
+//                                color: Colors.blue,
+//                                borderRadius: BorderRadius.circular(100),
+//                              ),
+//                              child: CircleAvatar(
+//                                  backgroundImage: Constants.myProfilePhoto.image,
+//                                  radius: 100),
+//                            ),
+//                          ),
+
+                        _image != null ? Padding(
                           padding: const EdgeInsets.all(60),
                           child: CircleAvatar(backgroundImage:FileImage(_image), radius: 100),
                         ) :
