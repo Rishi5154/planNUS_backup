@@ -133,30 +133,23 @@ class _SignInState extends State<SignIn> {
                                   if (formKey.currentState.validate()) {
                                     QuerySnapshot userInfoSnapshot;
                                     if (formKey.currentState.validate()) {
-                                      HelperFunctions.saveUserEmailSharedPreferences(
-                                          email);
-                                      DatabaseMethods()
-                                          .getUserByUserEmail(email)
-                                          .then((value) {
-                                        userInfoSnapshot = value;
-                                        HelperFunctions.saveUsernameSharedPreferences(
-                                            userInfoSnapshot
-                                                .documents[0].data["name"]);
-                                        print(userInfoSnapshot
-                                            .documents[0].data["name"]);
-                                        HelperFunctions
-                                            .saveUserHandleSharedPreferences(
-                                                userInfoSnapshot
-                                                    .documents[0].data["handle"]);
-                                      });
+//                                      HelperFunctions.saveUserEmailSharedPreferences(
+//                                          email);
+//                                      DatabaseMethods()
+//                                          .getUserByUserEmail(email)
+//                                          .then((value) {
+//                                        userInfoSnapshot = value;
+//                                        HelperFunctions.saveUsernameSharedPreferences(
+//                                            userInfoSnapshot
+//                                                .documents[0].data["name"]);
+//                                        print(userInfoSnapshot
+//                                            .documents[0].data["name"]);
+//                                        HelperFunctions
+//                                            .saveUserHandleSharedPreferences(
+//                                                userInfoSnapshot
+//                                                    .documents[0].data["handle"]);
+//                                      });
                                       setState(() => loading = true);
-                                      //NEWLY ADDED 22 July 2020 12:44//
-                                      await DatabaseMethods()
-                                          .getUserByUserEmail(email)
-                                          .then((value) =>
-                                          DatabaseMethods().getUserByUID(value.documents[0].documentID))
-                                          .then((user) => user.getReviewNotice());
-                                      //^^^^^^^^^^ To add notifications of to-review events that has been completed :)
                                       dynamic result =
                                           await auth.signInWithEmailAndPassword(
                                               email, password);
@@ -169,8 +162,31 @@ class _SignInState extends State<SignIn> {
                                           ..show(context);
                                       } else {
                                         print("here at signin");
+                                        HelperFunctions.saveUserEmailSharedPreferences(
+                                            email);
+                                        DatabaseMethods()
+                                            .getUserByUserEmail(email)
+                                            .then((value) {
+                                          userInfoSnapshot = value;
+                                          HelperFunctions.saveUsernameSharedPreferences(
+                                              userInfoSnapshot
+                                                  .documents[0].data["name"]);
+                                          print(userInfoSnapshot
+                                              .documents[0].data["name"]);
+                                          HelperFunctions
+                                              .saveUserHandleSharedPreferences(
+                                              userInfoSnapshot
+                                                  .documents[0].data["handle"]);
+                                        });
                                         HelperFunctions
                                             .saveUserLoggedInSharedPreferences(true);
+                                        //NEWLY ADDED 22 July 2020 12:44//
+                                        await DatabaseMethods()
+                                            .getUserByUserEmail(email)
+                                            .then((value) =>
+                                            DatabaseMethods().getUserByUID(value.documents[0].documentID))
+                                            .then((user) => user.getReviewNotice());
+                                        //^^^^^^^^^^ To add notifications of to-review events that has been completed :)
                                         await Constants.setAll();
 //                                        Constants.myName = await HelperFunctions
 //                                            .getUsernameSharedPreferences();
@@ -180,10 +196,10 @@ class _SignInState extends State<SignIn> {
                                         print(Constants.myName + " has logged in");
                                         print(Constants.myHandle + " has logged in");
                                       }
-                                    } else {
+                                    } /*else {
                                       HelperFunctions
                                           .saveUserLoggedInSharedPreferences(true);
-                                    }
+                                    }*/
                                   }
                                 },
                                 shape: RoundedRectangleBorder(

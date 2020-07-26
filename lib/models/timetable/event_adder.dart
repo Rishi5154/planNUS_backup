@@ -168,61 +168,83 @@ class _EventAdderState extends State<EventAdder> {
               child: TextFormField(
                 key: Key("Activity"),
                 decoration: InputDecoration(
-                    hintText: 'What activity is it?'),
+                    hintText: 'What activity is it?',
+                    fillColor: Colors.white,
+                    filled: true,
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey[300], width: 2),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 2),
+                    )
+                ),
+//                decoration: InputDecoration(
+//                    hintText: 'What activity is it?'),
 //                : "What activity is it?",
                 controller: _selectedName,
               )
             ),
-            Text("Start"),
-            SizedBox(height: 8.0),
-            Container(
-              padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-              decoration: ShapeDecoration(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  side: BorderSide(width: 1.0, style: BorderStyle.solid, color: Colors.grey[500])
-                ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    Text("Start"),
+                    SizedBox(height: 10.0),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                      decoration: ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            side: BorderSide(width: 1.0, style: BorderStyle.solid, color: Colors.grey[500])
+                        ),
+                      ),
+                      child: DropdownButton(
+                        key: Key("Start"),
+                        value: _selectedStartTime,
+                        items: _dropdownStartTimes,
+                        onChanged: (val) {
+                          setState(() {
+                            _selectedStartTime = val;
+                          });
+                          print(_selectedStartTime.hour);
+                        },
+                      ),
+                    ),
+                ],),
+              Column(
+                children: <Widget>[
+                  Text("End"),
+                  SizedBox(height: 10.0),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                    decoration: ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          side: BorderSide(width: 1.0, style: BorderStyle.solid, color: Colors.grey[500])
+                      ),
+                    ),
+                    child: DropdownButton(
+                      key: Key("End"),
+                      value: _selectedEndTime,
+                      items: _dropdownEndTimes,
+                      onChanged: (val) {
+                        if (val.hour <= _selectedStartTime.hour) {
+                          setState((){
+                            error = "Inappropriate End Time!";
+                          });
+                        } else {
+                          setState(() {
+                            error = '';
+                            _selectedEndTime = val;
+                          });
+                        }
+                      },
+                    ),
+                  ),
+                ],
               ),
-              child: DropdownButton(
-                key: Key("Start"),
-                value: _selectedStartTime,
-                items: _dropdownStartTimes,
-                onChanged: (val) {
-                  setState(() {
-                    _selectedStartTime = val;
-                  });
-                  print(_selectedStartTime.hour);
-                },
-              ),
-            ),
-            SizedBox(height: 8.0),
-            Text("End"),
-            SizedBox(height: 8.0),
-            Container(
-              padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-              decoration: ShapeDecoration(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    side: BorderSide(width: 1.0, style: BorderStyle.solid, color: Colors.grey[500])
-                ),
-              ),
-              child: DropdownButton(
-                key: Key("End"),
-                value: _selectedEndTime,
-                items: _dropdownEndTimes,
-                onChanged: (val) {
-                  if (val.hour <= _selectedStartTime.hour) {
-                    setState((){
-                      error = "Inappropriate End Time!";
-                    });
-                  } else {
-                    setState(() {
-                      error = '';
-                      _selectedEndTime = val;
-                    });
-                  }
-                },
-              ),
+            ],
             ),
             error != '' ? Text(
               error,
