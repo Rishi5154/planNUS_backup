@@ -26,7 +26,7 @@ We aim to make event planning easy for students and academic staff by giving the
 4. On Android Studio, download the __Flutter__ & __Dart__ plugins.
 5. Go to __Tools > AVD Manager > Create Virtual Device__
 5. Download the __Pixel XL API R emulator__, as well as the android SDK alongside, preferably API level 28/29 & follow up with the installation processes.
-6. Once done, restart the IDE. If u get an pop-up to configure for Android, do activate that as well.
+6. Once done, restart the IDE. If you get an pop-up to configure for Android, do activate that as well.
 7. Start up the emulator by selecting Pixel XL API R from the top central panel that is placed onside with a blue smartphone icon.
 8. From there, you can search for plannusandroid app on the Home screen and you're good to go.
 
