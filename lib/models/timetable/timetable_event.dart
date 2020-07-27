@@ -22,7 +22,15 @@ class TimeTableEvent {
   bool isPrivate;
 
   //Constructor
-  TimeTableEvent(this.timing, this.id, this.name, this.isImportant, this.startDate, this.endDate, this.isWeekly, this.location, this.isPrivate);
+  TimeTableEvent(this.timing,
+                 this.id,
+                 this.name,
+                 this.isImportant,
+                 this.startDate,
+                 this.endDate,
+                 this.isWeekly,
+                 this.location,
+                 this.isPrivate);
 
   //JsonSerializable methods
   factory TimeTableEvent.fromJson(Map<String, dynamic> data) => _$TimeTableEventFromJson(data);
@@ -183,7 +191,7 @@ class _TimeTableEventWidgetState extends State<TimeTableEventWidget> {
           padding: EdgeInsets.fromLTRB(4, 2, 4, 0),
           child: DefaultTextStyle(
             style: TextStyle(
-              fontSize: 12,
+              fontSize: 11.5,
               color: Colors.black,
             ),
             child: Text((isPrivate && event.isPrivate)? 'Private Event' : event.name),

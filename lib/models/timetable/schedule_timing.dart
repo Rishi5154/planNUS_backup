@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'schedule_timing.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class ScheduleTiming {
+class  ScheduleTiming {
   //Properties
   int start; //hours
   int end;
@@ -28,9 +28,11 @@ class ScheduleTiming {
     int thisEnd = this.end;
     int otherStart = other.start;
     int otherEnd = other.end;
-    if (otherEnd >= thisStart && otherEnd <= thisEnd) {
+    if (otherStart == thisStart || otherEnd == thisEnd) {
       return true;
-    } else if (otherStart >= thisStart && otherStart <= thisEnd) {
+    } else if (otherEnd > thisStart && otherEnd < thisEnd) {
+      return true;
+    } else if (otherStart > thisStart && otherStart < thisEnd) {
       return true;
     } else {
       return false;
