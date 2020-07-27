@@ -1,8 +1,3 @@
-<h1 align="center">
-  <a href="https://github.com/Q-gabe/DropTheBeat"><img src="file:///Users/rishi/Desktop/Screenshot%202020-07-27%20at%208.20.37%20PM.png" alt="Drop The Beat" width="100%"></a>
-</h1>
-<h3 align="center">Share your audio-spatial experiences, wherever you are.</h3>
-
 # PlanNUS
 
 A mobile application made available on Android devices whereby users can speed up/simplify the process of event-planning.
