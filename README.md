@@ -29,6 +29,6 @@ We aim to make event planning easy for students and academic staff by giving the
 6. Once done, restart the IDE. If u get an pop-up to configure for Android, do activate that as well.
 7. Start up the emulator by selecting Pixel XL API R from the top central panel that is placed onside with a blue smartphone icon.
 8. From there, you can search for plannusandroid app on the Home screen and you're good to go.
-* Note of caution, the Google Sign In option may not work as intended for your device, as its unique SHA key will need to be added onto our Firebase configuration.
+_Note of caution, the Google Sign In option may not work as intended for your device, as its unique SHA key will need to be added onto our Firebase configuration._
 
 
