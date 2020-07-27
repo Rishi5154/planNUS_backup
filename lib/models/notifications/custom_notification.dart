@@ -58,7 +58,15 @@ class CustomNotification {
                       child: Column(
                           children: [
                             Text(name,
-                                style: TextStyle(fontSize: 24.0)
+                                style: TextStyle(
+                                    fontSize:
+                                      name.length > 25
+                                      ? 14.0
+                                      : name.length > 20
+                                        ? 16.0
+                                        : name.length > 10
+                                            ? 20.0
+                                            : 24.0)
                             ),
                             Text('Requested by: $requesterName',
                                 style: TextStyle(fontSize: 12.0)

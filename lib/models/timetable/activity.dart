@@ -10,6 +10,12 @@ part 'activity.g.dart';
 ///Activity that happens once on the date
 @JsonSerializable(explicitToJson: true)
 class Activity extends TimeTableEvent {
+  //Constructor
+  Activity(DateTime startDate, ScheduleTiming timing, String id,
+      String name, bool isImportant, String location, bool isPrivate)
+      : super(timing, id, name, isImportant, startDate, startDate,
+      false, location, isPrivate);
+
 //  const BasicEvent({
 //    @required Object id,
 //    @required this.title,
@@ -17,11 +23,6 @@ class Activity extends TimeTableEvent {
 //    @required LocalDateTime start,
 //    @required LocalDateTime end,
 //  })
-  //Constructor
-  Activity(DateTime startDate, ScheduleTiming timing, String id, String name, bool isImportant, String location, bool isPrivate)
-      : super(timing, id, name, isImportant, startDate, startDate, false, location, isPrivate);
-
-
   ///startDate == endDate
 
   List<BasicEvent> get toBasicEvent {

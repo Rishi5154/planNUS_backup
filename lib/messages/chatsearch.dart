@@ -41,7 +41,9 @@ class ChatSearch extends SearchDelegate<String>{
         String name = ref['name'];
         print(ref['handle']);
         String handle = ref['handle'];
-        users.add(Pair(name, handle));
+        if (handle != Constants.myHandle) {
+          users.add(Pair(name, handle));
+        }
       }
     } catch (e) {
       print(e);
@@ -76,7 +78,6 @@ class ChatSearch extends SearchDelegate<String>{
 
   @override
   Widget buildResults(BuildContext context) {
-    // TODO: implement buildResults
     return Material(
       child: Scaffold(
         appBar: AppBar(
@@ -95,7 +96,6 @@ class ChatSearch extends SearchDelegate<String>{
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    // TODO: implement buildSuggestions
     createChatRoomToStartConversation({String name, User user}) {
       print(Constants.myName + " is now");
       print(name + " is here");
@@ -147,7 +147,7 @@ class ChatSearch extends SearchDelegate<String>{
           },
         )
     );
-    throw UnimplementedError();
+//    throw UnimplementedError();
   }
 
 }

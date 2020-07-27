@@ -76,10 +76,13 @@ class _TimeTableWidgetState extends State<TimeTableWidget> {
           }
           result.add(we);
           myHashMap[we.id] = a;
-          j += (a.timing.end - a.timing.start);
+          j += (a.timing.end - a.timing.start - 1) ;
         }
       }
       refDate = refDate.add(Duration(days: 1));
+    }
+    for (BasicEvent be in result) {
+      print('start : ${be.start} , end: ${be.end}');
     }
     return result;
   }
@@ -111,6 +114,7 @@ class _TimeTableWidgetState extends State<TimeTableWidget> {
       visibleRange: VisibleRange.days(7),
       firstDayOfWeek: DayOfWeek.monday,
     );
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -133,7 +137,7 @@ class _TimeTableWidgetState extends State<TimeTableWidget> {
         controller: _controller,
         theme: TimetableThemeData(
           primaryColor: Colors.deepPurpleAccent,
-          partDayEventMinimumDuration: Period(minutes: 60),
+          partDayEventMinimumDuration: Period(minutes: 59),
         ),
         onEventBackgroundTap: (start, isAllDay) {
 //          setState(() {
