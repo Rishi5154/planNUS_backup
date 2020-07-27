@@ -22,7 +22,7 @@ We aim to make event planning easy for students and academic staff by giving the
 ## Instructions for use
 1. Ensure that you have the latest version of __Flutter__ installed on your systems. For more details, please refer to https://flutter.dev/docs/get-started/install to get started.
 2. Do a __clone__ of this repository with `git clone https://github.com/Rishi5154/planNUS_backup` in an empty directory.
-3. Ensure that you have an __Android emulator__ installed. This app is specifically designed for __Android__ only, as of now. We highly recommend downloading Android Studio [https://developer.android.com/studio/?gclid=CjwKCAjw9vn4BRBaEiwAh0muDJlTH_UKSMsapmTlXwHkQw33H-er42iOt5gh1x_4WasJBNQo6Cg7rBoCf9MQAvD_BwE&gclsrc=aw.ds].
+3. Ensure that you have an __Android emulator__ installed. This app is specifically designed for __Android__ only, as of now. We highly recommend downloading Android Studio  at https://developer.android.com/studio/?gclid=CjwKCAjw9vn4BRBaEiwAh0muDJlTH_UKSMsapmTlXwHkQw33H-er42iOt5gh1x_4WasJBNQo6Cg7rBoCf9MQAvD_BwE&gclsrc=aw.ds.
 4. On Android Studio, download the __Flutter__ & __Dart__ plugins.
 5. Go to __Tools > AVD Manager > Create Virtual Device__
 5. Download the __Pixel XL API R emulator__, as well as the android SDK alongside, preferably API level 28/29 & follow up with the installation processes.
