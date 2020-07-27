@@ -6,13 +6,12 @@ A mobile application made available on Android devices whereby users can speed u
 	<a href=""><img src="https://img.shields.io/badge/Devpost-Drop The Beat-informational"></a>
 	<a href = "https://flutter.dev/"><img src="https://img.shields.io/badge/Made with-Flutter-23425C?logo=flutter"></a>
 	<a href = "https://developers.google.com/maps/documentation"><img src="https://img.shields.io/badge/Powered by-Google Maps-blue?logo=google"></a>
-	<a href = "https://flutter.dev/"><img src="https://img.shields.io/badge/Powered by-Spotify-green?logo=spotify"></a>
 </p>
 
-Functioned with Firebase.
-Delivered with Flutter/Dart.
-Supported with Nodejs/Google Maps API.
-Controlled via Git/Github.
+- Functioned with Firebase.
+- Delivered with Flutter/Dart.
+- Supported with Nodejs/Google Maps API.
+- Controlled via Git/Github.
 
 Intended level of achievement: Apollo
 
