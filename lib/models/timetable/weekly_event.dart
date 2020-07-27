@@ -14,9 +14,11 @@ class WeeklyEvent extends TimeTableEvent {
   
   //Constructor
   WeeklyEvent(this.day,
-      ScheduleTiming timing, String id, String name, bool isImportant,
-      DateTime startDate, DateTime endDate, String location, bool isPrivate)
-      : super(timing, id, name, isImportant, startDate, endDate, true, location, isPrivate);
+      ScheduleTiming timing, String id, String name,
+      bool isImportant, DateTime startDate, DateTime endDate,
+      String location, bool isPrivate)
+      : super(timing, id, name, isImportant, startDate,
+      endDate, true, location, isPrivate);
 
   List<BasicEvent> get toBasicEvents {
     DateTime ref = startDate;

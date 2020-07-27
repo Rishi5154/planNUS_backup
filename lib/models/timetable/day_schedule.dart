@@ -46,7 +46,8 @@ class DaySchedule {
   bool addable(WeeklyEvent event) {
     for (TimeTableEvent items in ds) {
       if (items != null && items.timing.coincide(event.timing)) {
-        print('#####################EVENT IS NOT ADDABLE ############################');
+        print('${event.name}  #####################EVENT IS NOT ADDABLE ############################');
+        print('${items.name} coincides with ${event.name}');
         return false;
       }
     }
