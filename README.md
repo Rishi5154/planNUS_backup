@@ -9,7 +9,7 @@ A mobile application made available on Android devices whereby users can speed u
 
 Intended level of achievement: Apollo
 
-# Motivation
+## Motivation
 
 Given the age where we have a wide range of classes and events to attend, keeping track of events which we have to attend can be a burden on the memory. Sometimes, we also fail to prioritise our schedule properly. In addition, the hectic lifestyles make it difficult for us to find common free time together, whether it is for leisure activities or a formal meeting. It is also a hassle to manually look for free time with someone.
 
