@@ -11,6 +11,7 @@ import 'package:plannusandroidversion/models/meeting/meeting_handler.dart';
 import 'package:plannusandroidversion/models/timetable/timetable_widget.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:plannusandroidversion/screens/drawer/meeting_request_page.dart';
+import 'package:plannusandroidversion/models/user_search.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
 import 'package:provider/provider.dart';
@@ -269,6 +270,15 @@ class _ChatRoomsTileState extends State<ChatRoomsTile> {
                 ),
                 child: Text("${widget.name.isNotEmpty ? widget.name.substring(0,1).toUpperCase() : "-"}",
                   style: TextStyle(fontSize: 18,color: Colors.white),),
+            SizedBox(width: 5),
+            Container(
+              //padding: EdgeInsets.only(left: 5),
+//              margin: EdgeInsets.only(left: 1),
+              height: 54, width: 54,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(54),
               ),
             ),
 //            Container(
