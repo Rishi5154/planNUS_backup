@@ -21,6 +21,7 @@ TimeTableEvent _$TimeTableEventFromJson(Map<String, dynamic> json) {
     json['isWeekly'] as bool,
     json['location'] as String,
     json['isPrivate'] as bool,
+    json['type'] as String
   );
 }
 
@@ -35,4 +36,5 @@ Map<String, dynamic> _$TimeTableEventToJson(TimeTableEvent instance) =>
       'isWeekly': instance.isWeekly,
       'location': instance.location,
       'isPrivate': instance.isPrivate,
+      'type': instance.type
     };
