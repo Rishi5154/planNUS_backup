@@ -16,7 +16,7 @@ class AddRatingsPage extends StatefulWidget {
 }
 
 class _AddRatingsPageState extends State<AddRatingsPage> {
-  static final TimeTableEvent _dummyEvent = TimeTableEvent(null, null, '----', false, null, null, null, null, null);
+  static final TimeTableEvent _dummyEvent = TimeTableEvent(null, null, '----', false, null, null, null, null, null, null);
   TimeTableEvent defaultSelection;
 
   _AddRatingsPageState(this.defaultSelection) {

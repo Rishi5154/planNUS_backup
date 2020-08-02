@@ -12,9 +12,9 @@ part 'activity.g.dart';
 class Activity extends TimeTableEvent {
   //Constructor
   Activity(DateTime startDate, ScheduleTiming timing, String id,
-      String name, bool isImportant, String location, bool isPrivate)
+      String name, bool isImportant, String location, bool isPrivate, String type)
       : super(timing, id, name, isImportant, startDate, startDate,
-      false, location, isPrivate);
+      false, location, isPrivate, type);
 
 //  const BasicEvent({
 //    @required Object id,

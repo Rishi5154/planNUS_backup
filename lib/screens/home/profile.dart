@@ -231,10 +231,10 @@ class _ProfileState extends State<Profile> {
                             )
                         ),
                         obscureText: false,
-                        validator: (val) => val[0] != '@' ? 'Handle starts with @!' : null,
+                        validator: (val) => val[0] != '@' || val.isEmpty ? 'Handle starts with @!' : null,
                         onChanged: (val) {
-                          setState(() => newHandle = val);
-                          //print(handle);
+                            setState(() => newHandle = val);
+                            //print(handle);
                         },
                       ),
                     ),

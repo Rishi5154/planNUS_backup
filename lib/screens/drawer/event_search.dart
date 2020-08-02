@@ -104,7 +104,7 @@ class EventSearch extends SearchDelegate<String> {
               );
             } catch (e) {
               print(e.toString());
-              HelperWidgets.flushbar("Event location unavailable!", Icons.place)..show(context);
+              //HelperWidgets.flushbar("Event location unavailable!", Icons.place)..show(context);
               events.add(toAdd.event.name);
               return Navigator.push(context,
                   MaterialPageRoute(builder: (context) =>
