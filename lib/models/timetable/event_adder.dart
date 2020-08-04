@@ -36,7 +36,7 @@ class _EventAdderState extends State<EventAdder> {
 
   static List<DropdownMenuItem<int>> buildDropDownMenuItems2(List<String> days) {
     List<DropdownMenuItem<int>> items = List();
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < days.length; i++) {
       items.add(
         DropdownMenuItem(
           value: i + 1,
@@ -46,6 +46,25 @@ class _EventAdderState extends State<EventAdder> {
     }
     return items;
   }
+  static List<DropdownMenuItem<String>> buildDropDownMenuItems3(List<String> list) {
+    List<DropdownMenuItem<String>> items = List();
+    for (int i = 0; i < list.length; i++) {
+      items.add(
+        DropdownMenuItem(
+          value: list[i],
+          child: Row(
+            children: <Widget>[
+              Icon(Icons.list, color: Colors.deepPurpleAccent,),
+              SizedBox(width: 10,),
+              Text(list[i])
+            ],
+          )/*Text(list[i])*/,
+        ),
+      );
+    }
+    return items;
+  }
+
   static List<TimeOfDay> startTimeList = [
     TimeOfDay(hour: 8, minute: 0),
     TimeOfDay(hour: 9, minute: 0),
@@ -80,12 +99,16 @@ class _EventAdderState extends State<EventAdder> {
   List<DropdownMenuItem<int>> _dropdownDays = buildDropDownMenuItems2(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
   List<DropdownMenuItem<TimeOfDay>> _dropdownStartTimes = buildDropDownMenuItems(startTimeList);
   List<DropdownMenuItem<TimeOfDay>> _dropdownEndTimes= buildDropDownMenuItems(endTimeList);
+  static List<String> eventTypes = ['Work', 'Education', 'Recreation', 'Travel', 'Food & Beverage', 'Shopping'];
+  List<DropdownMenuItem<String>> _dropDownTypes = buildDropDownMenuItems3(eventTypes);
   TextEditingController _selectedName = new TextEditingController();
   TimeOfDay _selectedStartTime;
   TimeOfDay _selectedEndTime;
   TextEditingController _selectedLocation = new TextEditingController();
   int _selectedDay;
   bool _selectedImportance = false;
+  String _typeOfEvent;
+  String _natureOfEvent;
   String error = '';
   String addable = '';
   DateTime _selectedStartDate = DateTime.now();
@@ -184,6 +207,55 @@ class _EventAdderState extends State<EventAdder> {
                 controller: _selectedName,
               )
             ),
+//            Padding(
+//                padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
+//                child: CustomTextField(labelText: "Location", controller: _selectedLocation,)
+//            ),
+//            Row(
+//              mainAxisAlignment: MainAxisAlignment.center,
+//              children: <Widget>[
+//                RaisedButton(
+//                  key: Key('Location'),
+//                  child: Text(
+//                    "Get current location",
+//                    style: GoogleFonts.openSans(fontSize: 12, fontWeight: FontWeight.w500),
+//                  ),
+//                  color: Colors.lightBlueAccent,
+//                  onPressed: () async {
+//                    Position pos = await LocationService.getCurrentLocation();
+//                    print(pos);
+//                    Placemark placemark = await LocationService.getCurrentAddress(pos);
+//                    Address adrs = await LocationService.getAddress(pos);
+//                    print(adrs.addressLine);
+//                    print(adrs.locality);
+//                    setState(() {
+//                      _selectedLocation.text = adrs.addressLine;
+//                    });
+//                  },
+//                ),
+//                SizedBox(width: 20,),
+//                RaisedButton(
+//                  child: Text(
+//                    "Set location",
+//                    style: GoogleFonts.openSans(fontSize: 14),
+//                  ),
+//                  color: Colors.lightBlueAccent,
+//                  onPressed: () async {
+//                    final res = await Navigator.push(context,
+//                        MaterialPageRoute(
+//                          builder: (context) => Location(),
+//                        )
+//                    );
+//                    print(res == null ? '' : res  + " has been taken!!!");
+//                    if (res != null) {
+//                      setState(() {
+//                        _selectedLocation.text = res;
+//                      });
+//                    }
+//                  },
+//                )
+//              ],
+//            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
@@ -250,6 +322,88 @@ class _EventAdderState extends State<EventAdder> {
               error,
               style: TextStyle(color: Colors.red, fontSize: 14),
             ) : Container(),
+            Padding(
+                padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
+                child: CustomTextField(labelText: "Location", controller: _selectedLocation,)
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                RaisedButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(40),
+                    side: BorderSide(color: Colors.lightBlue),
+                  ),
+                  key: Key('Location'),
+                  child: Text(
+                    "Get current location",
+                    style: GoogleFonts.lato(fontSize: 12, fontWeight: FontWeight.w400),
+                  ),
+                  color: Colors.lightBlueAccent,
+                  onPressed: () async {
+                    Position pos = await LocationService.getCurrentLocation();
+                    print(pos);
+                    Placemark placemark = await LocationService.getCurrentAddress(pos);
+                    Address adrs = await LocationService.getAddress(pos);
+                    print(adrs.addressLine);
+                    print(adrs.locality);
+                    setState(() {
+                      _selectedLocation.text = adrs.addressLine;
+                    });
+                  },
+                ),
+                SizedBox(width: 20,),
+                RaisedButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(40),
+                    side: BorderSide(color: Colors.lightBlue),
+                  ),
+                  child: Text(
+                    "Set location",
+                    style: GoogleFonts.openSans(fontSize: 14),
+                  ),
+                  color: Colors.lightBlueAccent,
+                  onPressed: () async {
+                    final res = await Navigator.push(context,
+                        MaterialPageRoute(
+                          builder: (context) => Location(),
+                        )
+                    );
+                    print(res == null ? '' : res  + " has been taken!!!");
+                    if (res != null) {
+                      setState(() {
+                        _selectedLocation.text = res;
+                      });
+                    }
+                  },
+                )
+              ],
+            ),
+            Column(
+              children: <Widget>[
+                Text("Type of Event"),
+                SizedBox(height: 5.0),
+                Container(
+                  padding: EdgeInsets.fromLTRB(15, 5, 5, 5),
+                  decoration: ShapeDecoration(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        side: BorderSide(width: 1.0, style: BorderStyle.solid, color: Colors.grey[500])
+                    ),
+                  ),
+                  child: DropdownButton(
+                      value: _typeOfEvent,
+                      items: _dropDownTypes,
+                      onChanged: (val) {
+                        print(val);
+                        setState(() {
+                          _typeOfEvent = val;
+                        });
+                      }
+                  ),
+                ),
+              ],
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -340,55 +494,55 @@ class _EventAdderState extends State<EventAdder> {
                 Text(isPrivate ? 'Yes' : 'No')
               ],
             ),
-            Padding(
-                padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
-                child: CustomTextField(labelText: "Location", controller: _selectedLocation,)
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                RaisedButton(
-                  key: Key('Location'),
-                  child: Text(
-                    "Get current location",
-                    style: GoogleFonts.openSans(fontSize: 12, fontWeight: FontWeight.w500),
-                  ),
-                  color: Colors.lightBlueAccent,
-                  onPressed: () async {
-                    Position pos = await LocationService.getCurrentLocation();
-                    print(pos);
-                    Placemark placemark = await LocationService.getCurrentAddress(pos);
-                    Address adrs = await LocationService.getAddress(pos);
-                    print(adrs.addressLine);
-                    print(adrs.locality);
-                    setState(() {
-                      _selectedLocation.text = adrs.addressLine;
-                    });
-                  },
-                ),
-                SizedBox(width: 20,),
-                RaisedButton(
-                  child: Text(
-                    "Set location",
-                    style: GoogleFonts.openSans(fontSize: 14),
-                  ),
-                  color: Colors.lightBlueAccent,
-                  onPressed: () async {
-                    final res = await Navigator.push(context,
-                        MaterialPageRoute(
-                          builder: (context) => Location(),
-                        )
-                    );
-                    print(res == null ? '' : res  + " has been taken!!!");
-                    if (res != null) {
-                      setState(() {
-                        _selectedLocation.text = res;
-                      });
-                    }
-                  },
-                )
-              ],
-            ),
+//            Padding(
+//                padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
+//                child: CustomTextField(labelText: "Location", controller: _selectedLocation,)
+//            ),
+//            Row(
+//              mainAxisAlignment: MainAxisAlignment.center,
+//              children: <Widget>[
+//                RaisedButton(
+//                  key: Key('Location'),
+//                  child: Text(
+//                    "Get current location",
+//                    style: GoogleFonts.openSans(fontSize: 12, fontWeight: FontWeight.w500),
+//                  ),
+//                  color: Colors.lightBlueAccent,
+//                  onPressed: () async {
+//                    Position pos = await LocationService.getCurrentLocation();
+//                    print(pos);
+//                    Placemark placemark = await LocationService.getCurrentAddress(pos);
+//                    Address adrs = await LocationService.getAddress(pos);
+//                    print(adrs.addressLine);
+//                    print(adrs.locality);
+//                    setState(() {
+//                      _selectedLocation.text = adrs.addressLine;
+//                    });
+//                  },
+//                ),
+//                SizedBox(width: 20,),
+//                RaisedButton(
+//                  child: Text(
+//                    "Set location",
+//                    style: GoogleFonts.openSans(fontSize: 14),
+//                  ),
+//                  color: Colors.lightBlueAccent,
+//                  onPressed: () async {
+//                    final res = await Navigator.push(context,
+//                        MaterialPageRoute(
+//                          builder: (context) => Location(),
+//                        )
+//                    );
+//                    print(res == null ? '' : res  + " has been taken!!!");
+//                    if (res != null) {
+//                      setState(() {
+//                        _selectedLocation.text = res;
+//                      });
+//                    }
+//                  },
+//                )
+//              ],
+//            ),
             Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -430,7 +584,8 @@ class _EventAdderState extends State<EventAdder> {
                             _selectedStartDate,
                             _selectedEndDate,
                             _selectedLocation.text,
-                            isPrivate
+                            isPrivate,
+                            _typeOfEvent
                           ));
                         } else {
                           user.timetable.addActivity(Activity(
@@ -440,7 +595,8 @@ class _EventAdderState extends State<EventAdder> {
                             _selectedName.text,
                             _selectedImportance,
                             _selectedLocation.text,
-                            isPrivate
+                            isPrivate,
+                            _typeOfEvent
                           ));
                         }
                         await user.update()

@@ -20,6 +20,7 @@ class TimeTableEvent {
   bool isWeekly;
   String location;
   bool isPrivate;
+  String type;
 
   //Constructor
   TimeTableEvent(this.timing,
@@ -30,7 +31,8 @@ class TimeTableEvent {
                  this.endDate,
                  this.isWeekly,
                  this.location,
-                 this.isPrivate);
+                 this.isPrivate,
+                 this.type);
 
   //JsonSerializable methods
   factory TimeTableEvent.fromJson(Map<String, dynamic> data) => _$TimeTableEventFromJson(data);

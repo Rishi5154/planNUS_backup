@@ -47,6 +47,7 @@ class _DetailedEventState extends State<DetailedEvent> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           leading:
             IconButton(icon: Icon(Icons.arrow_back),
               onPressed: () {
@@ -94,6 +95,17 @@ class _DetailedEventState extends State<DetailedEvent> {
                     markers: Set<Marker>.of(_markers),
                   ),
               ),
+              widget.event.event.type != null ?
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(children: <Widget>[
+                      Icon(Icons.info, semanticLabel: 'Type', color: Colors.lightBlue, size: 35,),
+                      SizedBox(width: 5,),
+                      Text(widget.event.event.type, style: GoogleFonts.lato(fontSize: 18, color: Colors.lightBlue),)
+                    ],
+                ),
+              )
+                  : Container(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
