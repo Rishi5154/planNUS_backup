@@ -52,7 +52,7 @@ class HelperWidgets {
     );
   }
 
-  static Flushbar TopFlushbar(String text, IconData icon) {
+  static Flushbar topFlushbar(String text, IconData icon) {
     return Flushbar(
       flushbarStyle: FlushbarStyle.FLOATING,
       flushbarPosition: FlushbarPosition.TOP,

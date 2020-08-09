@@ -66,7 +66,7 @@ class TimeTable {
     ref.addEvent(event);
     timetable[index] = ref;
     if (event.isImportant) {
-      DateTime curr = DateTime.now();
+      //DateTime curr = DateTime.now();
       int startTime = event.timing.start;
       DateTime startDay = event.startDate;
       notificationService.scheduleAtTime(DateTime(startDay.year, startDay.month, startDay.day, startTime - 1, 45), notificationIdGenerator(event), "Important Event",
@@ -173,7 +173,7 @@ class TimeTable {
   }
 
   Future<void> deleteWeeklyEvent(TimeTableEvent event) async {
-    int s = event.timing.start;
+//    int s = event.timing.start;
 //    print(day);
 //    print(notificationIdGenerator(s, day));
     FlutterLocalNotificationsPlugin().cancel(

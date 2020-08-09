@@ -54,7 +54,7 @@ class _EventPageState extends State<EventPage> {
         String location = act.location;
         return act.location == null ? new DayEvent(time, task, desc, isFinish, isImportant)
             : new DayEvent(time, task, desc, isFinish, isImportant, location: location);
-        return new DayEvent(time, task, desc, isFinish, isImportant, location: location);
+//        return new DayEvent(time, task, desc, isFinish, isImportant, location: location);
       }
     }).toList();
 

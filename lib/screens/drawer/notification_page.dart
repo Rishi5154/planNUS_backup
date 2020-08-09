@@ -36,7 +36,7 @@ class _NotificationPageState extends State<NotificationPage> {
   Widget build(BuildContext context) {
     _currUser = Provider.of<User>(context);
     //unreadNotifications = _currUser.requests;
-    List<CustomNotification> refUnread = unreadNotifications.reversed.toList();
+//    List<CustomNotification> refUnread = unreadNotifications.reversed.toList();
     if (unreadNotifications.length > 0) {
       return Padding(
           padding: const EdgeInsets.fromLTRB(8, 5, 8, 5),

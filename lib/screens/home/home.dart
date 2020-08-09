@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,9 +9,6 @@ import 'package:plannusandroidversion/models/todo/todo_main.dart';
 import 'package:plannusandroidversion/models/todo/todo_models/todo_data.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:plannusandroidversion/screens/drawer/my_drawer.dart';
-import 'package:plannusandroidversion/models/timetable/weekly_event_adder.dart';
-import 'package:plannusandroidversion/screens/drawer/notification_page.dart';
-import 'package:plannusandroidversion/models/user_search.dart';
 import 'package:plannusandroidversion/screens/home/messages.dart';
 import 'package:plannusandroidversion/screens/home/profile.dart';
 import 'package:plannusandroidversion/services/auth.dart';

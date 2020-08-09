@@ -8,6 +8,7 @@ A mobile application made available on Android devices whereby users can speed u
 - Controlled via Git/Github.
 
 Intended level of achievement: **Apollo**
+Actual level of achievement: **Artemis**
 
 ## Motivation
 

@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:plannusandroidversion/messages/chats.dart';
 import 'package:plannusandroidversion/messages/chatscreenredirect.dart';
 import 'package:plannusandroidversion/messages/chatsearch.dart';
 import 'package:plannusandroidversion/messages/constants.dart';
@@ -11,7 +10,6 @@ import 'package:plannusandroidversion/models/meeting/meeting_handler.dart';
 import 'package:plannusandroidversion/models/timetable/timetable_widget.dart';
 import 'package:plannusandroidversion/models/user.dart';
 import 'package:plannusandroidversion/screens/drawer/meeting_request_page.dart';
-import 'package:plannusandroidversion/models/user_search.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/messages/helperfunctions.dart';
 import 'package:provider/provider.dart';
@@ -270,6 +268,8 @@ class _ChatRoomsTileState extends State<ChatRoomsTile> {
                 ),
                 child: Text("${widget.name.isNotEmpty ? widget.name.substring(0,1).toUpperCase() : "-"}",
                   style: TextStyle(fontSize: 18,color: Colors.white),),
+              ),
+            ),
             SizedBox(width: 5),
             Container(
               //padding: EdgeInsets.only(left: 5),

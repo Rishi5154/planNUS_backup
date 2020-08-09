@@ -79,7 +79,7 @@ class _LocationState extends State<Location> {
       return;
     }
     String baseURL = 'https://maps.googleapis.com/maps/api/place/autocomplete/json';
-    String type = '(regions)';
+//    String type = '(regions)';
 
     //String request = '$baseURL?input=$input&key=$kGoogleApiKey&type=$type&sessiontoken=$sessionToken';
     String request = '$baseURL?input=$input&key=$kGoogleApiKey&sessiontoken=$sessionToken';
