@@ -7,7 +7,7 @@ A mobile application made available on Android devices whereby users can speed u
 - Supported with Nodejs/Google Maps API.
 - Controlled via Git/Github.
 
-Intended level of achievement: **Apollo**
+Intended level of achievement: **Artemis**
 
 ## Motivation
 
