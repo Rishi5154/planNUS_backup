@@ -281,13 +281,13 @@ class _ChatsState extends State<Chats> {
                       icon: new Icon(Icons.search, color: Colors.cyanAccent, size: 30,),
                       onPressed: () async {
                         if (Constants.myName == null || Constants.myName.isEmpty) {
-                          HelperWidgets.TopFlushbar('Please update your name at Profile!'
+                          HelperWidgets.topFlushbar('Please update your name at Profile!'
                               , Icons.perm_identity)..show(context);
                         } else if (Constants.myHandle == null || Constants.myHandle.isEmpty) {
-                          HelperWidgets.TopFlushbar('Please update your handle at Profile!'
+                          HelperWidgets.topFlushbar('Please update your handle at Profile!'
                               , Icons.perm_identity)..show(context);
                         } else if (searchTextEditingController.text == Constants.myHandle) {
-                          HelperWidgets.TopFlushbar("You can't search for yourself!"
+                          HelperWidgets.topFlushbar("You can't search for yourself!"
                               , Icons.info_outline)..show(context);
                         } else {
                           initiateSearch();

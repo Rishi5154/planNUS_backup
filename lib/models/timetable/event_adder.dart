@@ -108,7 +108,7 @@ class _EventAdderState extends State<EventAdder> {
   int _selectedDay;
   bool _selectedImportance = false;
   String _typeOfEvent;
-  String _natureOfEvent;
+//  String _natureOfEvent;
   String error = '';
   String addable = '';
   DateTime _selectedStartDate = DateTime.now();
@@ -343,7 +343,7 @@ class _EventAdderState extends State<EventAdder> {
                   onPressed: () async {
                     Position pos = await LocationService.getCurrentLocation();
                     print(pos);
-                    Placemark placemark = await LocationService.getCurrentAddress(pos);
+                    //Placemark placemark = await LocationService.getCurrentAddress(pos);
                     Address adrs = await LocationService.getAddress(pos);
                     print(adrs.addressLine);
                     print(adrs.locality);

@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:ui';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +71,7 @@ class _ProfileState extends State<Profile> {
   Future getImage() async {
     ImagePicker imagePicker = new ImagePicker();
     PickedFile img = await imagePicker.getImage(source: ImageSource.gallery);
-    File image = File(img.path);
+//    File image = File(img.path);
     if (img != null) {
       File image =
       await ImageCropper.cropImage(sourcePath: img.path,
@@ -283,7 +282,7 @@ class _ProfileState extends State<Profile> {
                           margin: EdgeInsets.only(left: 3, right:0, top: 0, bottom: 0),
                           child: RaisedButton(
                             onPressed: () async {
-                              File curr = await getImage();
+//                              File curr = await getImage();
 
 ////                              ImagePicker imagePicker = new ImagePicker();
 ////                              PickedFile img = await imagePicker.getImage(source: ImageSource.gallery);

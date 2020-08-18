@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -160,9 +158,9 @@ class _TimeTableWidgetState extends State<TimeTableWidget> {
     );
   }
 
-  void _showSnackBar(String content) {
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
-      content: Text(content),
-    ));
-  }
+//  void _showSnackBar(String content) {
+//    _scaffoldKey.currentState.showSnackBar(SnackBar(
+//      content: Text(content),
+//    ));
+//  }
 }
