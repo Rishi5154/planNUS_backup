@@ -1,4 +1,3 @@
-import 'package:plannusandroidversion/models/timetable/activity.dart';
 import 'package:plannusandroidversion/models/timetable/day_schedule.dart';
 import 'package:plannusandroidversion/models/timetable/schedule_timing.dart';
 import 'package:plannusandroidversion/models/timetable/timetable_event.dart';

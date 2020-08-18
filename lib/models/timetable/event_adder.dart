@@ -108,6 +108,7 @@ class _EventAdderState extends State<EventAdder> {
   int _selectedDay;
   bool _selectedImportance = false;
   String _typeOfEvent;
+
   String _natureOfEvent;
   String error = '';
   String addable = '';

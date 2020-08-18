@@ -139,7 +139,7 @@ class _MyDrawerState extends State<MyDrawer> {
               splashColor: Colors.orange,
               onTap: () async {
                 QuerySnapshot ss = await DatabaseMethods().getRateQuerySnapshots();
-                QuerySnapshot _querySnapshot = Provider.of<QuerySnapshot>(context, listen: false);
+//                QuerySnapshot _querySnapshot = Provider.of<QuerySnapshot>(context, listen: false);
                 if (ss != null) {
                   showSearch(
                       context: context,

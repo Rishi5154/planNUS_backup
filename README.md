@@ -7,7 +7,7 @@ A mobile application made available on Android devices whereby users can speed u
 - Supported with Nodejs/Google Maps API.
 - Controlled via Git/Github.
 
-Intended level of achievement: Apollo
+Intended level of achievement: **Artemis**
 
 ## Motivation
 
@@ -16,7 +16,7 @@ Given the age where we have a wide range of classes and events to attend, keepin
 
 ## And that's where planNUS steps in!
 
-We aim to make event planning easy for students and academic staff by giving them in-depth info about events relevant to them as well as proffering them suggestions on what they could do as well as expediting the process of organising mutual events among themselves. In addition, we aim to ease the process of finding mutually convenient time with any user of the application.
+We aim to make event planning easy for students and academic staff by giving them in-depth info about events relevant to them as well as proffering them details on the events happening across their location while also expediting the process of organising mutual events among themselves. In addition, we intend to ease the process of finding mutually convenient time with any user of the application.
 
 
 ## Instructions for use
@@ -31,5 +31,6 @@ We aim to make event planning easy for students and academic staff by giving the
 8. From there, you can search for plannusandroid app on the Home screen and you're good to go.
 
 _Note of caution, the Google Sign In option may not work as intended for your device, as its unique SHA key will need to be added onto our Firebase configuration._
+
 
 

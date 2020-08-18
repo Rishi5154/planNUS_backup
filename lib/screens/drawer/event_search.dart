@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:plannusandroidversion/models/rating/rateable.dart';
 import 'package:plannusandroidversion/models/timetable/timetable_event.dart';
@@ -8,7 +7,6 @@ import 'package:plannusandroidversion/models/user.dart';
 import 'package:plannusandroidversion/screens/drawer/detailedevent.dart';
 import 'package:plannusandroidversion/services/database.dart';
 import 'package:plannusandroidversion/services/locationservice.dart';
-import 'package:plannusandroidversion/shared/helperwidgets.dart';
 
 class EventSearch extends SearchDelegate<String> {
 
