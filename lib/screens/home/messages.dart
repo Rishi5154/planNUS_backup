@@ -249,38 +249,41 @@ class _ChatRoomsTileState extends State<ChatRoomsTile> {
         ),
         child: Row(
           children: <Widget>[
-            CachedNetworkImage(
-              imageUrl: link ?? '',
-              useOldImageOnUrlChange: false,
-              placeholder: (context, url) => CircularProgressIndicator(),
-              imageBuilder: (context, imageprovider) => Padding(
-                padding: const EdgeInsets.only(left: 6, top: 0, right: 0, bottom: 0),
-                child: CircleAvatar(backgroundImage: imageprovider, radius: 27.5,),
-              ),
-              errorWidget: (context, url, error) => Container(
-                //padding: EdgeInsets.only(left: 5),
-                margin: EdgeInsets.only(left: 7),
-                height: 54, width: 54,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(54),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CachedNetworkImage(
+                imageUrl: link ?? '',
+                useOldImageOnUrlChange: false,
+                placeholder: (context, url) => CircularProgressIndicator(),
+                imageBuilder: (context, imageprovider) => Padding(
+                  padding: const EdgeInsets.only(left: 6, top: 0, right: 0, bottom: 0),
+                  child: CircleAvatar(backgroundImage: imageprovider, radius: 27.5,),
                 ),
-                child: Text("${widget.name.isNotEmpty ? widget.name.substring(0,1).toUpperCase() : "-"}",
-                  style: TextStyle(fontSize: 18,color: Colors.white),),
+                errorWidget: (context, url, error) => Container(
+                  //padding: EdgeInsets.only(left: 5),
+                  margin: EdgeInsets.only(left: 7),
+                  height: 54, width: 54,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(54),
+                  ),
+                  child: Text("${widget.name.isNotEmpty ? widget.name.substring(0,1).toUpperCase() : "-"}",
+                    style: TextStyle(fontSize: 18,color: Colors.white),),
+                ),
               ),
             ),
             SizedBox(width: 5),
-            Container(
-              //padding: EdgeInsets.only(left: 5),
-//              margin: EdgeInsets.only(left: 1),
-              height: 54, width: 54,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(54),
-              ),
-            ),
+//            Container(
+//              //padding: EdgeInsets.only(left: 5),
+////              margin: EdgeInsets.only(left: 1),
+//              height: 54, width: 54,
+//              alignment: Alignment.center,
+//              decoration: BoxDecoration(
+//                color: Colors.blue,
+//                borderRadius: BorderRadius.circular(54),
+//              ),
+//            ),
 //            Container(
 //              //padding: EdgeInsets.only(left: 5),
 //              margin: EdgeInsets.only(left: 7),
