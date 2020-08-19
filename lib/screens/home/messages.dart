@@ -169,7 +169,7 @@ class ChatRoomsTile extends StatefulWidget {
 }
 
 class _ChatRoomsTileState extends State<ChatRoomsTile> {
-  List<User> toChecks = new List<User>();
+
   setProfileDialog(BuildContext context) {
     return showDialog(context: context,
         barrierDismissible: false,
@@ -330,7 +330,6 @@ class _ChatRoomsTileState extends State<ChatRoomsTile> {
               onSelected: (String choice) async => {
                 if (choice == 'Meet') {
                   //setProfileDialog(context),
-                  toChecks.add(widget.user),
 //                  print(widget.user.name),
 //                  print(currUser.name),
 ////                  MeetingHandler handler = ,
@@ -345,7 +344,7 @@ class _ChatRoomsTileState extends State<ChatRoomsTile> {
                                 child: Stack(
                                     children: [
                                       MeetingRequestPage(
-                                          new MeetingHandler(widget.currUser, toChecks), true, cont,
+                                          new MeetingHandler(widget.currUser, [widget.user]), true, cont,
                                       ),
                                       BackButton(
                                         onPressed: () async {
