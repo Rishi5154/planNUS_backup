@@ -87,12 +87,42 @@ exports.meetingsUpdate = functions.firestore.document('/meetings/{meetingsId}')
         var uid1 = uids[0];
         //var uid2 = uids[1];
         const requestor = await obj.requesterName;
+        const start = slots.start < 10 ? '0' + slots.start + '00' : slots.start + '00'
+        const end = slots.end < 10 ? '0' + slots.end + '00' : slots.end + '00'
         const payload = {
             notification: {
                 title: 'Meeting request',
-                body: 'You have a meeting request from ' + requestor + ' between ' + slots.start + ' - ' + slots.end
+                body: 'You have a meeting request from ' + requestor + ' between ' + start + ' - ' + end
             }
         }
+        const promises = []
+        const send = async (val) => {
+            var doc = await admin.firestore()
+                    .collection('userNotificationTokens')
+                    .doc(val)
+                    .get()
+                var token = doc.data().token
+                const response = await admin.messaging()
+                .sendToDevice(token, payload)
+        }
+        if (uids.length > 1) {
+            for (id in uids) {
+                console.log(uids[id])
+                promises.push(send(uids[id]))
+            }
+            const responses = await Promise.all(promises)
+            // uids.map((id, index) => {
+            //     console.log(id)
+            //     var doc = admin.firestore()
+            //         .collection('userNotificationTokens')
+            //         .doc(id)
+            //         .get()
+            //     var token = doc.data().token
+            //     const response = await admin.messaging()
+            //     .sendToDevice(token, payload)
+            // })
+            return null
+        } else {
         var doc = await admin.firestore()
         .collection('userNotificationTokens')
         .doc(uid1)
@@ -101,6 +131,7 @@ exports.meetingsUpdate = functions.firestore.document('/meetings/{meetingsId}')
         const response = await admin.messaging()
         .sendToDevice(token, payload)
         return null;
+        }
 
     })
 
@@ -111,20 +142,32 @@ exports.meetingsOutcome = functions.firestore.document('/meetings/{meetingsId}')
     var decision = await data.isAccepted;
     data = await data.meeting
     const userUid = await data.userUID
+    const mates = await data.groupUID
     const slots = await data.slot;
     const memberName = await data.memberNames
     //const name = memberName[0]
+    const start = slots.start < 10 ? '0' + slots.start + '00' : slots.start + '00'
+    const end = slots.end < 10 ? '0' + slots.end + '00' : slots.end + '00'
     const payload = {
         notification: {
-            title: 'Meeting with ' + memberName + ' between ' + slots.start + ' - ' + slots.end,
-            body: decision ? 'approved' : 'rejected' 
+            title: 'Meeting with ' + memberName + ' between ' + start + ' - ' + end,
+            body: decision ? 'Approved' : 'Rejected' 
         }
     }
-    const token = await admin.firestore()
-    .collection('userNotificationTokens')
-    .doc(userUid)
-    .get().then(value => value.data().token)
-    await admin.messaging().sendToDevice(token, payload);
+    if (mates.length > 1 && decision === null) {
+        return null
+    }
+    if (decision === true || mates.length === 1) {
+        if (decision === null) {
+            decision = false
+        }
+        const token = await admin.firestore()
+        .collection('userNotificationTokens')
+        .doc(userUid)
+        .get().then(value => value.data().token)
+        await admin.messaging().sendToDevice(token, payload);
+        return null
+    }
     // if (decision) {
     //     await admin.messaging().sendToDevice(token, payload);
     // } else {
