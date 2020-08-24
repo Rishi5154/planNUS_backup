@@ -40,7 +40,10 @@ class User {
   }
 
   Future<void> deleteMeetingRequest(MeetingRequest mr) {
-    this.requests.removeWhere((req) => req.meetingRequest != null && req.meetingRequest.meeting.uid == mr.meeting.uid);
+    this.requests.removeWhere((req) {
+//      print(req.meetingRequest.meeting.uid);
+      return req.meetingRequest != null && req.meetingRequest.meeting.uid == mr.meeting.uid;
+    });
     return this.update();
   }
 
